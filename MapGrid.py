@@ -6,7 +6,7 @@ from coord import Coord
 
 
 class MapGrid:
-    def __init__(self, xsize: int, ysize: int, coords: list):
+    def __init__(self, xsize: int, ysize: int, obstacles: list):
         self.xsize = xsize
         self.ysize = ysize
         self.gridArea = []
@@ -15,6 +15,8 @@ class MapGrid:
             for j in range(0, ysize):
                 new.append(0)
             self.gridArea.append(new)
+        for coord in obstacles:
+            self.gridArea[coord.x][coord.y] = 1
 
     def is_adjacent(self, coord1: Coord, coord2: Coord) -> bool:
         """
@@ -42,6 +44,11 @@ class MapGrid:
         return True
 
     def is_adjacent_position(self, coord1: Coord, coord2: Coord) -> bool:
+        """
+        :param coord1:
+        :param coord2:
+        :return: True if coord1 is one tile away from coord2, false otherwise
+        """
         manhattan_dist = abs(coord1.x - coord2.x) + abs(coord1.y - coord2.y)
         if manhattan_dist == 1:
             return True
@@ -52,6 +59,8 @@ class MapGrid:
         :param coord:
         :return: All neighbors of coord in a list. (A coord with no neighbors would return empty list)
         """
+        if not self.is_valid_coord(coord):
+            return []
         raw_neighbors = [
             Coord(coord.x, coord.y + 1),
             Coord(coord.x, coord.y - 1),
