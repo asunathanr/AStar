@@ -59,19 +59,13 @@ class MapGrid:
         :param coord:
         :return: All neighbors of coord in a list. (A coord with no neighbors would return empty list)
         """
-        if not self.is_valid_coord(coord):
-            return []
         raw_neighbors = [
             Coord(coord.x, coord.y + 1),
             Coord(coord.x, coord.y - 1),
             Coord(coord.x - 1, coord.y),
             Coord(coord.x + 1, coord.y)
         ]
-        valid_neighbors = []
-        for i in raw_neighbors:
-            if self.is_adjacent(coord, i):
-                valid_neighbors.append(i)
-        return valid_neighbors
+        return list(filter(lambda i: self.is_adjacent(i, coord), raw_neighbors))
 
     def insert_obstacle(self, coord: Coord) -> None:
         if self.is_valid_coord(coord):
