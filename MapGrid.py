@@ -1,5 +1,9 @@
 from coord import Coord
 
+# File: MapGrid.py
+# Authors: Kelsey Lewis, Ryan, Nathan Robertson, Pedro Reyes
+# Purpose: Describes a MapGrid class used in path finding algorithms.
+
 
 class MapGrid:
     def __init__(self, xsize: int, ysize: int, coords: list):
@@ -43,9 +47,8 @@ class MapGrid:
             return True
         return False
 
-    def adjacent(self, coord: Coord) -> list:
+    def neighbors(self, coord: Coord) -> list:
         """
-
         :param coord:
         :return: All neighbors of coord in a list. (A coord with no neighbors would return empty list)
         """
@@ -55,11 +58,11 @@ class MapGrid:
             Coord(coord.x - 1, coord.y),
             Coord(coord.x + 1, coord.y)
         ]
-        neighbors = []
+        valid_neighbors = []
         for i in raw_neighbors:
             if self.is_adjacent(coord, i):
-                neighbors.append(i)
-        return neighbors
+                valid_neighbors.append(i)
+        return valid_neighbors
 
     def insert_obstacle(self, coord: Coord) -> None:
         if self.is_valid_coord(coord):

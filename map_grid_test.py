@@ -18,5 +18,5 @@ class GridTest(unittest.TestCase):
         self.assertTrue(self.grid.is_adjacent(Coord(1, 1), Coord(0, 1)))
 
     def test_adjacent(self):
-        neighbors = self.grid.adjacent(Coord(1, 1))
+        neighbors = self.grid.neighbors(Coord(1, 1))
         self.assertEqual({Coord(1, 2), Coord(0, 1), Coord(2, 1), Coord(1, 0)}, set(neighbors))
