@@ -2,11 +2,11 @@ from coord import Coord
 
 
 class WeightedCoord(Coord):
-    def __init__(self, weight, x, y):
+    def __init__(self, weight, x, y, parent=None):
         super().__init__(x, y)
         self.h = 0
         self.weight = weight
-        self.parent = None
+        self.parent = parent
 
     def f(self):
         return self.weight + self.h
