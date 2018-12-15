@@ -5,10 +5,17 @@ from weighted_coord import Coord, WeightedCoord
 class AStar(MapGrid):
     def __init__(self, xsize, ysize, obstacles: list):
         super().__init__(xsize, ysize, obstacles)
+        self.PATH_OUT_OF_BOUNDS = None
+        self.INVALID_PATH = []
 
     def a_star(self, start: Coord, end: Coord) -> []:
         if not self.is_valid_coord(start) or not self.is_valid_coord(end):
-            return None
+            return self.PATH_OUT_OF_BOUNDS
+        last_cell, successful = self.create_path(start, end)
+        path = self.make_path(last_cell, end) if successful else self.INVALID_PATH
+        return path
+
+    def create_path(self, start, end) -> (WeightedCoord, bool):
         open_set, closed_set = self.initialize(start)
         current, neighbors = self.next_cell(open_set, closed_set)
         while len(open_set) > 0 and end not in neighbors:
@@ -18,8 +25,7 @@ class AStar(MapGrid):
                 open_set = self.try_add_cell(tentative_g, neighbor, open_set, current, end)
             closed_set.add(current)
             current, neighbors = self.next_cell(open_set, closed_set)
-        path = self.make_path(current, end) if end in neighbors else []
-        return path
+        return current, end in neighbors
 
     def initialize(self, start):
         return {WeightedCoord(0, start.x, start.y)}, set()
