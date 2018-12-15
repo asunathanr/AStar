@@ -1,4 +1,7 @@
 from coord import Coord
+from weighted_coord import WeightedCoord
+import heapq
+import sys
 
 # File: MapGrid.py
 # Authors: Kelsey Lewis, Ryan, Nathan Robertson, Pedro Reyes
@@ -10,13 +13,20 @@ class MapGrid:
         self.xsize = xsize
         self.ysize = ysize
         self.gridArea = []
+        self.OBSTACLE_VALUE = 2
+        self.INVALID_POSITION = -1
         for i in range(0, xsize):
             new = []
             for j in range(0, ysize):
-                new.append(0)
+                new.append(1)
             self.gridArea.append(new)
         for coord in obstacles:
-            self.gridArea[coord.x][coord.y] = 1
+            self.gridArea[coord.x][coord.y] = self.OBSTACLE_VALUE
+
+    def cost(self, coord):
+        if self.is_valid_coord(coord):
+            return self.gridArea[coord.x][coord.y]
+        return self.INVALID_POSITION
 
     def is_adjacent(self, coord1: Coord, coord2: Coord) -> bool:
         """
@@ -54,24 +64,28 @@ class MapGrid:
             return True
         return False
 
+    def cell_value(self, coord: Coord):
+        if self.is_valid_coord(coord):
+            return self.gridArea[coord.x][coord.y]
+        return self.INVALID_POSITION
+
     def neighbors(self, coord: Coord) -> list:
         """
         :param coord:
         :return: All neighbors of coord in a list. (A coord with no neighbors would return empty list)
         """
-        fn = lambda x, y: Coord(coord.x + x, coord.y + y)
-        dist = map(lambda i: fn(i[0], i[1]), [(0, -1), (-1, 0), (1, 0), (0, 1)])
+        make_neighbor = lambda x, y: Coord(coord.x + x, coord.y + y)
+        dist = map(lambda i: make_neighbor(i[0], i[1]), [(0, -1), (0, 1), (-1, 0), (1, 0)])
         return list(filter(lambda i: self.is_adjacent(coord, i), dist))
 
     def insert_obstacle(self, coord: Coord) -> None:
         if self.is_valid_coord(coord):
-            self.gridArea[coord.x][coord.y] = 1
+            self.gridArea[coord.x][coord.y] = self.OBSTACLE_VALUE
 
     def obstacles(self) -> list:
         li = []
         for i in range(0, self.xsize):
             for j in range(0, self.ysize):
-                if self.gridArea[i][j] != 0:
+                if self.gridArea[i][j] != 1:
                     li.append(Coord(i, j))
         return li
-
