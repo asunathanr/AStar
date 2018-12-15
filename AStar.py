@@ -1,6 +1,10 @@
 from MapGrid import MapGrid
 from weighted_coord import Coord, WeightedCoord
 
+# File: AStar.py
+# Authors: Eric Day, Joe, Nathan Robertson
+# Purpose: Implement the AStar algorithm using the MapGrid class
+
 
 class AStar(MapGrid):
     def __init__(self, xsize, ysize, obstacles: list):
@@ -21,13 +25,15 @@ class AStar(MapGrid):
         while len(open_set) > 0 and end not in neighbors:
             open_set.remove(current)
             for neighbor in neighbors:
-                tentative_g = current.weight + self.cost(neighbor)
-                open_set = self.try_add_cell(tentative_g, neighbor, open_set, current, end)
+                open_set = self.try_add_cell(neighbor, open_set, current, end)
             closed_set.add(current)
             current, neighbors = self.next_cell(open_set, closed_set)
         return current, end in neighbors
 
-    def initialize(self, start):
+    def initialize(self, start: Coord):
+        """
+        Create initial data structures to traverse grid with.
+        """
         return {WeightedCoord(0, start.x, start.y)}, set()
 
     def next_cell(self, open_set, closed_set) -> ():
@@ -45,7 +51,8 @@ class AStar(MapGrid):
     def manhattan(self, coord1, coord2):
         return abs(coord1.x - coord2.x) + abs(coord1.y - coord2.y)
 
-    def try_add_cell(self, new_g, cell, open_set, parent, end):
+    def try_add_cell(self, cell, open_set, parent, end):
+        new_g = parent.weight + self.cost(cell)
         if self.should_replace_cell(new_g, cell, open_set):
             new_cell = self.make_new_cell(new_g, cell, parent, end)
             if new_cell in open_set:

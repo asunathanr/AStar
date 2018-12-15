@@ -21,6 +21,9 @@ class MapGrid:
             self.gridArea[coord.x][coord.y] = self.OBSTACLE_VALUE
 
     def cost(self, coord):
+        """
+        Returns cost (weight) to move into a cell on the grid.
+        """
         if self.is_valid_coord(coord):
             return self.gridArea[coord.x][coord.y]
         return self.INVALID_POSITION

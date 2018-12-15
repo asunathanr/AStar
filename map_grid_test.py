@@ -70,6 +70,14 @@ class SimpleAStarTest(unittest.TestCase):
 
 
 class ThreeGridAStarTest(unittest.TestCase):
+    """
+    Only one path goes through this three by three grid.
+    test_path method should give us back this one path.
+    It looks like:
+    |X|X|E|
+    | | | |
+    |S|X|X|
+    """
     def setUp(self):
         obstacles = [Coord(2, 0), Coord(2, 1), Coord(0, 1), Coord(0, 2)]
         self.grid = AStar(3, 3, obstacles)
