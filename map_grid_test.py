@@ -1,7 +1,7 @@
 import unittest
-from MapGrid import *
 from AStar import AStar
-from coord import Coord
+from MapGrid import MapGrid
+from weighted_coord import Coord, WeightedCoord
 
 
 # File: map_grid_test.py
@@ -67,3 +67,14 @@ class SimpleAStarTest(unittest.TestCase):
     def test_pick_current(self):
         current = self.grid.pick_current({WeightedCoord(1, 1, 1), WeightedCoord(2, 2, 2)})
         self.assertEqual(WeightedCoord(1, 1, 1), current)
+
+
+class ThreeGridAStarTest(unittest.TestCase):
+    def setUp(self):
+        obstacles = [Coord(2, 0), Coord(2, 1), Coord(0, 1), Coord(0, 2)]
+        self.grid = AStar(3, 3, obstacles)
+
+    def test_path(self):
+        path = set(self.grid.a_star(Coord(0, 0), Coord(2, 2)))
+        coord_path = set(map(lambda cell: Coord(cell.x, cell.y), path))
+        self.assertEqual({Coord(0, 0), Coord(1, 0), Coord(1, 1), Coord(1, 2), Coord(2, 2)}, coord_path)

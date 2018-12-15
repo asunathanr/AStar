@@ -1,4 +1,5 @@
-from MapGrid import *
+from MapGrid import MapGrid
+from weighted_coord import Coord, WeightedCoord
 
 
 class AStar(MapGrid):
@@ -8,15 +9,15 @@ class AStar(MapGrid):
     def a_star(self, start: Coord, end: Coord) -> []:
         if not self.is_valid_coord(start) or not self.is_valid_coord(end):
             return None
-        processing, visited = self.initialize(start)
-        current, neighbors = self.next_cell(processing, visited)
-        while len(processing) > 0 and end not in neighbors:
-            processing.remove(current)
+        open_set, closed_set = self.initialize(start)
+        current, neighbors = self.next_cell(open_set, closed_set)
+        while len(open_set) > 0 and end not in neighbors:
+            open_set.remove(current)
             for neighbor in neighbors:
                 tentative_g = current.weight + self.cost(neighbor)
-                processing = self.try_add_cell(tentative_g, neighbor, processing, current, end)
-            visited.add(current)
-            current, neighbors = self.next_cell(processing, visited)
+                open_set = self.try_add_cell(tentative_g, neighbor, open_set, current, end)
+            closed_set.add(current)
+            current, neighbors = self.next_cell(open_set, closed_set)
         path = self.make_path(current, end) if end in neighbors else []
         return path
 

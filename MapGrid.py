@@ -1,7 +1,4 @@
 from coord import Coord
-from weighted_coord import WeightedCoord
-import heapq
-import sys
 
 # File: MapGrid.py
 # Authors: Kelsey Lewis, Ryan, Nathan Robertson, Pedro Reyes
