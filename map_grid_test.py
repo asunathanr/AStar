@@ -45,9 +45,9 @@ class ObstacleGridTest(unittest.TestCase):
         self.assertEqual([Coord(1, 1)], self.grid.obstacles())
 
 
-class AStarTest(unittest.TestCase):
+class SimpleAStarTest(unittest.TestCase):
     def setUp(self):
-        self.grid = AStar(3, 3, [])
+        self.grid = AStar(2, 2, [])
 
     def test_initialize(self):
         open_set, closed_set = self.grid.initialize(Coord(1, 1))
@@ -61,8 +61,8 @@ class AStarTest(unittest.TestCase):
         self.assertEqual(None, result)
 
     def test_simple_path(self):
-        path = self.grid.a_star(Coord(0, 0), Coord(2, 2))
-        self.assertEqual({Coord(0, 0), Coord(1, 1), Coord(2, 2)}, path)
+        path = set(self.grid.a_star(Coord(0, 0), Coord(1, 1)))
+        self.assertEqual({WeightedCoord(0, 0, 0), WeightedCoord(1, 1, 0), WeightedCoord(0, 1, 1)}, path)
 
     def test_pick_current(self):
         current = self.grid.pick_current({WeightedCoord(1, 1, 1), WeightedCoord(2, 2, 2)})
