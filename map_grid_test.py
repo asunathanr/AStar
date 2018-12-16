@@ -49,10 +49,6 @@ class SimpleAStarTest(unittest.TestCase):
     def setUp(self):
         self.grid = AStar(2, 2, [])
 
-    def test_initialize(self):
-        open_set, closed_set = self.grid.initialize(Coord(1, 1))
-        self.assertEqual({WeightedCoord(0, 1, 1)}, open_set)
-        self.assertEqual(set(), closed_set)
 
     def test_invalid_coords(self):
         invalid1 = Coord(-1, -1)
@@ -63,10 +59,6 @@ class SimpleAStarTest(unittest.TestCase):
     def test_simple_path(self):
         path = set(self.grid.a_star(Coord(0, 0), Coord(1, 1)))
         self.assertEqual({WeightedCoord(0, 0, 0), WeightedCoord(1, 1, 0), WeightedCoord(0, 1, 1)}, path)
-
-    def test_pick_current(self):
-        current = self.grid.pick_current({WeightedCoord(1, 1, 1), WeightedCoord(2, 2, 2)})
-        self.assertEqual(WeightedCoord(1, 1, 1), current)
 
 
 class ThreeGridAStarTest(unittest.TestCase):
@@ -82,7 +74,13 @@ class ThreeGridAStarTest(unittest.TestCase):
         obstacles = [Coord(2, 0), Coord(2, 1), Coord(0, 1), Coord(0, 2)]
         self.grid = AStar(3, 3, obstacles)
 
-    def test_path(self):
+    def test_only_path(self):
         path = set(self.grid.a_star(Coord(0, 0), Coord(2, 2)))
+        coord_path = set(map(lambda cell: Coord(cell.x, cell.y), path))
+        self.assertEqual({Coord(0, 0), Coord(1, 0), Coord(1, 1), Coord(1, 2), Coord(2, 2)}, coord_path)
+
+    def test_tricky_path(self):
+        tricky_grid = AStar(3, 3, [Coord(0, 1), Coord(2, 1)])
+        path = set(tricky_grid.a_star(Coord(0, 0), Coord(2, 2)))
         coord_path = set(map(lambda cell: Coord(cell.x, cell.y), path))
         self.assertEqual({Coord(0, 0), Coord(1, 0), Coord(1, 1), Coord(1, 2), Coord(2, 2)}, coord_path)
