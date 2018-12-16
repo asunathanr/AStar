@@ -37,6 +37,10 @@ class AStar(MapGrid):
         return self.find_path(weighted_end.parent) + [weighted_end]
 
     class PathMaker:
+        """
+        Creates paths from start to one goal using manhattan distance heuristics and a grid structure.
+        This is the meat of the A* implementation.
+        """
         def __init__(self, astar, start: Coord, end: Coord):
             self.astar = astar
             self.start = start
@@ -64,21 +68,6 @@ class AStar(MapGrid):
         def add_new_cells(self, new_cells):
             for cell in new_cells:
                 self.add_cell(cell)
-
-        def initialize(self, start: Coord):
-            """
-            Create initial data structures to traverse grid with.
-            """
-            self.open_set = HashHeap()
-            self.open_set.add(0, WeightedCoord(0, start.x, start.y))
-            self.closed_set = set()
-
-        def pick_current(self):
-            if len(self.open_set) > 0:
-                _, current = self.open_set.pop()
-            else:
-                current = None
-            return current
 
         def next_neighbors(self) -> []:
             neighbors = list(filter(lambda n: n not in self.closed_set, self.astar.neighbors(self.current)))
