@@ -12,11 +12,12 @@ class AStar(MapGrid):
     def __init__(self, xsize, ysize, obstacles: list):
         super().__init__(xsize, ysize, obstacles)
         self.PATH_OUT_OF_BOUNDS = None
+        self.SAME_CELL = []
         self.INVALID_PATH = []
 
     def a_star(self, start: Coord, end: Coord) -> []:
         if start == end:
-            return []
+            return self.SAME_CELL
         if not self.is_valid_coord(start) or not self.is_valid_coord(end):
             return self.PATH_OUT_OF_BOUNDS
         last_cell, successful = self.PathMaker(self, start, end).make()
@@ -52,23 +53,27 @@ class AStar(MapGrid):
             self.neighbors = self.next_neighbors()
 
         def make(self) -> (WeightedCoord, bool):
+            """
+            Attempt to find quickest path from start to end.
+            This starts the "procedural" part of the algorithm. It seems best to treat this part procedurally so far.
+            :return: Next to last node of path and if an actual path was found from start to end
+            """
             while len(self.open_set) > 0 and self.end not in self.neighbors:
+                self.open_set.pop()
                 self.process_cell()
+                self.current = self.open_set.top()
+                self.neighbors = self.next_neighbors()
             return self.current, self.end in self.neighbors
 
         def process_cell(self):
             """
-            Given the current cell and neighbors not in closed set for that cell; see if any neighbors are
-            the best option for that neighbor and add them to neighbors to consider if they are.
-            TODO: Probably best to take a few lines out of this method and place them in make as this method does a little too much.
+            Given the current cell and neighbors not in closed set for that cell update open set with new information.
+            Add it to closed set once finished
             """
-            self.open_set.pop()
             cheaper_neighbors = self.neighbors_to_update()
             new_cells = map(lambda neighbor: self.make_new_cell(neighbor), cheaper_neighbors)
             self.add_new_cells(new_cells)
             self.closed_set.add(self.current)
-            self.current = self.open_set.top()
-            self.neighbors = self.next_neighbors()
 
         def add_new_cells(self, new_cells) -> None:
             """
