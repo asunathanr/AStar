@@ -51,7 +51,8 @@ class AStar(MapGrid):
             self.end = end
             self.open_set = HashHeap()
             self.open_set.add(0, WeightedCoord(0, start.x, start.y))
-            self.closed_set = set()
+            self.closed_set = {}
+            self.setup_closed_set()
             self.current = self.open_set.top()
             self.neighbors = self.next_neighbors()
 
@@ -76,7 +77,7 @@ class AStar(MapGrid):
             cheaper_neighbors = self.neighbors_to_update()
             new_cells = map(lambda neighbor: self.make_new_cell(neighbor), cheaper_neighbors)
             self.add_new_cells(new_cells)
-            self.closed_set.add(self.current)
+            self.closed_set[Coord(self.current.x, self.current.y)] = True
 
         def add_new_cells(self, new_cells) -> None:
             """
@@ -87,7 +88,7 @@ class AStar(MapGrid):
                 self.open_set.add(cell.weight, cell)
 
         def next_neighbors(self) -> []:
-            neighbors = list(filter(lambda n: n not in self.closed_set, self.astar.neighbors(self.current)))
+            neighbors = list(filter(lambda n: not self.closed_set[n], self.astar.neighbors(self.current)))
             return neighbors
 
         def neighbors_to_update(self):
@@ -106,3 +107,8 @@ class AStar(MapGrid):
             new_cell = WeightedCoord(self.current.weight + self.astar.cost(location), location.x, location.y, self.current)
             new_cell.h = self.astar.manhattan(new_cell, self.end)
             return new_cell
+
+        def setup_closed_set(self):
+            for i in range(0, self.astar.xsize):
+                for j in range(0, self.astar.ysize):
+                    self.closed_set[Coord(i, j)] = False

@@ -8,6 +8,7 @@ File: astar_timing.py
 Author: Nathan Robertson
 Purpose:
     Investigate efficiency of astar algorithm implementation.
+    The goal is to get it to run 100x100 cell grids with obstacles in < 1 second.
 """
 
 
