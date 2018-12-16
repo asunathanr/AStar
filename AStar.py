@@ -3,7 +3,8 @@ from weighted_coord import Coord, WeightedCoord
 
 # File: AStar.py
 # Authors: Eric Day, Hey Joe, Nathan Robertson
-# Purpose: Implement the AStar algorithm using the MapGrid class
+# Purpose: Implement the A* algorithm using the MapGrid class
+# A* is a path finding algorithm used to find the best approximate path between two nodes in a graph.
 
 
 class AStar(MapGrid):
@@ -13,6 +14,8 @@ class AStar(MapGrid):
         self.INVALID_PATH = []
 
     def a_star(self, start: Coord, end: Coord) -> []:
+        if start == end:
+            return []
         if not self.is_valid_coord(start) or not self.is_valid_coord(end):
             return self.PATH_OUT_OF_BOUNDS
         last_cell, successful = self.PathMaker(self, start, end).make()
@@ -63,15 +66,15 @@ class AStar(MapGrid):
             """
             return {WeightedCoord(0, start.x, start.y)}, set()
 
-        def pick_current(self, open_set):
-            if len(open_set) > 0:
-                current = min(open_set)
+        def pick_current(self):
+            if len(self.open_set) > 0:
+                current = min(self.open_set)
             else:
                 current = None
             return current
 
         def next_cell(self) -> ():
-            current = self.pick_current(self.open_set)
+            current = self.pick_current()
             neighbors = list(filter(lambda n: n not in self.closed_set, self.astar.neighbors(current)))
             return current, neighbors
 

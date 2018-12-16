@@ -49,12 +49,15 @@ class SimpleAStarTest(unittest.TestCase):
     def setUp(self):
         self.grid = AStar(2, 2, [])
 
-
     def test_invalid_coords(self):
         invalid1 = Coord(-1, -1)
         invalid2 = Coord(5, 5)
         result = self.grid.a_star(invalid1, invalid2)
         self.assertEqual(None, result)
+
+    def test_no_path(self):
+        path = set(self.grid.a_star(Coord(0, 0), Coord(0, 0)))
+        self.assertEqual(set(), path)
 
     def test_simple_path(self):
         path = set(self.grid.a_star(Coord(0, 0), Coord(1, 1)))
