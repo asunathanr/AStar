@@ -57,6 +57,11 @@ class AStar(MapGrid):
             return self.current, self.end in self.neighbors
 
         def process_cell(self):
+            """
+            Given the current cell and neighbors not in closed set for that cell; see if any neighbors are
+            the best option for that neighbor and add them to neighbors to consider if they are.
+            TODO: Probably best to take a few lines out of this method and place them in make as this method does a little too much.
+            """
             self.open_set.pop()
             cheaper_neighbors = self.neighbors_to_update()
             new_cells = map(lambda neighbor: self.make_new_cell(neighbor), cheaper_neighbors)
@@ -65,9 +70,13 @@ class AStar(MapGrid):
             self.current = self.open_set.top()
             self.neighbors = self.next_neighbors()
 
-        def add_new_cells(self, new_cells):
+        def add_new_cells(self, new_cells) -> None:
+            """
+            Add cells that are potentially part of the cheapest path.
+            :param new_cells:
+            """
             for cell in new_cells:
-                self.add_cell(cell)
+                self.open_set.add(cell.weight, cell)
 
         def next_neighbors(self) -> []:
             neighbors = list(filter(lambda n: n not in self.closed_set, self.astar.neighbors(self.current)))
@@ -84,9 +93,6 @@ class AStar(MapGrid):
             if self.current == old_value and new_g < old_value.weight:
                 return True
             return False
-
-        def add_cell(self, new_cell):
-            self.open_set.add(new_cell.weight, new_cell)
 
         def make_new_cell(self, location) -> WeightedCoord:
             new_cell = WeightedCoord(self.current.weight + self.astar.cost(location), location.x, location.y, self.current)

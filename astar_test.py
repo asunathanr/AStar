@@ -2,6 +2,40 @@ import unittest
 from AStar import AStar
 from weighted_coord import Coord, WeightedCoord
 
+"""
+File: astar_test.py
+Authors: Nathan Robertson
+Purpose: 
+    Ensure the AStar path-finding class works correctly.
+    Special cases for the A* algorithm:
+    1. If a start and end are the same the path given back is an empty list.
+    2. If start and end cells are off the grid it should return a special out of bounds value
+    3. If an end cell is unreachable from the start cell it should return a special value indicating that.
+    
+    Normal behavior:
+    1. Will return a list of nodes ordered by which nodes to visit first.
+    2. First node in list is start node
+    3. Last node will be end node.
+"""
+
+
+class SameStartEndTest(unittest.TestCase):
+    def setUp(self):
+        self.grid = AStar(2, 2, [])
+
+    def test_first_cell(self):
+        path = set(self.grid.a_star(Coord(0, 0), Coord(0, 0)))
+        self.assertEqual(set(), path)
+
+
+class OffGridTest(unittest.TestCase):
+    def setUp(self):
+        self.grid = AStar(3, 3, [])
+
+    def test_below_grid(self):
+        path = self.grid.a_star(Coord(-1, -1), Coord(-2, -2))
+        self.assertEqual(self.grid.PATH_OUT_OF_BOUNDS, path)
+
 
 class SimpleAStarTest(unittest.TestCase):
     def setUp(self):
@@ -11,11 +45,7 @@ class SimpleAStarTest(unittest.TestCase):
         invalid1 = Coord(-1, -1)
         invalid2 = Coord(5, 5)
         result = self.grid.a_star(invalid1, invalid2)
-        self.assertEqual(None, result)
-
-    def test_no_path(self):
-        path = set(self.grid.a_star(Coord(0, 0), Coord(0, 0)))
-        self.assertEqual(set(), path)
+        self.assertEqual(self.grid.PATH_OUT_OF_BOUNDS, result)
 
     def test_simple_path(self):
         path = set(self.grid.a_star(Coord(0, 0), Coord(1, 1)))
