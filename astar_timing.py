@@ -12,7 +12,7 @@ Purpose:
     Therefore the next order of magnitude is 100x100.
     The max time given was 10 seconds with 0.5 seconds added each round. 
     I will start with trying to get a 100x100 in under 10 seconds then progressively decrease the time.
-    The current goal is to get it to run 100x100 grids with obstacles in <= 1.0 second
+    The current goal is to get it to run 100x100 grids with obstacles in <= 0.5 second
 """
 
 
@@ -39,5 +39,5 @@ xsize = 100
 ysize = 100
 grid = make_grid((xsize, ysize), 5)
 
-print(timeit.timeit(lambda: grid.a_star(Coord(0, 0), Coord(xsize - 1, ysize - 1)), number=10))
+print(timeit.timeit(lambda: grid.a_star(Coord(0, 0), Coord(xsize - 1, ysize - 1)), number=1))
 

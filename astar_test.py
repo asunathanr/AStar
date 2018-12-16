@@ -47,7 +47,7 @@ class SimpleAStarTest(unittest.TestCase):
 
     def test_simple_path(self):
         path = set(self.grid.a_star(Coord(0, 0), Coord(1, 1)))
-        self.assertEqual({WeightedCoord(0, 0, 0), WeightedCoord(1, 0, 1), WeightedCoord(0, 1, 1)}, path)
+        self.assertEqual({Coord(0, 0), Coord(0, 1), Coord(1, 1)}, path)
 
 
 class ThreeGridAStarTest(unittest.TestCase):
@@ -73,3 +73,15 @@ class ThreeGridAStarTest(unittest.TestCase):
         path = set(tricky_grid.a_star(Coord(0, 0), Coord(2, 2)))
         coord_path = set(map(lambda cell: Coord(cell.x, cell.y), path))
         self.assertEqual({Coord(0, 0), Coord(1, 0), Coord(1, 1), Coord(1, 2), Coord(2, 2)}, coord_path)
+
+
+class ComplexPathTest(unittest.TestCase):
+    def test_l_wall(self):
+        """
+        An L-shaped wall is between the start and end.
+        Test to see if A* goes around wall instead of walking straight up to it.
+        """
+        grid = AStar(4, 4, [Coord(2, 1), Coord(2, 2), Coord(1, 2), Coord(0, 2)])
+        expected_path = {Coord(1, 0), Coord(2, 0), Coord(3, 0), Coord(3, 1), Coord(3, 2), Coord(3, 3), Coord(2, 3)}
+        actual_path = grid.a_star(Coord(1, 0), Coord(2, 3))
+        self.assertEqual(expected_path, set(actual_path))

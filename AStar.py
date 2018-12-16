@@ -22,7 +22,7 @@ class AStar(MapGrid):
             return self.PATH_OUT_OF_BOUNDS
         last_cell, successful = self.PathMaker(self, start, end).make()
         path = self.make_path(last_cell, end) if successful else self.INVALID_PATH
-        return path
+        return self.remove_weights(path)
 
     def remove_weights(self, path: []) -> []:
         return list(map(lambda cell: Coord(cell.x, cell.y), path))

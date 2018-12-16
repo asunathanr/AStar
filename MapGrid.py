@@ -12,7 +12,7 @@ class MapGrid:
         self.gridArea = []
         self.CELL_VALUE = 0
         self.OBSTACLE_VALUE = 2
-        self.INVALID_POSITION = - 1
+        self.INVALID_POSITION = -1
         for i in range(0, xsize):
             new = []
             for j in range(0, ysize):
@@ -24,6 +24,7 @@ class MapGrid:
     def cost(self, coord):
         """
         Returns cost (weight) to move into a cell on the grid.
+        Preconditions: coord should be a point on the grid
         """
         return self.gridArea[coord.x][coord.y]
 
