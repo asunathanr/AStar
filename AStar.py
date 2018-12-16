@@ -77,13 +77,13 @@ class AStar(MapGrid):
 
         def neighbors_to_update(self):
             calc_g = lambda n: self.current.weight + self.astar.cost(n)
-            return filter(lambda x: self.should_replace_cell(calc_g(x), self.current, self.open_set), self.neighbors)
+            return filter(lambda x: self.should_replace_cell(calc_g(x)), self.neighbors)
 
-        def should_replace_cell(self, new_g, cell, open_set):
-            if cell not in open_set:
+        def should_replace_cell(self, new_g):
+            if self.current not in self.open_set:
                 return True
-            for i in open_set:
-                if cell == i and new_g < i.weight:
+            for i in self.open_set:
+                if self.current == i and new_g < i.weight:
                     return True
             return False
 
