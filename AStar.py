@@ -24,6 +24,9 @@ class AStar(MapGrid):
         path = self.make_path(last_cell, end) if successful else self.INVALID_PATH
         return path
 
+    def remove_weights(self, path: []) -> []:
+        return list(map(lambda cell: Coord(cell.x, cell.y), path))
+
     def manhattan(self, coord1, coord2):
         return abs(coord1.x - coord2.x) + abs(coord1.y - coord2.y)
 

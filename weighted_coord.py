@@ -19,7 +19,7 @@ class WeightedCoord(Coord):
 
     def __str__(self):
         str_parent = '' if self.parent is None else str(self.parent.x) + ' ' + str(self.parent.y)
-        return 'Weight: ' + str(self.weight) + ' (' + str(self.x) + ' ' + str(self.y) + ')' + ' Parent: ' + str_parent
+        return ' (' + str(self.x) + ' ' + str(self.y) + ')' + ' Parent: ' + str_parent
 
     def __hash__(self):
         return hash((self.weight, self.x, self.y))
