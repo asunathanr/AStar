@@ -15,14 +15,20 @@ class HashHeap:
         heapq.heappush(self.heap, (key, value))
         self.table[key] = value
 
+    def top(self):
+        return self.heap[0][1]
+
     def pop(self):
         key, value = heapq.heappop(self.heap)
         if self.find(key) is not None:
             value = self.table[key]
             self.table.pop(key)
-        return key, value
+        return value
 
     def find(self, key):
         if key in self.table:
             return self.table[key]
         return None
+
+    def __len__(self):
+        return len(self.heap)

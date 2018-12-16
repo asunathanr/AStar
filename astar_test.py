@@ -19,7 +19,7 @@ class SimpleAStarTest(unittest.TestCase):
 
     def test_simple_path(self):
         path = set(self.grid.a_star(Coord(0, 0), Coord(1, 1)))
-        self.assertEqual({WeightedCoord(0, 0, 0), WeightedCoord(1, 1, 0), WeightedCoord(0, 1, 1)}, path)
+        self.assertEqual({WeightedCoord(0, 0, 0), WeightedCoord(1, 0, 1), WeightedCoord(0, 1, 1)}, path)
 
 
 class ThreeGridAStarTest(unittest.TestCase):
