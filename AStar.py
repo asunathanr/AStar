@@ -38,7 +38,7 @@ class AStar(MapGrid):
             self.start = start
             self.end = end
             self.open_set, self.closed_set = self.initialize(start)
-            self.current, self.neighbors = self.next_cell(self.open_set, self.closed_set)
+            self.current, self.neighbors = self.next_cell()
 
         def make(self) -> (WeightedCoord, bool):
             while len(self.open_set) > 0 and self.end not in self.neighbors:
@@ -51,7 +51,7 @@ class AStar(MapGrid):
             new_cells = map(lambda neighbor: self.make_new_cell(neighbor), cheaper_neighbors)
             self.add_new_cells(new_cells)
             self.closed_set.add(self.current)
-            self.current, self.neighbors = self.next_cell(self.open_set, self.closed_set)
+            self.current, self.neighbors = self.next_cell()
 
         def add_new_cells(self, new_cells):
             for cell in new_cells:
@@ -70,9 +70,9 @@ class AStar(MapGrid):
                 current = None
             return current
 
-        def next_cell(self, open_set, closed_set) -> ():
-            current = self.pick_current(open_set)
-            neighbors = list(filter(lambda n: n not in closed_set, self.astar.neighbors(current)))
+        def next_cell(self) -> ():
+            current = self.pick_current(self.open_set)
+            neighbors = list(filter(lambda n: n not in self.closed_set, self.astar.neighbors(current)))
             return current, neighbors
 
         def neighbors_to_update(self):
@@ -97,5 +97,3 @@ class AStar(MapGrid):
             new_cell = WeightedCoord(self.current.weight + self.astar.cost(location), location.x, location.y, self.current)
             new_cell.h = self.astar.manhattan(new_cell, self.end)
             return new_cell
-
-
