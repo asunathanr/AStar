@@ -19,6 +19,19 @@ class AStar(MapGrid):
         path = self.make_path(last_cell, end) if successful else self.INVALID_PATH
         return path
 
+    def manhattan(self, coord1, coord2):
+        return abs(coord1.x - coord2.x) + abs(coord1.y - coord2.y)
+
+    def make_path(self, parent, end):
+        weighted_end = WeightedCoord(0, end.x, end.y)
+        weighted_end.parent = parent
+        return self.find_path(weighted_end)
+
+    def find_path(self, weighted_end):
+        if weighted_end is None:
+            return []
+        return self.find_path(weighted_end.parent) + [weighted_end]
+
     class PathMaker:
         def __init__(self, astar, start: Coord, end: Coord):
             self.astar = astar
@@ -29,16 +42,20 @@ class AStar(MapGrid):
 
         def make(self) -> (WeightedCoord, bool):
             while len(self.open_set) > 0 and self.end not in self.neighbors:
-                self.open_set.remove(self.current)
-                cheaper_neighbors = self.neighbors_to_update()
-                new_cells = map(
-                    lambda neighbor: self.make_new_cell(neighbor),
-                    cheaper_neighbors)
-                for cell in new_cells:
-                    self.open_set = self.add_cell(cell, self.open_set)
-                self.closed_set.add(self.current)
-                self.current, self.neighbors = self.next_cell(self.open_set, self.closed_set)
+                self.process_cell()
             return self.current, self.end in self.neighbors
+
+        def process_cell(self):
+            self.open_set.remove(self.current)
+            cheaper_neighbors = self.neighbors_to_update()
+            new_cells = map(lambda neighbor: self.make_new_cell(neighbor), cheaper_neighbors)
+            self.add_new_cells(new_cells)
+            self.closed_set.add(self.current)
+            self.current, self.neighbors = self.next_cell(self.open_set, self.closed_set)
+
+        def add_new_cells(self, new_cells):
+            for cell in new_cells:
+                self.open_set = self.add_cell(cell)
 
         def initialize(self, start: Coord):
             """
@@ -70,26 +87,15 @@ class AStar(MapGrid):
                     return True
             return False
 
-        def add_cell(self, new_cell, open_set):
-            if new_cell in open_set:
-                open_set.remove(new_cell)
-            open_set.add(new_cell)
-            return open_set
+        def add_cell(self, new_cell):
+            if new_cell in self.open_set:
+                self.open_set.remove(new_cell)
+            self.open_set.add(new_cell)
+            return self.open_set
 
         def make_new_cell(self, location) -> WeightedCoord:
             new_cell = WeightedCoord(self.current.weight + self.astar.cost(location), location.x, location.y, self.current)
             new_cell.h = self.astar.manhattan(new_cell, self.end)
             return new_cell
 
-    def manhattan(self, coord1, coord2):
-        return abs(coord1.x - coord2.x) + abs(coord1.y - coord2.y)
 
-    def make_path(self, parent, end):
-        weighted_end = WeightedCoord(0, end.x, end.y)
-        weighted_end.parent = parent
-        return self.find_path(weighted_end)
-
-    def find_path(self, weighted_end):
-        if weighted_end is None:
-            return []
-        return self.find_path(weighted_end.parent) + [weighted_end]
