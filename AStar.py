@@ -25,9 +25,9 @@ class AStar(MapGrid):
         while len(open_set) > 0 and end not in neighbors:
             open_set.remove(current)
             cheaper_neighbors = self.neighbors_to_update(current, neighbors, open_set)
-            for neighbor in cheaper_neighbors:
-                new_cell = self.make_new_cell(current.weight + self.cost(neighbor), neighbor, current, end)
-                open_set = self.add_cell(new_cell, open_set)
+            new_cells = map(lambda neighbor: self.make_new_cell(current.weight + self.cost(neighbor), neighbor, current, end), cheaper_neighbors)
+            for cell in new_cells:
+                open_set = self.add_cell(cell, open_set)
             closed_set.add(current)
             current, neighbors = self.next_cell(open_set, closed_set)
         return current, end in neighbors
