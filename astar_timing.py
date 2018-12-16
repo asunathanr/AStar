@@ -8,7 +8,11 @@ File: astar_timing.py
 Author: Nathan Robertson
 Purpose:
     Investigate efficiency of astar algorithm implementation.
-    The goal is to get it to run 100x100 cell grids with obstacles in < 1 second.
+    Battlecode 2017's map took place on maps ranging from size 20x20 to 50x50. 
+    Therefore the next order of magnitude is 100x100.
+    The max time given was 10 seconds with 0.5 seconds added each round. 
+    I will start with trying to get a 100x100 in under 10 seconds then progressively decrease the time.
+    The current goal is to get it to run 100x100 grids with obstacles in <= 1.0 second
 """
 
 
@@ -31,9 +35,9 @@ def make_grid(size: (int, int), obstacle_prob: int) -> AStar:
     return AStar(xsize, ysize, obstacles)
 
 
-xsize = 7
-ysize = 7
+xsize = 100
+ysize = 100
 grid = make_grid((xsize, ysize), 5)
 
-print(timeit.timeit(lambda: grid.a_star(Coord(0, 0), Coord(xsize - 1, ysize - 1)), number=1))
+print(timeit.timeit(lambda: grid.a_star(Coord(0, 0), Coord(xsize - 1, ysize - 1)), number=10))
 

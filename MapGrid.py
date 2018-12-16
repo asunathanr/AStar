@@ -10,12 +10,13 @@ class MapGrid:
         self.xsize = xsize
         self.ysize = ysize
         self.gridArea = []
+        self.CELL_VALUE = 0
         self.OBSTACLE_VALUE = 2
-        self.INVALID_POSITION = -1
+        self.INVALID_POSITION = - 1
         for i in range(0, xsize):
             new = []
             for j in range(0, ysize):
-                new.append(1)
+                new.append(self.CELL_VALUE)
             self.gridArea.append(new)
         for coord in obstacles:
             self.gridArea[coord.x][coord.y] = self.OBSTACLE_VALUE
@@ -24,9 +25,7 @@ class MapGrid:
         """
         Returns cost (weight) to move into a cell on the grid.
         """
-        if self.is_valid_coord(coord):
-            return self.gridArea[coord.x][coord.y]
-        return self.INVALID_POSITION
+        return self.gridArea[coord.x][coord.y]
 
     def is_adjacent(self, coord1: Coord, coord2: Coord) -> bool:
         """
@@ -88,6 +87,6 @@ class MapGrid:
         li = []
         for i in range(0, self.xsize):
             for j in range(0, self.ysize):
-                if self.gridArea[i][j] != 1:
+                if self.gridArea[i][j] == self.OBSTACLE_VALUE:
                     li.append(Coord(i, j))
         return li

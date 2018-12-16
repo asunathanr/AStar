@@ -55,6 +55,7 @@ class AStar(MapGrid):
             self.setup_closed_set()
             self.current = self.open_set.top()
             self.neighbors = self.next_neighbors()
+            self.heuristic_values = self.compute_heuristics()
 
         def make(self) -> (WeightedCoord, bool):
             """
@@ -105,10 +106,19 @@ class AStar(MapGrid):
 
         def make_new_cell(self, location) -> WeightedCoord:
             new_cell = WeightedCoord(self.current.weight + self.astar.cost(location), location.x, location.y, self.current)
-            new_cell.h = self.astar.manhattan(new_cell, self.end)
+            new_cell.h = 4*self.heuristic_values[location]
+            new_cell.set_f()
             return new_cell
 
         def setup_closed_set(self):
             for i in range(0, self.astar.xsize):
                 for j in range(0, self.astar.ysize):
                     self.closed_set[Coord(i, j)] = False
+
+        def compute_heuristics(self):
+            heuristics = {}
+            for i in range(0, self.astar.xsize):
+                for j in range(0, self.astar.ysize):
+                    coord = Coord(i, j)
+                    heuristics[coord] = self.astar.manhattan(coord, self.end)
+            return heuristics
