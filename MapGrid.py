@@ -66,10 +66,6 @@ class MapGrid:
             return True
         return False
 
-    def cell_value(self, coord: Coord):
-        if self.is_valid_coord(coord):
-            return self.gridArea[coord.x][coord.y]
-        return self.INVALID_POSITION
 
     def neighbors(self, coord: Coord) -> list:
         """

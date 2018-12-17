@@ -1,4 +1,4 @@
-from AStar import *
+from PathMaker import *
 from MapGrid import print_grid
 import timeit
 import random
@@ -24,7 +24,7 @@ def print_path(path: []) -> None:
     list(map(lambda cell: print(str(cell), sep=' '), path))
 
 
-def make_grid(size: (int, int), obstacle_prob: int) -> AStar:
+def make_grid(size: (int, int), obstacle_prob: int) -> PathMaker:
     """
     :param size: tuple of max x and max y values
     :param obstacle_prob: Probability that an obstacle is on a tile.
@@ -37,7 +37,7 @@ def make_grid(size: (int, int), obstacle_prob: int) -> AStar:
             if random.randint(0, 100) < obstacle_prob:
                 if i != j:
                     obstacles.append(Coord(i, j))
-    return AStar(xsize, ysize, obstacles)
+    return PathMaker(xsize, ysize, obstacles)
 
 
 xsize = 10

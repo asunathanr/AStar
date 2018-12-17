@@ -8,7 +8,7 @@ from HashHeap import HashHeap
 # A* is a path finding algorithm used to find the best approximate path between two nodes in a graph.
 
 
-class AStar(MapGrid):
+class PathMaker(MapGrid):
     def __init__(self, xsize, ysize, obstacles: list):
         super().__init__(xsize, ysize, obstacles)
         self.PATH_OUT_OF_BOUNDS = None
@@ -20,7 +20,7 @@ class AStar(MapGrid):
             return self.SAME_CELL
         if not self.is_valid_coord(start) or not self.is_valid_coord(end):
             return self.PATH_OUT_OF_BOUNDS
-        last_cell, successful = self.PathMaker(self, start, end).make()
+        last_cell, successful = self.AStar(self, start, end).make()
         path = self.make_path(last_cell, end) if successful else self.INVALID_PATH
         return self.remove_weights(path)
 
@@ -40,7 +40,7 @@ class AStar(MapGrid):
             return []
         return self.find_path(weighted_end.parent) + [weighted_end]
 
-    class PathMaker:
+    class AStar:
         """
         Creates paths from start to one goal using manhattan distance heuristics and a grid structure.
         This is the meat of the A* implementation.
