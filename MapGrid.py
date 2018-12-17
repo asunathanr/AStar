@@ -10,7 +10,7 @@ class MapGrid:
         self.xsize = xsize
         self.ysize = ysize
         self.gridArea = []
-        self.obstacle_list = obstacles
+        self.obstacle_list = set(obstacles)
         self.CELL_VALUE = 1
         self.OBSTACLE_VALUE = 2
         self.INVALID_POSITION = -1
@@ -85,9 +85,9 @@ class MapGrid:
     def insert_obstacle(self, coord: Coord) -> None:
         if self.is_valid_coord(coord):
             self.gridArea[coord.x][coord.y] = self.OBSTACLE_VALUE
-            self.obstacle_list.append(coord)
+            self.obstacle_list.add(coord)
 
-    def obstacles(self) -> list:
+    def obstacles(self) -> set:
         return self.obstacle_list
 
 

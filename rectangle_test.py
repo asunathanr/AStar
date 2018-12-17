@@ -5,7 +5,7 @@ import unittest
 class FillEmptyGridTest(unittest.TestCase):
     def setUp(self):
         self.grid = MapGrid(3, 3, [])
-        self.rect = make_rect(self.grid, Coord(0, 0))
+        self.rect = find_maximal_rectangles(self.grid)
 
     def test_origin(self):
         self.assertEqual(Coord(2, 2), self.rect.origin)
@@ -18,7 +18,7 @@ class FillEmptyGridTest(unittest.TestCase):
 class FillObstacleGridTest(unittest.TestCase):
     def setUp(self):
         self.grid = MapGrid(3, 3, [Coord(1, 0), Coord(1, 1), Coord(1, 2)])
-        self.rect = make_rect(self.grid, Coord(0, 0))
+        self.rect = find_maximal_rectangles(self.grid)
 
     def test_origin(self):
         self.assertEqual(Coord(0, 0), self.rect.origin)

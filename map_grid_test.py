@@ -41,6 +41,6 @@ class ObstacleGridTest(unittest.TestCase):
 
     def test_add_obstacle(self):
         self.grid.insert_obstacle(Coord(1, 1))
-        self.assertEqual([Coord(1, 1)], self.grid.obstacles())
+        self.assertEqual({Coord(1, 1)}, self.grid.obstacles())
 
 
