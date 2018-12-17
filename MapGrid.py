@@ -10,7 +10,8 @@ class MapGrid:
         self.xsize = xsize
         self.ysize = ysize
         self.gridArea = []
-        self.CELL_VALUE = 0
+        self.obstacle_list = obstacles
+        self.CELL_VALUE = 1
         self.OBSTACLE_VALUE = 2
         self.INVALID_POSITION = -1
         for i in range(0, xsize):
@@ -31,9 +32,10 @@ class MapGrid:
     def is_adjacent(self, coord1: Coord, coord2: Coord) -> bool:
         """
         Is coordinate one adjacent to coordinate 2?
-        TODO: Do we count coord1 == coord2 as being adjacent?
         """
         if self.is_valid_coord(coord1) and self.is_valid_coord(coord2):
+            if self.cost(coord1) == self.OBSTACLE_VALUE or self.cost(coord2) == self.OBSTACLE_VALUE:
+                return False
             if self.is_adjacent_position(coord1, coord2):
                 return True
         return False
@@ -83,11 +85,21 @@ class MapGrid:
     def insert_obstacle(self, coord: Coord) -> None:
         if self.is_valid_coord(coord):
             self.gridArea[coord.x][coord.y] = self.OBSTACLE_VALUE
+            self.obstacle_list.append(coord)
 
     def obstacles(self) -> list:
-        li = []
-        for i in range(0, self.xsize):
-            for j in range(0, self.ysize):
-                if self.gridArea[i][j] == self.OBSTACLE_VALUE:
-                    li.append(Coord(i, j))
-        return li
+        return self.obstacle_list
+
+
+def print_grid(grid: MapGrid, path: []):
+    for i in range(0, grid.xsize):
+        for j in range(0, grid.ysize):
+            coord = Coord(i, j)
+            if coord in path:
+                val = 'P'
+            elif grid.cost(coord) == grid.OBSTACLE_VALUE:
+                val = 'X'
+            else:
+                val = '.'
+            print(val, sep=' ', end=' ')
+        print()

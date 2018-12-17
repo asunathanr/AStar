@@ -106,7 +106,12 @@ class AStar(MapGrid):
 
         def make_new_cell(self, location) -> WeightedCoord:
             new_cell = WeightedCoord(self.current.weight + self.astar.cost(location), location.x, location.y, self.current)
-            new_cell.h = 4*self.heuristic_values[location]
+            dx1 = location.x - self.end.x
+            dy1 = location.y - self.end.y
+            dx2 = self.start.x - self.end.x
+            dy2 = self.start.y - self.start.x
+            cross = abs(dx1 * dy2 - dx2 * dy1)
+            new_cell.h = self.heuristic_values[location] + cross * 0.001
             new_cell.set_f()
             return new_cell
 

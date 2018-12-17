@@ -13,6 +13,9 @@ Purpose:
     The max time given was 10 seconds with 0.5 seconds added each round. 
     I will start with trying to get a 100x100 in under 10 seconds then progressively decrease the time.
     The current goal is to get it to run 100x100 grids with obstacles in <= 0.5 second
+    
+    Run in terminal with command: python -m cProfile -o profiling_results astar_timing.py
+    to generate a file called profiling_result which can be viewed by running the display_stats.py script
 """
 
 
@@ -35,9 +38,9 @@ def make_grid(size: (int, int), obstacle_prob: int) -> AStar:
     return AStar(xsize, ysize, obstacles)
 
 
-xsize = 100
-ysize = 100
-grid = make_grid((xsize, ysize), 5)
+xsize = 10
+ysize = 10
+grid = make_grid((xsize, ysize), 15)
 
 print(timeit.timeit(lambda: grid.a_star(Coord(0, 0), Coord(xsize - 1, ysize - 1)), number=1))
 
