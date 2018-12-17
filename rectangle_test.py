@@ -8,7 +8,7 @@ class FillEmptyGridTest(unittest.TestCase):
         self.rect = make_rect(self.grid, Coord(0, 0))
 
     def test_origin(self):
-        self.assertEqual(Coord(0, 0), self.rect.origin)
+        self.assertEqual(Coord(2, 2), self.rect.origin)
 
     def test_fill(self):
         self.assertEqual(3, self.rect.dim[0])
