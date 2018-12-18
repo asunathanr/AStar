@@ -1,4 +1,3 @@
-from MapGrid import MapGrid
 from weighted_coord import Coord, WeightedCoord
 from HashHeap import HashHeap
 
@@ -23,7 +22,7 @@ class PathMaker:
             return self.SAME_CELL
         if not self.is_valid_coord(start) or not self.is_valid_coord(end):
             return self.PATH_OUT_OF_BOUNDS
-        last_cell, successful = self.AStar(self, start, end).execute()
+        last_cell, successful = self.AStar(self.grid, start, end, self.heuristic_fn).execute()
         path = self.make_path(last_cell, end) if successful else self.INVALID_PATH
         return self.remove_weights(path)
 
@@ -57,8 +56,9 @@ class PathMaker:
         Creates paths from start to one goal using manhattan distance heuristics and a grid structure.
         This is the meat of the A* implementation.
         """
-        def __init__(self, astar, start: Coord, end: Coord):
-            self.astar = astar
+        def __init__(self, grid, start: Coord, end: Coord, heuristic_fn):
+            self.astar = grid
+            self.heuristic_fn = heuristic_fn
             self.start = start
             self.end = end
             self.open_set = HashHeap()
@@ -122,7 +122,7 @@ class PathMaker:
             dx2 = self.start.x - self.end.x
             dy2 = self.start.y - self.start.x
             cross = abs(dx1 * dy2 - dx2 * dy1)
-            new_cell.h = self.astar.heuristic_fn(location, self.end) + cross * 0.001
+            new_cell.h = self.heuristic_fn(location, self.end) + cross * 0.001
             new_cell.set_f()
             return new_cell
 
