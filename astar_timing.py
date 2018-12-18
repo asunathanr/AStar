@@ -21,12 +21,8 @@ Purpose:
 """
 
 
-def print_path(path: []) -> None:
-    list(map(lambda cell: print(str(cell), sep=' '), path))
-
-
 def tie_breaker_h(coord1, coord2):
-    return manhattan(coord1, coord2) * (1.0 + 1 / 1000)
+    return manhattan(coord1, coord2) * (1.0 + 1 / 10)
 
 
 def make_grid(size: (int, int), obstacle_prob: int) -> MapGrid:

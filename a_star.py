@@ -15,7 +15,6 @@ class AStar:
         self.open_set = HashHeap()
         self.open_set.add(0, WeightedCoord(0, self.start.x, self.start.y))
         self.closed_set = {}
-        self.setup_closed_set()
         self.current = self.open_set.top()
         self.neighbors = self.next_neighbors()
 
@@ -40,7 +39,7 @@ class AStar:
         cheaper_neighbors = self.neighbors_to_update()
         new_cells = map(lambda neighbor: self.make_new_cell(neighbor), cheaper_neighbors)
         self.add_new_cells(new_cells)
-        self.closed_set[Coord(self.current.x, self.current.y)] = True
+        self.closed_set[Coord(self.current.x, self.current.y)] = self.current.weight
 
     def add_new_cells(self, new_cells) -> None:
         """
@@ -51,8 +50,12 @@ class AStar:
             self.open_set.add(cell.weight, cell)
 
     def next_neighbors(self) -> []:
-        neighbors = list(filter(lambda n: not self.closed_set[n], self.grid.neighbors(self.current)))
-        return neighbors
+        neighbors = self.grid.neighbors(self.current)
+        for cell in neighbors:
+            cell_weight = self.current.weight + self.grid.cost(cell)
+            if cell in self.closed_set and cell_weight < self.closed_set[cell]:
+                self.closed_set.pop(cell)
+        return list(filter(lambda n: n not in self.closed_set, neighbors))
 
     def neighbors_to_update(self):
         calc_g = lambda n: self.current.weight + self.grid.cost(n)
@@ -68,12 +71,7 @@ class AStar:
 
     def make_new_cell(self, location) -> WeightedCoord:
         new_cell = WeightedCoord(self.current.weight + self.grid.cost(location), location.x, location.y, self.current)
-        dx1 = location.x - self.end.x
-        dy1 = location.y - self.end.y
-        dx2 = self.start.x - self.end.x
-        dy2 = self.start.y - self.start.x
-        cross = abs(dx1 * dy2 - dx2 * dy1)
-        new_cell.h = self.heuristic_fn(location, self.end) + cross * 0.001
+        new_cell.h = self.heuristic_fn(location, self.end)
         new_cell.set_f()
         return new_cell
 
