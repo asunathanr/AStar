@@ -1,10 +1,18 @@
 from coord import Coord
 
-# File: MapGrid.py
-# Authors: Kelsey Lewis, Ryan, Nathan Robertson, Pedro Reyes
-# Purpose:
-#   Describes a MapGrid class used in path finding algorithms.
-#   Uses a Sparse Grid implementation which only stores obstacles and size of grid.
+"""
+File: MapGrid.py
+Authors: Kelsey Lewis, Ryan, Nathan Robertson, Pedro Reyes
+Purpose:
+    Describes a MapGrid class used in path finding algorithms.
+    Uses a Sparse Grid implementation which only stores obstacles and size of grid.
+"""
+
+
+def manhattan(coord1, coord2):
+    return abs(coord1.x - coord2.x) + abs(coord1.y - coord2.y)
+
+
 
 
 class MapGrid:
@@ -72,10 +80,17 @@ class MapGrid:
         return list(filter(lambda i: self.is_adjacent(coord, i), dist))
 
     def insert_obstacle(self, coord: Coord) -> None:
+        """
+        Add obstacle to grid
+        :param coord:
+        """
         if self.is_valid_coord(coord):
             self.obstacle_set.add(coord)
 
     def obstacles(self) -> set:
+        """
+        :return: All tiles that are impassable in the current MapGrid
+        """
         return self.obstacle_set
 
 
@@ -84,7 +99,6 @@ def print_grid(grid: MapGrid, path: []):
     Print a grid with path.
     :param grid: MapGrid to print
     :param path: Path
-    :return:
     """
     for i in range(0, grid.xsize):
         for j in range(0, grid.ysize):

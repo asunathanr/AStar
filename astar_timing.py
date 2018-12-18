@@ -1,5 +1,6 @@
 from PathMaker import *
-from MapGrid import print_grid
+from MapGrid import MapGrid, manhattan, print_grid
+from a_star import AStar
 import timeit
 import random
 
@@ -24,7 +25,11 @@ def print_path(path: []) -> None:
     list(map(lambda cell: print(str(cell), sep=' '), path))
 
 
-def make_grid(size: (int, int), obstacle_prob: int) -> PathMaker:
+def tie_breaker_h(coord1, coord2):
+    return manhattan(coord1, coord2) * (1.0 + 1 / 1000)
+
+
+def make_grid(size: (int, int), obstacle_prob: int) -> MapGrid:
     """
     :param size: tuple of max x and max y values
     :param obstacle_prob: Probability that an obstacle is on a tile.
@@ -37,12 +42,13 @@ def make_grid(size: (int, int), obstacle_prob: int) -> PathMaker:
             if random.randint(0, 100) < obstacle_prob:
                 if i != j:
                     obstacles.append(Coord(i, j))
-    return PathMaker(xsize, ysize, obstacles)
+    return MapGrid(xsize, ysize, obstacles)
 
 
 xsize = 10
 ysize = 10
-grid = make_grid((xsize, ysize), 30)
-print(timeit.timeit(lambda: grid.make(Coord(0, 0), Coord(xsize - 1, ysize - 1)), number=1))
-path = grid.make(Coord(0, 0), Coord(xsize - 1, ysize - 1))
+grid = make_grid((xsize, ysize), 10)
+maker = PathMaker(grid)
+print(timeit.timeit(lambda: maker.make(AStar(grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), tie_breaker_h)), number=1))
+path = maker.make(AStar(grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), tie_breaker_h))
 print_grid(grid, path)
