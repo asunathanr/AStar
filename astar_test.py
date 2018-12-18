@@ -1,6 +1,7 @@
 import unittest
 from MapGrid import MapGrid
-from PathMaker import AStar, PathMaker
+from a_star import AStar
+from PathMaker import PathMaker
 from weighted_coord import Coord
 
 """
