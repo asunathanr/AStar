@@ -4,7 +4,7 @@ from coord import Coord
 # Authors: Kelsey Lewis, Ryan, Nathan Robertson, Pedro Reyes
 # Purpose:
 #   Describes a MapGrid class used in path finding algorithms.
-#   Uses a Sparse Grid implementation
+#   Uses a Sparse Grid implementation which only stores obstacles and size of grid.
 
 
 class MapGrid:
