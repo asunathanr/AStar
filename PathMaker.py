@@ -111,7 +111,7 @@ class PathMaker(MapGrid):
             dx2 = self.start.x - self.end.x
             dy2 = self.start.y - self.start.x
             cross = abs(dx1 * dy2 - dx2 * dy1)
-            new_cell.h = self.heuristic_values[location] + cross * 0.001
+            new_cell.h = self.astar.manhattan(location, self.end) + cross * 0.001
             new_cell.set_f()
             return new_cell
 
