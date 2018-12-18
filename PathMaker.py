@@ -9,20 +9,19 @@ from HashHeap import HashHeap
 
 
 class PathMaker:
-    def __init__(self, grid, heuristic_fn):
+    def __init__(self, grid):
         self.grid = grid
         self.PATH_OUT_OF_BOUNDS = None
         self.SAME_CELL = []
         self.INVALID_PATH = []
-        self.heuristic_fn = heuristic_fn
 
-    def a_star(self, start: Coord, end: Coord) -> []:
-        if start == end:
+    def a_star(self, algorithm) -> []:
+        if algorithm.start == algorithm.end:
             return self.SAME_CELL
-        if not self.is_valid_coord(start) or not self.is_valid_coord(end):
+        if not self.is_valid_coord(algorithm.start) or not self.is_valid_coord(algorithm.end):
             return self.PATH_OUT_OF_BOUNDS
-        last_cell, successful = AStar(self.grid, (start, end), self.heuristic_fn).execute()
-        path = self.make_path(last_cell, end) if successful else self.INVALID_PATH
+        last_cell, successful = algorithm.execute()
+        path = self.make_path(last_cell, algorithm.end) if successful else self.INVALID_PATH
         return self.remove_weights(path)
 
     def is_valid_coord(self, coord: Coord):
@@ -30,9 +29,6 @@ class PathMaker:
 
     def remove_weights(self, path: []) -> []:
         return list(map(lambda cell: Coord(cell.x, cell.y), path))
-
-    def manhattan(self, coord1, coord2):
-        return abs(coord1.x - coord2.x) + abs(coord1.y - coord2.y)
 
     def make_path(self, parent, end):
         weighted_end = WeightedCoord(0, end.x, end.y)
