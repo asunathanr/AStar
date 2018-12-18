@@ -22,7 +22,7 @@ class PathMaker:
             return self.SAME_CELL
         if not self.is_valid_coord(start) or not self.is_valid_coord(end):
             return self.PATH_OUT_OF_BOUNDS
-        last_cell, successful = self.AStar(self.grid, start, end, self.heuristic_fn).execute()
+        last_cell, successful = self.AStar(self.grid, (start, end), self.heuristic_fn).execute()
         path = self.make_path(last_cell, end) if successful else self.INVALID_PATH
         return self.remove_weights(path)
 
@@ -53,16 +53,15 @@ class PathMaker:
 
     class AStar:
         """
-        Creates paths from start to one goal using manhattan distance heuristics and a grid structure.
+        Creates paths from start to one goal using a heuristic function and a grid structure.
         This is the meat of the A* implementation.
         """
-        def __init__(self, grid, start: Coord, end: Coord, heuristic_fn):
-            self.astar = grid
+        def __init__(self, grid, endpoints: (Coord, Coord), heuristic_fn):
+            self.grid = grid
             self.heuristic_fn = heuristic_fn
-            self.start = start
-            self.end = end
+            self.start, self.end = endpoints
             self.open_set = HashHeap()
-            self.open_set.add(0, WeightedCoord(0, start.x, start.y))
+            self.open_set.add(0, WeightedCoord(0, self.start.x, self.start.y))
             self.closed_set = {}
             self.setup_closed_set()
             self.current = self.open_set.top()
@@ -100,11 +99,11 @@ class PathMaker:
                 self.open_set.add(cell.weight, cell)
 
         def next_neighbors(self) -> []:
-            neighbors = list(filter(lambda n: not self.closed_set[n], self.astar.neighbors(self.current)))
+            neighbors = list(filter(lambda n: not self.closed_set[n], self.grid.neighbors(self.current)))
             return neighbors
 
         def neighbors_to_update(self):
-            calc_g = lambda n: self.current.weight + self.astar.cost(n)
+            calc_g = lambda n: self.current.weight + self.grid.cost(n)
             return filter(lambda x: self.should_replace_cell(calc_g(x)), self.neighbors)
 
         def should_replace_cell(self, new_g):
@@ -116,7 +115,7 @@ class PathMaker:
             return False
 
         def make_new_cell(self, location) -> WeightedCoord:
-            new_cell = WeightedCoord(self.current.weight + self.astar.cost(location), location.x, location.y, self.current)
+            new_cell = WeightedCoord(self.current.weight + self.grid.cost(location), location.x, location.y, self.current)
             dx1 = location.x - self.end.x
             dy1 = location.y - self.end.y
             dx2 = self.start.x - self.end.x
@@ -127,7 +126,7 @@ class PathMaker:
             return new_cell
 
         def setup_closed_set(self):
-            for i in range(0, self.astar.xsize):
-                for j in range(0, self.astar.ysize):
+            for i in range(0, self.grid.xsize):
+                for j in range(0, self.grid.ysize):
                     self.closed_set[Coord(i, j)] = False
 
