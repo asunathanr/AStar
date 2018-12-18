@@ -9,6 +9,10 @@ from HashHeap import HashHeap
 
 
 class PathMaker:
+    """
+    Creates paths on a grid.
+    """
+
     def __init__(self, grid):
         self.grid = grid
         self.PATH_OUT_OF_BOUNDS = None
@@ -43,8 +47,7 @@ class PathMaker:
 
 class AStar:
     """
-    Creates paths from start to one goal using a heuristic function and a grid structure.
-    This is the meat of the A* implementation.
+    Creates a path from start to goal using a heuristic function and a grid structure.
     """
 
     def __init__(self, grid, endpoints: (Coord, Coord), heuristic_fn):

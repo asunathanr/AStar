@@ -1,7 +1,7 @@
 import unittest
 from MapGrid import MapGrid
 from PathMaker import AStar, PathMaker
-from weighted_coord import Coord, WeightedCoord
+from weighted_coord import Coord
 
 """
 File: astar_test.py
@@ -91,9 +91,24 @@ class ComplexPathTest(unittest.TestCase):
         """
         An L-shaped wall is between the start and end.
         Test to see if A* goes around wall instead of walking straight up to it.
+        Expected outcome:
+        P P P P
+        P X X E
+        S . X .
+        . . X .
         """
         grid = MapGrid(4, 4, [Coord(2, 1), Coord(2, 2), Coord(1, 2), Coord(0, 2)])
         maker = PathMaker(grid)
         expected_path = {Coord(1, 0), Coord(2, 0), Coord(3, 0), Coord(3, 1), Coord(3, 2), Coord(3, 3), Coord(2, 3)}
         actual_path = maker.make(AStar(grid, (Coord(1, 0), Coord(2, 3)), manhattan))
         self.assertEqual(expected_path, set(actual_path))
+
+
+class RightToLeftTest(unittest.TestCase):
+    def setUp(self):
+        self.grid = MapGrid(2, 2, [])
+        self.maker = PathMaker(self.grid)
+
+    def test_simple_path(self):
+        path = set(self.maker.make(AStar(self.grid, (Coord(1, 1), Coord(0, 0)), manhattan)))
+        self.assertEqual({Coord(1, 1), Coord(1, 0), Coord(0, 0)}, path)

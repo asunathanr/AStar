@@ -20,7 +20,6 @@ class MapGrid:
         """
         Returns cost (weight) to move into a cell on the grid.
         Preconditions: coord should be a point on the grid
-        Todo: Remove this method? Now that obstacles really don't have a value doesn't make sense to keep it.
         """
         return self.OBSTACLE_VALUE if coord in self.obstacles() else self.CELL_VALUE
 
