@@ -31,6 +31,9 @@ class PathMaker(MapGrid):
     def neighbors(self, coord: Coord):
         return super().neighbors(coord)
 
+    def is_valid_coord(self, coord: Coord):
+        return super().is_valid_coord(coord)
+
     def remove_weights(self, path: []) -> []:
         return list(map(lambda cell: Coord(cell.x, cell.y), path))
 
