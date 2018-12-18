@@ -2,32 +2,26 @@ from coord import Coord
 
 # File: MapGrid.py
 # Authors: Kelsey Lewis, Ryan, Nathan Robertson, Pedro Reyes
-# Purpose: Describes a MapGrid class used in path finding algorithms.
+# Purpose:
+#   Describes a MapGrid class used in path finding algorithms.
+#   Uses a Sparse Grid implementation
 
 
 class MapGrid:
     def __init__(self, xsize: int, ysize: int, obstacles: list):
         self.xsize = xsize
         self.ysize = ysize
-        self.gridArea = []
         self.obstacle_list = set(obstacles)
         self.CELL_VALUE = 1
         self.OBSTACLE_VALUE = 2
         self.INVALID_POSITION = -1
-        for i in range(0, xsize):
-            new = []
-            for j in range(0, ysize):
-                new.append(self.CELL_VALUE)
-            self.gridArea.append(new)
-        for coord in obstacles:
-            self.gridArea[coord.x][coord.y] = self.OBSTACLE_VALUE
 
     def cost(self, coord):
         """
         Returns cost (weight) to move into a cell on the grid.
         Preconditions: coord should be a point on the grid
         """
-        return self.gridArea[coord.x][coord.y]
+        return self.OBSTACLE_VALUE if coord in self.obstacles() else self.CELL_VALUE
 
     def is_adjacent(self, coord1: Coord, coord2: Coord) -> bool:
         """
@@ -43,7 +37,7 @@ class MapGrid:
     def is_valid_coord(self, coord: Coord) -> bool:
         """
         :param coord:
-        :return: If coordinate is in gridArea
+        :return: If coordinate is in grid
         """
         if coord.x < 0:
             return False
@@ -66,7 +60,6 @@ class MapGrid:
             return True
         return False
 
-
     def neighbors(self, coord: Coord) -> list:
         """
         :param coord:
@@ -80,7 +73,6 @@ class MapGrid:
 
     def insert_obstacle(self, coord: Coord) -> None:
         if self.is_valid_coord(coord):
-            self.gridArea[coord.x][coord.y] = self.OBSTACLE_VALUE
             self.obstacle_list.add(coord)
 
     def obstacles(self) -> set:
