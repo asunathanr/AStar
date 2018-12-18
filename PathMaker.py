@@ -25,6 +25,12 @@ class PathMaker(MapGrid):
         path = self.make_path(last_cell, end) if successful else self.INVALID_PATH
         return self.remove_weights(path)
 
+    def cost(self, coord: Coord):
+        return super().cost(coord)
+
+    def neighbors(self, coord: Coord):
+        return super().neighbors(coord)
+
     def remove_weights(self, path: []) -> []:
         return list(map(lambda cell: Coord(cell.x, cell.y), path))
 
@@ -56,7 +62,6 @@ class PathMaker(MapGrid):
             self.setup_closed_set()
             self.current = self.open_set.top()
             self.neighbors = self.next_neighbors()
-            #self.heuristic_values = self.compute_heuristics()
 
         def execute(self) -> (WeightedCoord, bool):
             """
@@ -121,10 +126,3 @@ class PathMaker(MapGrid):
                 for j in range(0, self.astar.ysize):
                     self.closed_set[Coord(i, j)] = False
 
-        def compute_heuristics(self):
-            heuristics = {}
-            for i in range(0, self.astar.xsize):
-                for j in range(0, self.astar.ysize):
-                    coord = Coord(i, j)
-                    heuristics[coord] = self.astar.manhattan(coord, self.end)
-            return heuristics
