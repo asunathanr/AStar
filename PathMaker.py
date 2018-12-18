@@ -9,18 +9,19 @@ from HashHeap import HashHeap
 
 
 class PathMaker(MapGrid):
-    def __init__(self, xsize, ysize, obstacles: list):
+    def __init__(self, xsize, ysize, obstacles: list, heuristic_fn):
         super().__init__(xsize, ysize, obstacles)
         self.PATH_OUT_OF_BOUNDS = None
         self.SAME_CELL = []
         self.INVALID_PATH = []
+        self.heuristic_fn = heuristic_fn
 
     def a_star(self, start: Coord, end: Coord) -> []:
         if start == end:
             return self.SAME_CELL
         if not self.is_valid_coord(start) or not self.is_valid_coord(end):
             return self.PATH_OUT_OF_BOUNDS
-        last_cell, successful = self.AStar(self, start, end).make()
+        last_cell, successful = self.AStar(self, start, end).execute()
         path = self.make_path(last_cell, end) if successful else self.INVALID_PATH
         return self.remove_weights(path)
 
@@ -55,9 +56,9 @@ class PathMaker(MapGrid):
             self.setup_closed_set()
             self.current = self.open_set.top()
             self.neighbors = self.next_neighbors()
-            self.heuristic_values = self.compute_heuristics()
+            #self.heuristic_values = self.compute_heuristics()
 
-        def make(self) -> (WeightedCoord, bool):
+        def execute(self) -> (WeightedCoord, bool):
             """
             Attempt to find quickest path from start to end.
             This starts the "procedural" part of the algorithm. It seems best to treat this part procedurally so far.
@@ -111,7 +112,7 @@ class PathMaker(MapGrid):
             dx2 = self.start.x - self.end.x
             dy2 = self.start.y - self.start.x
             cross = abs(dx1 * dy2 - dx2 * dy1)
-            new_cell.h = self.astar.manhattan(location, self.end) + cross * 0.001
+            new_cell.h = self.astar.heuristic_fn(location, self.end) + cross * 0.001
             new_cell.set_f()
             return new_cell
 
