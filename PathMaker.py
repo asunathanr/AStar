@@ -10,8 +10,6 @@ from HashHeap import HashHeap
 
 class PathMaker:
     def __init__(self, grid, heuristic_fn):
-        self.xsize = grid.xsize
-        self.ysize = grid.ysize
         self.grid = grid
         self.PATH_OUT_OF_BOUNDS = None
         self.SAME_CELL = []
@@ -26,12 +24,6 @@ class PathMaker:
         last_cell, successful = AStar(self.grid, (start, end), self.heuristic_fn).execute()
         path = self.make_path(last_cell, end) if successful else self.INVALID_PATH
         return self.remove_weights(path)
-
-    def cost(self, coord: Coord):
-        return self.grid.cost(coord)
-
-    def neighbors(self, coord: Coord):
-        return self.grid.neighbors(coord)
 
     def is_valid_coord(self, coord: Coord):
         return self.grid.is_valid_coord(coord)
