@@ -8,9 +8,11 @@ from HashHeap import HashHeap
 # A* is a path finding algorithm used to find the best approximate path between two nodes in a graph.
 
 
-class PathMaker(MapGrid):
-    def __init__(self, xsize, ysize, obstacles: list, heuristic_fn):
-        super().__init__(xsize, ysize, obstacles)
+class PathMaker:
+    def __init__(self, grid, heuristic_fn):
+        self.xsize = grid.xsize
+        self.ysize = grid.ysize
+        self.grid = grid
         self.PATH_OUT_OF_BOUNDS = None
         self.SAME_CELL = []
         self.INVALID_PATH = []
@@ -26,13 +28,13 @@ class PathMaker(MapGrid):
         return self.remove_weights(path)
 
     def cost(self, coord: Coord):
-        return super().cost(coord)
+        return self.grid.cost(coord)
 
     def neighbors(self, coord: Coord):
-        return super().neighbors(coord)
+        return self.grid.neighbors(coord)
 
     def is_valid_coord(self, coord: Coord):
-        return super().is_valid_coord(coord)
+        return self.grid.is_valid_coord(coord)
 
     def remove_weights(self, path: []) -> []:
         return list(map(lambda cell: Coord(cell.x, cell.y), path))
