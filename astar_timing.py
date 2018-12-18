@@ -43,6 +43,6 @@ def make_grid(size: (int, int), obstacle_prob: int) -> PathMaker:
 xsize = 10
 ysize = 10
 grid = make_grid((xsize, ysize), 30)
-print(timeit.timeit(lambda: grid.a_star(Coord(0, 0), Coord(xsize - 1, ysize - 1)), number=1))
-path = grid.a_star(Coord(0, 0), Coord(xsize - 1, ysize - 1))
+print(timeit.timeit(lambda: grid.make(Coord(0, 0), Coord(xsize - 1, ysize - 1)), number=1))
+path = grid.make(Coord(0, 0), Coord(xsize - 1, ysize - 1))
 print_grid(grid, path)

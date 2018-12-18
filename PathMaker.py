@@ -15,7 +15,7 @@ class PathMaker:
         self.SAME_CELL = []
         self.INVALID_PATH = []
 
-    def a_star(self, algorithm) -> []:
+    def make(self, algorithm) -> []:
         if algorithm.start == algorithm.end:
             return self.SAME_CELL
         if not self.is_valid_coord(algorithm.start) or not self.is_valid_coord(algorithm.end):
