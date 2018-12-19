@@ -3,6 +3,42 @@ from coord import Coord
 from HashHeap import HashHeap
 
 
+class ClosedSet:
+    def __init__(self):
+        self.closed = {}
+
+    def add(self, item, weight) -> None:
+        self.closed[item] = weight
+
+    def find(self, item) -> bool:
+        return item in self.closed
+
+    def filter_neighbor(self, weight, neighbor) -> None:
+        if self.find(neighbor) and weight < self.closed[neighbor]:
+            self.closed.pop(neighbor)
+
+
+class SearchNode:
+    def __init__(self, weight, value, parent=None):
+        self.weight = weight
+        self.value = value
+        self.parent = parent
+        self.h = 0
+        self.f = 0
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.value == other.value
+        else:
+            return self.value == other
+
+    def __lt__(self, other):
+        return self.weight < other.weight
+
+    def __hash__(self):
+        return hash(self.value)
+
+
 class AStar:
     """
     Creates a path from start to goal using a heuristic function and a grid structure.
@@ -13,69 +49,30 @@ class AStar:
         self.heuristic_fn = heuristic_fn
         self.start, self.end = endpoints
         self.open_set = HashHeap()
-        self.open_set.add(0, WeightedCoord(0, self.start.x, self.start.y))
-        self.closed_set = {}
-        self.current = self.open_set.top()
-        self.neighbors = self.next_neighbors()
+        self.weighted_start = SearchNode(0, self.start)
+        self.open_set.add(0, self.weighted_start)
+        self.closed_set = ClosedSet()
 
-    def execute(self) -> (WeightedCoord, bool):
+    def execute(self) -> (SearchNode, bool):
         """
         Attempt to find quickest path from start to end.
         This starts the "procedural" part of the algorithm. It seems best to treat this part procedurally so far.
         :return: Next to last node of path and if an actual path was found from start to end
         """
-        while len(self.open_set) > 0 and self.end not in self.neighbors:
-            self.open_set.pop()
-            self.process_cell()
-            self.current = self.open_set.top()
-            self.neighbors = self.next_neighbors()
-        return self.current, self.end in self.neighbors
 
-    def process_cell(self):
-        """
-        Given the current cell and neighbors not in closed set for that cell update open set with new information.
-        Add it to closed set once finished
-        """
-        cheaper_neighbors = self.neighbors_to_update()
-        new_cells = map(lambda neighbor: self.make_new_cell(neighbor), cheaper_neighbors)
-        self.add_new_cells(new_cells)
-        self.closed_set[Coord(self.current.x, self.current.y)] = self.current.weight
+        while len(self.open_set) > 0 and not self.is_goal_reached(self.open_set.top(), self.end):
+            current = self.open_set.pop()
+            self.closed_set.add(current, current.weight)
+            neighbors = self.grid.neighbors(current.value)
+            for neighbor in neighbors:
+                new_g = current.weight + self.grid.cost(neighbor)
+                self.closed_set.filter_neighbor(new_g, neighbor)
+                h = self.heuristic_fn(neighbor, self.end)
+                new_node = SearchNode(new_g, neighbor, current)
+                new_node.h = h
+                new_node.f = new_g + h
+                self.open_set.add(new_node.f, new_node)
+        return self.open_set.top()
 
-    def add_new_cells(self, new_cells) -> None:
-        """
-        Add cells that are potentially part of the cheapest path.
-        :param new_cells:
-        """
-        for cell in new_cells:
-            self.open_set.add(cell.weight, cell)
-
-    def next_neighbors(self) -> []:
-        neighbors = self.grid.neighbors(self.current)
-        for cell in neighbors:
-            cell_weight = self.current.weight + self.grid.cost(cell)
-            if cell in self.closed_set and cell_weight < self.closed_set[cell]:
-                self.closed_set.pop(cell)
-        return list(filter(lambda n: n not in self.closed_set, neighbors))
-
-    def neighbors_to_update(self):
-        calc_g = lambda n: self.current.weight + self.grid.cost(n)
-        return filter(lambda x: self.should_replace_cell(calc_g(x)), self.neighbors)
-
-    def should_replace_cell(self, new_g):
-        old_value = self.open_set.find(self.current)
-        if old_value is None:
-            return True
-        if self.current == old_value and new_g < old_value.weight:
-            return True
-        return False
-
-    def make_new_cell(self, location) -> WeightedCoord:
-        new_cell = WeightedCoord(self.current.weight + self.grid.cost(location), location.x, location.y, self.current)
-        new_cell.h = self.heuristic_fn(location, self.end)
-        new_cell.set_f()
-        return new_cell
-
-    def setup_closed_set(self):
-        for i in range(0, self.grid.xsize):
-            for j in range(0, self.grid.ysize):
-                self.closed_set[Coord(i, j)] = False
+    def is_goal_reached(self, current, goal):
+        return current == goal

@@ -24,20 +24,18 @@ class PathMaker:
             return self.SAME_CELL
         if not self.is_valid_coord(algorithm.start) or not self.is_valid_coord(algorithm.end):
             return self.PATH_OUT_OF_BOUNDS
-        last_cell, successful = algorithm.execute()
-        path = self.make_path(last_cell, algorithm.end) if successful else self.INVALID_PATH
+        last_cell = algorithm.execute()
+        path = self.make_path(last_cell)
         return self.remove_weights(path)
 
     def is_valid_coord(self, coord: Coord):
         return self.grid.is_valid_coord(coord)
 
     def remove_weights(self, path: []) -> []:
-        return list(map(lambda cell: Coord(cell.x, cell.y), path))
+        return list(map(lambda cell: cell.value, path))
 
-    def make_path(self, parent, end):
-        weighted_end = WeightedCoord(0, end.x, end.y)
-        weighted_end.parent = parent
-        return self.find_path(weighted_end)
+    def make_path(self, end):
+        return self.find_path(end)
 
     def find_path(self, weighted_end):
         if weighted_end is None:

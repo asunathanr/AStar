@@ -13,6 +13,9 @@ class Coord:
         """
         return isinstance(other, self.__class__) and self.x == other.x and self.y == other.y
 
+    def __ne__(self, other):
+        return not (self == other)
+
     def __hash__(self):
         """
         For putting coords in sets or any situation a coord would need to be hashed

@@ -1,6 +1,9 @@
 from PathMaker import *
 from MapGrid import MapGrid, manhattan, print_grid
+# My A* implementation
 from a_star import AStar
+# Another A* implementation
+import astar
 import timeit
 import random
 
@@ -22,7 +25,7 @@ Purpose:
 
 
 def tie_breaker_h(coord1, coord2):
-    return manhattan(coord1, coord2) * (1.0 + 1 / 10)
+    return manhattan(coord1, coord2) * (1.0 + 1/1000)
 
 
 def make_grid(size: (int, int), obstacle_prob: int) -> MapGrid:
@@ -45,6 +48,7 @@ xsize = 10
 ysize = 10
 grid = make_grid((xsize, ysize), 10)
 maker = PathMaker(grid)
-print(timeit.timeit(lambda: maker.make(AStar(grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), tie_breaker_h)), number=1))
-path = maker.make(AStar(grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), tie_breaker_h))
-print_grid(grid, path)
+#print(timeit.timeit(lambda: maker.make(AStar(grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), tie_breaker_h)), number=1))
+print(timeit.timeit(lambda: astar.find_path(Coord(0, 0), Coord(xsize - 1, ysize - 1), grid.neighbors), number=1))
+#path = maker.make(AStar(grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), tie_breaker_h))
+#print_grid(grid, path)

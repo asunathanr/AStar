@@ -8,3 +8,8 @@ class WeightedCoordTest(unittest.TestCase):
         coord2 = WeightedCoord(20, 1, 1)
         self.assertTrue(coord1 < coord2)
         self.assertFalse(coord2 < coord1)
+
+    def test_equal(self):
+        coord1 = WeightedCoord(0, 2, 2)
+        coord2 = WeightedCoord(20, 2, 2)
+        self.assertEqual(coord1, coord2)
