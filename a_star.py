@@ -64,15 +64,14 @@ class AStar:
         self.open_set.add(self.weighted_start)
         self.closed_set = ClosedSet()
 
-    def check_input(self):
-        pass
-
     def execute(self) -> (SearchNode, bool):
         """
         Attempt to find quickest path from start to end.
         This starts the "procedural" part of the algorithm. It seems best to treat this part procedurally so far.
         :return: Next to last node of path and if an actual path was found from start to end
         """
+        if self.start == self.end:
+            return [self.start]
         while not self.is_goal_reached(self.open_set.top(), self.end):
             current = self.open_set.pop()
             self.closed_set.add(current.value, current.weight)
@@ -85,7 +84,18 @@ class AStar:
                         new_node.h = self.heuristic_fn(neighbor, self.end)
                         new_node.f = new_g + new_node.h
                         self.open_set.add(new_node)
-        return self.open_set.top()
+        return self.remove_weights(self.find_path(self.open_set.top()))
 
     def is_goal_reached(self, current, goal):
         return current is None or current == goal
+
+    def remove_weights(self, path: []) -> []:
+        return list(map(lambda cell: cell.value, path))
+
+    def make_path(self, end):
+        return self.find_path(end)
+
+    def find_path(self, weighted_end):
+        if weighted_end is None:
+            return []
+        return self.find_path(weighted_end.parent) + [weighted_end]

@@ -28,15 +28,16 @@ def manhattan(coord1, coord2):
 class SameStartEndTest(unittest.TestCase):
     def setUp(self):
         self.grid = MapGrid(2, 2, [])
+        self.astar = AStar(self.grid, (Coord(0, 0), Coord(0, 0)), manhattan)
         self.maker = PathMaker(self.grid)
 
     def test_first_cell(self):
-        path = self.maker.make(AStar(self.grid, (Coord(0, 0), Coord(0, 0)), manhattan))
-        self.assertEqual(self.maker.SAME_CELL, path)
+        path = self.astar.execute()
+        self.assertEqual([Coord(0, 0)], path)
 
     def test_last_cell(self):
-        path = self.maker.make(AStar(self.grid, (Coord(1, 1), Coord(1, 1)), manhattan))
-        self.assertEqual(self.maker.SAME_CELL, path)
+        path = AStar(self.grid, (Coord(1, 1), Coord(1, 1)), manhattan).execute()
+        self.assertEqual([Coord(1, 1)], path)
 
 
 class OffGridTest(unittest.TestCase):
@@ -52,10 +53,10 @@ class OffGridTest(unittest.TestCase):
 class SimpleAStarTest(unittest.TestCase):
     def setUp(self):
         self.grid = MapGrid(2, 2, [])
-        self.maker = PathMaker(self.grid)
+        self.maker = AStar(self.grid, (Coord(0, 0), Coord(1, 1)), manhattan)
 
     def test_simple_path(self):
-        path = set(self.maker.make(AStar(self.grid, (Coord(0, 0), Coord(1, 1)), manhattan)))
+        path = set(self.maker.execute())
         self.assertEqual({Coord(0, 0), Coord(0, 1), Coord(1, 1)}, path)
 
 
