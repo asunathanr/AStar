@@ -26,16 +26,16 @@ class HashHeap:
         Only adds if it is beneficial to do so. (Is lowest value associated with that key)
         :param node:
         """
-        if self.find(node) is None:
+        if self.find(node.value) is None:
             self.table[node.value] = node
             heapq.heappush(self.heap, node)
         else:
-            if node.f < self.table[node].f:
+            if node.f < self.table[node.value].f:
                 self.table[node.value] = node
                 heapq.heappush(self.heap, node)
 
     def should_update(self, node) -> bool:
-        stored_node = self.find(node)
+        stored_node = self.find(node.value)
         if stored_node is None:
             return True
         elif node.weight < stored_node.weight:

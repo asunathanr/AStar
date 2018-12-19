@@ -75,15 +75,14 @@ class AStar:
 
         while len(self.open_set) > 0 and not self.is_goal_reached(self.open_set.top(), self.end):
             current = self.open_set.pop()
-            self.closed_set.add(current, current.weight)
+            self.closed_set.add(current.value, current.weight)
             neighbors = self.grid.neighbors(current.value)
             for neighbor in neighbors:
                 new_g = current.weight + self.grid.cost(neighbor)
                 self.closed_set.filter_neighbor(new_g, neighbor)
-                h = self.calculate_heuristic(neighbor)
                 new_node = SearchNode(new_g, neighbor, current)
-                new_node.h = h
-                new_node.f = new_g + h
+                new_node.h = self.heuristic_fn(neighbor, self.end)
+                new_node.f = new_g + new_node.h
                 self.open_set.add(new_node)
         return self.open_set.top()
 

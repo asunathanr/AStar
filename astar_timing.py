@@ -49,6 +49,6 @@ ysize = 30
 grid = make_grid((xsize, ysize), 10)
 maker = PathMaker(grid)
 print(timeit.timeit(lambda: maker.make(AStar(grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), tie_breaker_h)), number=1))
-#print(timeit.timeit(lambda: astar.find_path(Coord(0, 0), Coord(xsize - 1, ysize - 1), grid.neighbors), number=1))
+print(timeit.timeit(lambda: astar.find_path(Coord(0, 0), Coord(xsize - 1, ysize - 1), grid.neighbors, heuristic_cost_estimate_fnct=tie_breaker_h), number=1))
 #path = maker.make(AStar(grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), tie_breaker_h))
 #print_grid(grid, path)
