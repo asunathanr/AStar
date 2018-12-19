@@ -42,7 +42,3 @@ class HashHeapTest(unittest.TestCase):
         self.hash_heap.add(self.lower_search_node)
         value = self.hash_heap.top()
         self.assertEqual(self.lower_search_node, value)
-
-    def test_should_update(self):
-        self.hash_heap.add(self.search_node)
-        self.assertTrue(self.hash_heap.should_update(SearchNode(2, (1, 2))))

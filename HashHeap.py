@@ -34,15 +34,6 @@ class HashHeap:
                 self.table[node.value] = node
                 heapq.heappush(self.heap, node)
 
-    def should_update(self, node) -> bool:
-        stored_node = self.find(node.value)
-        if stored_node is None:
-            return True
-        elif node.weight < stored_node.weight:
-            return True
-        else:
-            return False
-
     def top(self):
         """
         :return: The top item on the heap or None if nothing is on the heap.
