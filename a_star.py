@@ -80,13 +80,13 @@ class AStar:
             self.closed_set.add(current.value, current.weight)
             neighbors = self.grid.neighbors(current.value)
             for neighbor in neighbors:
-                new_g = current.weight + self.grid.cost(neighbor)
-                self.closed_set.filter_neighbor(new_g, neighbor)
-                if self.open_set.should_replace_node(new_g, neighbor):
-                    new_node = SearchNode(new_g, neighbor, current)
-                    new_node.h = self.heuristic_fn(neighbor, self.end)
-                    new_node.f = new_g + new_node.h
-                    self.open_set.add(new_node)
+                if not self.closed_set.find(neighbor):
+                    new_g = current.weight + self.grid.cost(neighbor)
+                    if self.open_set.should_replace_node(new_g, neighbor):
+                        new_node = SearchNode(new_g, neighbor, current)
+                        new_node.h = self.heuristic_fn(neighbor, self.end)
+                        new_node.f = new_g + new_node.h
+                        self.open_set.add(new_node)
         return self.open_set.top()
 
     def is_goal_reached(self, current, goal):

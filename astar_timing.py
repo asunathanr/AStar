@@ -20,7 +20,7 @@ Purpose:
     The current goal is to get it to run 100x100 grids with obstacles in <= 0.05 second
     
     Run in terminal with command: python -m cProfile -o profiling_results astar_timing.py
-    to generate a file called profiling_result which can be viewed by running the display_stats.py script
+    to generate a file called profiling_results which can be viewed by running the display_stats.py script
 """
 
 
@@ -44,8 +44,8 @@ def make_grid(size: (int, int), obstacle_prob: int) -> MapGrid:
     return MapGrid(xsize, ysize, obstacles)
 
 
-xsize = 50
-ysize = 50
+xsize = 60
+ysize = 60
 grid = make_grid((xsize, ysize), 5)
 maker = PathMaker(grid)
 print(timeit.timeit(lambda: maker.make(AStar(grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), tie_breaker_h)), number=1))
