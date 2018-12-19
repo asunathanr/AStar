@@ -22,11 +22,6 @@ class ClosedSet:
     def find(self, item) -> bool:
         return item in self.closed
 
-    def filter_neighbor(self, weight, neighbor) -> None:
-        if self.find(neighbor) and weight < self.closed[neighbor]:
-            #self.closed.pop(neighbor)
-            pass
-
 
 class SearchNode:
     __slots__ = ('weight', 'value', 'value', 'parent', 'h', 'f')
@@ -41,7 +36,7 @@ class SearchNode:
     def __eq__(self, other):
         """
         :param other: Either another SearchNode or a node of the same type returned by a search node's value attribute
-        :return:
+        :return: Whether one SearchNode's value is equivalent to another.
         """
         if isinstance(other, self.__class__):
             return self.value == other.value
@@ -68,6 +63,9 @@ class AStar:
         self.weighted_start = SearchNode(0, self.start)
         self.open_set.add(self.weighted_start)
         self.closed_set = ClosedSet()
+
+    def check_input(self):
+        pass
 
     def execute(self) -> (SearchNode, bool):
         """
