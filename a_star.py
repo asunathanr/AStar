@@ -72,8 +72,7 @@ class AStar:
         This starts the "procedural" part of the algorithm. It seems best to treat this part procedurally so far.
         :return: Next to last node of path and if an actual path was found from start to end
         """
-
-        while len(self.open_set) > 0 and not self.is_goal_reached(self.open_set.top(), self.end):
+        while not self.is_goal_reached(self.open_set.top(), self.end):
             current = self.open_set.pop()
             self.closed_set.add(current.value, current.weight)
             neighbors = self.grid.neighbors(current.value)
@@ -87,7 +86,7 @@ class AStar:
         return self.open_set.top()
 
     def is_goal_reached(self, current, goal):
-        return current == goal
+        return current is None or current == goal
 
     def calculate_heuristic(self, node):
         """
