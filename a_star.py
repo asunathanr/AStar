@@ -1,6 +1,5 @@
-from weighted_coord import WeightedCoord
 from coord import Coord
-from HashHeap import HashHeap
+from HashHeap import *
 
 
 class ClosedSet:
@@ -33,7 +32,7 @@ class SearchNode:
             return self.value == other
 
     def __lt__(self, other):
-        return self.weight < other.weight
+        return self.f < other.f
 
     def __hash__(self):
         return hash(self.value)
@@ -50,7 +49,7 @@ class AStar:
         self.start, self.end = endpoints
         self.open_set = HashHeap()
         self.weighted_start = SearchNode(0, self.start)
-        self.open_set.add(0, self.weighted_start)
+        self.open_set.add(self.weighted_start)
         self.closed_set = ClosedSet()
 
     def execute(self) -> (SearchNode, bool):
@@ -71,7 +70,7 @@ class AStar:
                 new_node = SearchNode(new_g, neighbor, current)
                 new_node.h = h
                 new_node.f = new_g + h
-                self.open_set.add(new_node.f, new_node)
+                self.open_set.add(new_node)
         return self.open_set.top()
 
     def is_goal_reached(self, current, goal):
