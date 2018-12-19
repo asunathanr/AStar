@@ -1,6 +1,5 @@
 class Coord:
-    x = 0
-    y = 0
+    __slots__ = ('x', 'y')
 
     def __init__(self, x=0, y=0):
         self.x = x

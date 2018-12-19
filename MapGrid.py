@@ -13,8 +13,6 @@ def manhattan(coord1, coord2):
     return abs(coord1.x - coord2.x) + abs(coord1.y - coord2.y)
 
 
-
-
 class MapGrid:
     def __init__(self, xsize: int, ysize: int, obstacles: list):
         self.xsize = xsize

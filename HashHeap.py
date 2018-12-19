@@ -26,13 +26,17 @@ class HashHeap:
         Only adds if it is beneficial to do so. (Is lowest value associated with that key)
         :param node:
         """
-        if self.find(node.value) is None:
-            self.table[node.value] = node
-            heapq.heappush(self.heap, node)
+        self.table[node.value] = node
+        heapq.heappush(self.heap, node)
+
+    def should_replace_node(self, new_weight, new_value) -> bool:
+        if self.find(new_value) is None:
+            return True
         else:
-            if node.f < self.table[node.value].f:
-                self.table[node.value] = node
-                heapq.heappush(self.heap, node)
+            if new_weight < self.table[new_value].weight:
+                return True
+            else:
+                return False
 
     def top(self):
         """

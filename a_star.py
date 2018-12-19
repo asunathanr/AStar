@@ -24,10 +24,13 @@ class ClosedSet:
 
     def filter_neighbor(self, weight, neighbor) -> None:
         if self.find(neighbor) and weight < self.closed[neighbor]:
-            self.closed.pop(neighbor)
+            #self.closed.pop(neighbor)
+            pass
 
 
 class SearchNode:
+    __slots__ = ('weight', 'value', 'value', 'parent', 'h', 'f')
+
     def __init__(self, weight, value, parent=None):
         self.weight = weight
         self.value = value
@@ -79,23 +82,12 @@ class AStar:
             for neighbor in neighbors:
                 new_g = current.weight + self.grid.cost(neighbor)
                 self.closed_set.filter_neighbor(new_g, neighbor)
-                new_node = SearchNode(new_g, neighbor, current)
-                new_node.h = self.heuristic_fn(neighbor, self.end)
-                new_node.f = new_g + new_node.h
-                self.open_set.add(new_node)
+                if self.open_set.should_replace_node(new_g, neighbor):
+                    new_node = SearchNode(new_g, neighbor, current)
+                    new_node.h = self.heuristic_fn(neighbor, self.end)
+                    new_node.f = new_g + new_node.h
+                    self.open_set.add(new_node)
         return self.open_set.top()
 
     def is_goal_reached(self, current, goal):
         return current is None or current == goal
-
-    def calculate_heuristic(self, node):
-        """
-        Gets cached heuristic if already calculated or computes heuristic for brand-new node.
-        :param node:
-        :return:
-        """
-        prev_node = self.open_set.find(node)
-        if prev_node is None:
-            return self.heuristic_fn(node, self.end)
-        else:
-            return prev_node.h
