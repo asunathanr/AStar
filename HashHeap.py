@@ -28,11 +28,11 @@ class HashHeap:
         :return:
         """
         if self.find(node) is None:
-            self.table[node] = node.f
+            self.table[node.value] = node
             heapq.heappush(self.heap, node)
         else:
-            if node.f < self.table[node]:
-                self.table[node.f] = node
+            if node.f < self.table[node].f:
+                self.table[node.value] = node
                 heapq.heappush(self.heap, node)
 
     def should_update(self, node) -> bool:
@@ -46,7 +46,7 @@ class HashHeap:
 
     def top(self):
         """
-        :return: The top item on the heap
+        :return: The top item on the heap or None if nothing is on the heap.
         """
         if len(self.heap) > 0:
             return self.heap[0]
@@ -54,14 +54,14 @@ class HashHeap:
             return None
 
     def pop(self):
-        value = heapq.heappop(self.heap)
-        if self.find(value) is not None:
-            self.table.pop(value)
-        return value
+        node = heapq.heappop(self.heap)
+        if self.find(node.value) is not None:
+            self.table.pop(node.value)
+        return node
 
-    def find(self, node):
-        if node in self.table:
-            return self.table[node]
+    def find(self, node_value):
+        if node_value in self.table:
+            return self.table[node_value]
         return None
 
     def __len__(self):

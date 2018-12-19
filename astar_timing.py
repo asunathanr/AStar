@@ -46,9 +46,9 @@ def make_grid(size: (int, int), obstacle_prob: int) -> MapGrid:
 
 xsize = 10
 ysize = 10
-grid = make_grid((xsize, ysize), 10)
+grid = make_grid((xsize, ysize), 30)
 maker = PathMaker(grid)
-#print(timeit.timeit(lambda: maker.make(AStar(grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), tie_breaker_h)), number=1))
-print(timeit.timeit(lambda: astar.find_path(Coord(0, 0), Coord(xsize - 1, ysize - 1), grid.neighbors), number=1))
-#path = maker.make(AStar(grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), tie_breaker_h))
-#print_grid(grid, path)
+print(timeit.timeit(lambda: maker.make(AStar(grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), tie_breaker_h)), number=1))
+#print(timeit.timeit(lambda: astar.find_path(Coord(0, 0), Coord(xsize - 1, ysize - 1), grid.neighbors), number=1))
+path = maker.make(AStar(grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), tie_breaker_h))
+print_grid(grid, path)

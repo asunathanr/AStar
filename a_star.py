@@ -1,6 +1,13 @@
 from coord import Coord
 from HashHeap import *
 
+"""
+File: a_star.py
+Author: Nathan Robertson
+Purpose:
+    Implement a fast fairly generic AStar algorithm.
+"""
+
 
 class ClosedSet:
     def __init__(self):
@@ -26,6 +33,10 @@ class SearchNode:
         self.f = 0
 
     def __eq__(self, other):
+        """
+        :param other: Either another SearchNode or a node of the same type returned by a search node's value attribute
+        :return:
+        """
         if isinstance(other, self.__class__):
             return self.value == other.value
         else:
@@ -66,7 +77,7 @@ class AStar:
             for neighbor in neighbors:
                 new_g = current.weight + self.grid.cost(neighbor)
                 self.closed_set.filter_neighbor(new_g, neighbor)
-                h = self.heuristic_fn(neighbor, self.end)
+                h = self.calculate_heuristic(neighbor)
                 new_node = SearchNode(new_g, neighbor, current)
                 new_node.h = h
                 new_node.f = new_g + h
@@ -75,3 +86,10 @@ class AStar:
 
     def is_goal_reached(self, current, goal):
         return current == goal
+
+    def calculate_heuristic(self, node):
+        prev_node = self.open_set.find(node)
+        if prev_node is None:
+            return self.heuristic_fn(node, self.end)
+        else:
+            return prev_node.h

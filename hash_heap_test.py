@@ -26,13 +26,13 @@ class HashHeapTest(unittest.TestCase):
         :return:
         """
         self.hash_heap.add(self.search_node)
-        self.assertEqual(self.search_node.f, self.hash_heap.find(self.search_node))
+        self.assertEqual(self.search_node, self.hash_heap.find(self.search_node.value))
 
     def test_pop(self):
         self.hash_heap.add(self.search_node)
         value = self.hash_heap.pop()
         self.assertEqual(self.search_node, value)
-        self.assertIsNone(self.hash_heap.find(self.search_node))
+        self.assertIsNone(self.hash_heap.find(self.search_node.value))
 
     def test_min_prop(self):
         """
