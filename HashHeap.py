@@ -25,7 +25,6 @@ class HashHeap:
         Adds key to heap and key value pair to hash table.
         Only adds if it is beneficial to do so. (Is lowest value associated with that key)
         :param node:
-        :return:
         """
         if self.find(node) is None:
             self.table[node.value] = node

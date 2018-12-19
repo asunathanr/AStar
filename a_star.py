@@ -10,6 +10,9 @@ Purpose:
 
 
 class ClosedSet:
+    """
+    Closed set used in A* implementation.
+    """
     def __init__(self):
         self.closed = {}
 
@@ -88,6 +91,11 @@ class AStar:
         return current == goal
 
     def calculate_heuristic(self, node):
+        """
+        Gets cached heuristic if already calculated or computes heuristic for brand-new node.
+        :param node:
+        :return:
+        """
         prev_node = self.open_set.find(node)
         if prev_node is None:
             return self.heuristic_fn(node, self.end)

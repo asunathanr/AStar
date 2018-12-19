@@ -29,7 +29,7 @@ class MapGrid:
         Returns cost (weight) to move into a cell on the grid.
         Preconditions: coord should be a point on the grid
         """
-        return self.OBSTACLE_VALUE if coord in self.obstacles() else self.CELL_VALUE
+        return self.CELL_VALUE
 
     def is_adjacent(self, coord1: Coord, coord2: Coord) -> bool:
         """

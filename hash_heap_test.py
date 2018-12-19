@@ -8,9 +8,8 @@ Author: Nathan Robertson
 Purpose:
     Test the combined hash table/heap data structure.
     Invariant:
-    1. pop will return lowest value if one exists
-    2. add will add/update item in hash table and push it onto heap
-    3. If item is already in the hash table it will simply replace that items value.
+    1. heap[0] should always contain the lowest node.
+    2. table's keys will be the location of the node. For instance (0, 0) if using grid notation
 """
 
 
