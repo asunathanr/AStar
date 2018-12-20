@@ -27,7 +27,6 @@ class AStar:
     def execute(self) -> (SearchNode, bool):
         """
         Attempt to find quickest path from start to end.
-        This starts the "procedural" part of the algorithm. It seems best to treat this part procedurally so far.
         :return: A list of nodes from start to end if successful, an empty list if not.
         """
         if self.start == self.end:
