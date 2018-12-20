@@ -68,7 +68,7 @@ class AStar:
         """
         Attempt to find quickest path from start to end.
         This starts the "procedural" part of the algorithm. It seems best to treat this part procedurally so far.
-        :return: Next to last node of path and if an actual path was found from start to end
+        :return: A list of nodes from start to end if successful, an empty list if not.
         """
         if self.start == self.end:
             return [self.start]

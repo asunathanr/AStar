@@ -71,8 +71,6 @@ class MapGrid:
         :param coord:
         :return: All neighbors of coord in a list. (A coord with no neighbors would return empty list)
         """
-        if coord is None:
-            return []
         make_neighbor = lambda x, y: Coord(coord.x + x, coord.y + y)
         dist = map(lambda i: make_neighbor(i[0], i[1]), [(0, -1), (0, 1), (-1, 0), (1, 0)])
         return list(filter(lambda i: self.is_adjacent(coord, i), dist))
