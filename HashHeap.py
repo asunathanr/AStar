@@ -30,6 +30,11 @@ class HashHeap:
         heapq.heappush(self.heap, node)
 
     def should_replace_node(self, new_weight, new_value) -> bool:
+        """
+        :param new_weight:
+        :param new_value:
+        :return: If it is cheaper to travel new path opposed to path already stored in system.
+        """
         if self.find(new_value) is None:
             return True
         else:
@@ -48,6 +53,10 @@ class HashHeap:
             return None
 
     def pop(self):
+        """
+        Removes cheapest node from heap and table.
+        :return: Cheapest node in heap
+        """
         node = heapq.heappop(self.heap)
         if self.find(node.value) is not None:
             self.table.pop(node.value)

@@ -27,6 +27,13 @@ Purpose:
 
 @lru_cache(maxsize=None)
 def tie_breaker_h(coord1, coord2):
+    """
+    Decorater heuristic which adds a tie breaker to the formula.
+    Try to adjust the heuristic to favor certain tiles even if cost is the same.
+    :param coord1:
+    :param coord2:
+    :return:
+    """
     return manhattan(coord1, coord2) * (1.0 + 1/1000)
 
 
@@ -50,6 +57,6 @@ xsize = 100
 ysize = 100
 grid = make_grid((xsize, ysize), 10)
 print(timeit.timeit(lambda: AStar(grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), tie_breaker_h).execute(), number=1))
-print(timeit.timeit(lambda: astar.find_path(Coord(0, 0), Coord(xsize - 1, ysize - 1), grid.neighbors, heuristic_cost_estimate_fnct=tie_breaker_h), number=1))
+#print(timeit.timeit(lambda: astar.find_path(Coord(0, 0), Coord(xsize - 1, ysize - 1), grid.neighbors, heuristic_cost_estimate_fnct=tie_breaker_h), number=1))
 path = AStar(grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), tie_breaker_h).execute()
 print_grid(grid, path)

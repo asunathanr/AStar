@@ -34,7 +34,7 @@ class MapGrid:
         Is coordinate one adjacent to coordinate 2?
         """
         if self.is_valid_coord(coord1) and self.is_valid_coord(coord2):
-            if self.cost(coord1) == self.OBSTACLE_VALUE or self.cost(coord2) == self.OBSTACLE_VALUE:
+            if coord1 in self.obstacle_set or coord2 in self.obstacle_set:
                 return False
             if self.is_adjacent_position(coord1, coord2):
                 return True
@@ -45,13 +45,9 @@ class MapGrid:
         :param coord:
         :return: If coordinate is in grid
         """
-        if coord.x < 0:
+        if coord.x < 0 and coord.y < 0:
             return False
-        if coord.y < 0:
-            return False
-        if coord.x >= self.xsize:
-            return False
-        if coord.y >= self.ysize:
+        if coord.x >= self.xsize and coord.y >= self.ysize:
             return False
         return True
 
