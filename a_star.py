@@ -1,5 +1,6 @@
 from coord import Coord
 from HashHeap import *
+from search_node import SearchNode
 
 """
 File: a_star.py
@@ -7,47 +8,6 @@ Author: Nathan Robertson
 Purpose:
     Implement a fast fairly generic AStar algorithm.
 """
-
-
-class ClosedSet:
-    """
-    Closed set used in A* implementation.
-    """
-    def __init__(self):
-        self.closed = {}
-
-    def add(self, item, weight) -> None:
-        self.closed[item] = weight
-
-    def find(self, item) -> bool:
-        return item in self.closed
-
-
-class SearchNode:
-    __slots__ = ('weight', 'value', 'value', 'parent', 'h', 'f')
-
-    def __init__(self, weight, value, parent=None):
-        self.weight = weight
-        self.value = value
-        self.parent = parent
-        self.h = 0
-        self.f = 0
-
-    def __eq__(self, other):
-        """
-        :param other: Either another SearchNode or a node of the same type returned by a search node's value attribute
-        :return: Whether one SearchNode's value is equivalent to another.
-        """
-        if isinstance(other, self.__class__):
-            return self.value == other.value
-        else:
-            return self.value == other
-
-    def __lt__(self, other):
-        return self.f < other.f
-
-    def __hash__(self):
-        return hash(self.value)
 
 
 class AStar:
@@ -99,3 +59,17 @@ class AStar:
         if weighted_end is None:
             return []
         return self.find_path(weighted_end.parent) + [weighted_end]
+
+
+class ClosedSet:
+    """
+    Closed set used in A* implementation.
+    """
+    def __init__(self):
+        self.closed = {}
+
+    def add(self, item, weight) -> None:
+        self.closed[item] = weight
+
+    def find(self, item) -> bool:
+        return item in self.closed
