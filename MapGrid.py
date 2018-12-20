@@ -45,9 +45,9 @@ class MapGrid:
         :param coord:
         :return: If coordinate is in grid
         """
-        if coord.x < 0 and coord.y < 0:
+        if coord.x < 0 or coord.y < 0:
             return False
-        if coord.x >= self.xsize and coord.y >= self.ysize:
+        if coord.x >= self.xsize or coord.y >= self.ysize:
             return False
         return True
 

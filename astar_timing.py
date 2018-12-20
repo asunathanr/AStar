@@ -1,5 +1,6 @@
 from PathMaker import *
 from MapGrid import MapGrid, manhattan, print_grid
+from DiagonalGrid import DiagonalGrid, diagonal
 from functools import lru_cache
 # My A* implementation
 from a_star import AStar
@@ -28,13 +29,18 @@ Purpose:
 @lru_cache(maxsize=None)
 def tie_breaker_h(coord1, coord2):
     """
-    Decorater heuristic which adds a tie breaker to the formula.
+    Decorator heuristic which adds a tie breaker to the formula.
     Try to adjust the heuristic to favor certain tiles even if cost is the same.
     :param coord1:
     :param coord2:
     :return:
     """
     return manhattan(coord1, coord2) * (1.0 + 1/1000)
+
+
+@lru_cache(maxsize=None)
+def diagonal_tie_breaker(coord1, coord2):
+    return diagonal(coord1, coord2) * (1.0 + 1 / 1000)
 
 
 def make_grid(size: (int, int), obstacle_prob: int) -> MapGrid:
@@ -53,10 +59,27 @@ def make_grid(size: (int, int), obstacle_prob: int) -> MapGrid:
     return MapGrid(xsize, ysize, obstacles)
 
 
+def make_diagonal_grid(size: (int, int), obstacle_prob: int) -> DiagonalGrid:
+    """
+    :param size: tuple of max x and max y values
+    :param obstacle_prob: Probability that an obstacle is on a tile.
+    :return: AStar grid with randomly generated obstacles
+    """
+    obstacles = []
+    xsize, ysize = size
+    for i in range(0, xsize):
+        for j in range(0, ysize):
+            if random.randint(0, 100) < obstacle_prob:
+                if i != j:
+                    obstacles.append(Coord(i, j))
+    return DiagonalGrid(xsize, ysize, obstacles)
+
+
 xsize = 100
 ysize = 100
 grid = make_grid((xsize, ysize), 10)
 print(timeit.timeit(lambda: AStar(grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), tie_breaker_h).execute(), number=1))
+print(timeit.timeit(lambda: AStar(grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), diagonal_tie_breaker).execute(), number=1))
 #print(timeit.timeit(lambda: astar.find_path(Coord(0, 0), Coord(xsize - 1, ysize - 1), grid.neighbors, heuristic_cost_estimate_fnct=tie_breaker_h), number=1))
 path = AStar(grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), tie_breaker_h).execute()
 print_grid(grid, path)

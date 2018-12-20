@@ -13,7 +13,7 @@ def diagonal(coord1, coord2):
     return max(abs(coord1.x - coord2.x), abs(coord1.y - coord2.y))
 
 
-class MapGrid:
+class DiagonalGrid:
     def __init__(self, xsize: int, ysize: int, obstacles: list):
         self.xsize = xsize
         self.ysize = ysize
@@ -45,9 +45,9 @@ class MapGrid:
         :param coord:
         :return: If coordinate is in grid
         """
-        if coord.x < 0 and coord.y < 0:
+        if coord.x < 0 or coord.y < 0:
             return False
-        if coord.x >= self.xsize and coord.y >= self.ysize:
+        if coord.x >= self.xsize or coord.y >= self.ysize:
             return False
         return True
 
@@ -68,8 +68,8 @@ class MapGrid:
         :return: All neighbors of coord in a list. (A coord with no neighbors would return empty list)
         """
         make_neighbor = lambda x, y: Coord(coord.x + x, coord.y + y)
-        dist = map(lambda i: make_neighbor(i[0], i[1]), [(0, -1), (0, 1), (-1, 0), (1, 0)])
-        return list(filter(lambda i: self.is_adjacent(coord, i), dist))
+        dist = map(lambda i: make_neighbor(i[0], i[1]), [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (1, 1), (-1, 1), (1, -1)])
+        return list(filter(lambda i: self.is_adjacent(coord, i), list(dist)))
 
     def insert_obstacle(self, coord: Coord) -> None:
         """
@@ -85,21 +85,3 @@ class MapGrid:
         """
         return self.obstacle_set
 
-
-def print_grid(grid: MapGrid, path: []):
-    """
-    Print a grid with path.
-    :param grid: MapGrid to print
-    :param path: Path
-    """
-    for i in range(0, grid.xsize):
-        for j in range(0, grid.ysize):
-            coord = Coord(i, j)
-            if coord in path:
-                val = 'P'
-            elif grid.cost(coord) == grid.OBSTACLE_VALUE:
-                val = 'X'
-            else:
-                val = '.'
-            print(val, sep=' ', end=' ')
-        print()
