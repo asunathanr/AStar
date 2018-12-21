@@ -51,9 +51,6 @@ class AStar:
     def remove_weights(self, path: []) -> []:
         return list(map(lambda cell: cell.value, path))
 
-    def make_path(self, end):
-        return self.find_path(end)
-
     def find_path(self, weighted_end):
         if weighted_end is None:
             return []
