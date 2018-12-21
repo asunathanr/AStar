@@ -75,11 +75,12 @@ def make_diagonal_grid(size: (int, int), obstacle_prob: int) -> DiagonalGrid:
     return DiagonalGrid(xsize, ysize, obstacles)
 
 
-xsize = 100
-ysize = 100
+xsize = 50
+ysize = 50
 grid = make_grid((xsize, ysize), 10)
+diagonal_grid = make_diagonal_grid((xsize, ysize), 10)
 print(timeit.timeit(lambda: AStar(grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), tie_breaker_h).execute(), number=1))
-print(timeit.timeit(lambda: AStar(grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), diagonal_tie_breaker).execute(), number=1))
+print(timeit.timeit(lambda: AStar(diagonal_grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), diagonal_tie_breaker).execute(), number=1))
 #print(timeit.timeit(lambda: astar.find_path(Coord(0, 0), Coord(xsize - 1, ysize - 1), grid.neighbors, heuristic_cost_estimate_fnct=tie_breaker_h), number=1))
 path = AStar(grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), tie_breaker_h).execute()
 print_grid(grid, path)

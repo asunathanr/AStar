@@ -43,15 +43,30 @@ class AStar:
                         new_node.h = self.heuristic_fn(neighbor, self.end)
                         new_node.f = new_g + new_node.h
                         self.open_set.add(new_node)
-        return self.remove_weights(self.find_path(self.open_set.top()))
+        return self.extract_value(self.find_path(self.open_set.top()))
 
     def is_goal_reached(self, current, goal):
+        """
+        :param current:
+        :param goal:
+        :return: If current node is goal node or if there are no new nodes to process then there is no viable path from
+        start to end.
+        """
         return current is None or current == goal
 
-    def remove_weights(self, path: []) -> []:
+    def extract_value(self, path: []) -> []:
+        """
+        Goes through each search node, pulls out the value, and returns the new list.
+        :param path: A list of nodes on a grid that form a path.
+        :return: List of node values (e.g. if working with grid would be coordinates)
+        """
         return list(map(lambda cell: cell.value, path))
 
     def find_path(self, weighted_end):
+        """
+        Traverse end's parents until at start and capture that into a list
+        :param weighted_end:
+        """
         if weighted_end is None:
             return []
         return self.find_path(weighted_end.parent) + [weighted_end]
