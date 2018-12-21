@@ -85,3 +85,21 @@ class DiagonalGrid:
         """
         return self.obstacle_set
 
+
+def print_diagonal(grid: DiagonalGrid, path: []):
+    """
+    Print a grid with path.
+    :param grid: MapGrid to print
+    :param path: Path
+    """
+    for i in range(0, grid.xsize):
+        for j in range(0, grid.ysize):
+            coord = Coord(i, j)
+            if coord in path:
+                val = 'P'
+            elif grid.cost(coord) == grid.OBSTACLE_VALUE:
+                val = 'X'
+            else:
+                val = '.'
+            print(val, sep=' ', end=' ')
+        print()
