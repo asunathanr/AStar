@@ -1,6 +1,8 @@
-# File: search_node.py
-# Author: Nathan Robertson
-# Purpose: Create a search node class to be used by A*
+"""
+File: search_node.py
+Author: Nathan Robertson
+Purpose: Create a search node class to be used by A*
+"""
 
 
 class SearchNode:

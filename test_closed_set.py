@@ -1,6 +1,12 @@
 from a_star import ClosedSet, Coord, SearchNode
 import unittest
 
+"""
+File: test_closed_set.py
+Author: Nathan Robertson
+Purpose: Test behavior of ClosedSet class
+"""
+
 
 class ClosedSetTest(unittest.TestCase):
     def setUp(self):

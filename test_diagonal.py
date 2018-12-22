@@ -3,6 +3,13 @@ from coord import Coord
 import unittest
 
 
+"""
+File: test_diagonal.py
+Author: Nathan Robertson
+Purpose: Test behavior of DiagonalGrid class
+"""
+
+
 class DiagonalGridTest(unittest.TestCase):
     def setUp(self):
         self.grid = DiagonalGrid(3, 3, [])

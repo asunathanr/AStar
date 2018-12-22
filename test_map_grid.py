@@ -3,9 +3,11 @@ from MapGrid import MapGrid
 from coord import Coord
 
 
-# File: test_map_grid.py
-# Authors: Jason Cassimus, Eric Day, Nathan Robertson
-# Purpose: Test the MapGrid class.
+"""
+File: test_map_grid.py
+Authors: Jason Cassimus, Eric Day, Nathan Robertson
+Purpose: Test the MapGrid class.
+"""
 
 
 class GridTest(unittest.TestCase):

@@ -1,3 +1,12 @@
+"""
+File: coord.py
+Authors: Pedro Reyes, Kelsey Lewis, Ryan Pounders, Nathan Robertson
+Purpose:
+    A class that represents a coordinate on a grid. Coordinates have an x and a y component which acts
+    like an index for that coordinate.
+"""
+
+
 class Coord:
     __slots__ = ('x', 'y')
 
@@ -17,7 +26,7 @@ class Coord:
 
     def __hash__(self):
         """
-        For putting coords in sets or any situation a coord would need to be hashed
+        Coords need to be hashed if they are going in a set or dict
         :return: Hash of a Coord object
         """
         return hash((self.x, self.y))

@@ -2,9 +2,10 @@ from coord import Coord
 
 """
 File: MapGrid.py
-Authors: Kelsey Lewis, Ryan, Nathan Robertson, Pedro Reyes
+Authors: Kelsey Lewis, Ryan Pounders, Pedro Reyes, Nathan Robertson
 Purpose:
     Describes a MapGrid class used in path finding algorithms.
+    Entities using this class will be able to move orthogonally (north, south, east, and west).
     Uses a Sparse Grid implementation which only stores obstacles and size of grid.
 """
 
