@@ -10,8 +10,7 @@ Purpose:
 """
 
 
-def manhattan(coord1, coord2):
-    return abs(coord1.x - coord2.x) + abs(coord1.y - coord2.y)
+
 
 
 class MapGrid:

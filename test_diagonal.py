@@ -1,4 +1,4 @@
-from DiagonalGrid import DiagonalGrid, diagonal
+from DiagonalGrid import DiagonalGrid
 from coord import Coord
 import unittest
 

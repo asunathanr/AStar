@@ -1,4 +1,5 @@
 import unittest
+from heuristics import manhattan
 from MapGrid import MapGrid
 from a_star import AStar
 from coord import Coord
@@ -18,10 +19,6 @@ Purpose:
     2. First node in list is start node
     3. Last node will be end node.
 """
-
-
-def manhattan(coord1, coord2):
-    return abs(coord1.x - coord2.x) + abs(coord1.y - coord2.y)
 
 
 class SameStartEndTest(unittest.TestCase):

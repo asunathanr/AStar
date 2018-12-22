@@ -11,8 +11,7 @@ Purpose:
 """
 
 
-def diagonal(coord1, coord2):
-    return max(abs(coord1.x - coord2.x), abs(coord1.y - coord2.y))
+
 
 
 class DiagonalGrid:

@@ -1,6 +1,6 @@
-from MapGrid import MapGrid, manhattan, print_grid
-from DiagonalGrid import DiagonalGrid, diagonal, print_diagonal
-from functools import lru_cache
+from MapGrid import MapGrid, print_grid
+from DiagonalGrid import DiagonalGrid, print_diagonal
+from heuristics import diagonal_tie_breaker, tie_breaker_h
 # My A* implementation
 from a_star import *
 # Another A* implementation
@@ -23,23 +23,6 @@ Purpose:
     Run in terminal with command: python -m cProfile -o profiling_results astar_timing.py
     to generate a file called profiling_results which can be viewed by running the display_stats.py script
 """
-
-
-@lru_cache(maxsize=None)
-def tie_breaker_h(coord1, coord2):
-    """
-    Decorator heuristic which adds a tie breaker to the formula.
-    Try to adjust the heuristic to favor certain tiles even if cost is the same.
-    :param coord1:
-    :param coord2:
-    :return:
-    """
-    return manhattan(coord1, coord2) * (1.0 + 1/1000)
-
-
-@lru_cache(maxsize=None)
-def diagonal_tie_breaker(coord1, coord2):
-    return diagonal(coord1, coord2) * (1.0 + 1 / 1000)
 
 
 def make_grid(size: (int, int), obstacle_prob: int) -> MapGrid:
