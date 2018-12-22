@@ -1,7 +1,7 @@
 from coord import Coord
 
 """
-File: MapGrid.py
+File: DiagonalGrid.py
 Authors: Kelsey Lewis, Ryan Pounders, Pedro Reyes, Nathan Robertson
 Purpose:
     Describes a DiagonalGrid class used in path finding algorithms.
