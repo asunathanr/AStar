@@ -7,21 +7,17 @@ File: a_star.py
 Author: Nathan Robertson
 Purpose:
     Implement a fast fairly generic AStar algorithm.
+    See: http://theory.stanford.edu/~amitp/GameProgramming/AStarComparison.html
 """
 
 
 class AStar:
-    """
-    Creates a path from start to goal using a heuristic function and a grid structure.
-    """
-
-    def __init__(self, grid, endpoints: (Coord, Coord), heuristic_fn):
-        self.grid = grid
+    def __init__(self, graph, endpoints: (Coord, Coord), heuristic_fn):
+        self.graph = graph
         self.heuristic_fn = heuristic_fn
-        self.start, self.end = endpoints
+        self.start, self.goal = endpoints
         self.open_set = HashHeap()
-        self.weighted_start = SearchNode(0, self.start)
-        self.open_set.add(self.weighted_start)
+        self.open_set.add(SearchNode(0, self.start))
         self.closed_set = ClosedSet()
 
     def execute(self) -> (SearchNode, bool):
@@ -29,26 +25,26 @@ class AStar:
         Attempt to find quickest path from start to end.
         :return: A list of nodes from start to end if successful, an empty list if not.
         """
-        if self.start == self.end:
+        if self.start == self.goal:
             return [self.start]
-        while not self.is_goal_reached(self.open_set.top(), self.end):
+        while not self.is_goal_reached(self.open_set.top(), self.goal):
             current = self.open_set.pop()
             self.closed_set.add(current.value, current.weight)
-            neighbors = self.grid.neighbors(current.value)
+            neighbors = self.graph.neighbors(current.value)
             for neighbor in neighbors:
                 if not self.closed_set.find(neighbor):
-                    new_g = current.weight + self.grid.cost(neighbor)
+                    new_g = current.weight + self.graph.cost(neighbor)
                     if self.open_set.should_replace_node(new_g, neighbor):
                         new_node = SearchNode(new_g, neighbor, current)
-                        new_node.h = self.heuristic_fn(neighbor, self.end)
+                        new_node.h = self.heuristic_fn(neighbor, self.goal)
                         new_node.f = new_g + new_node.h
                         self.open_set.add(new_node)
         return self.extract_value(self.find_path(self.open_set.top()))
 
     def is_goal_reached(self, current, goal):
         """
-        :param current:
-        :param goal:
+        :param current: The cheapest node at this moment in time.
+        :param goal: Final node of path.
         :return: If current node is goal node or if there are no new nodes to process then there is no viable path from
         start to end.
         """
@@ -62,14 +58,14 @@ class AStar:
         """
         return list(map(lambda cell: cell.value, path))
 
-    def find_path(self, weighted_end):
+    def find_path(self, goal: SearchNode):
         """
         Traverse end's parents until at start and capture that into a list
-        :param weighted_end:
+        :param goal:
         """
-        if weighted_end is None:
+        if goal is None:
             return []
-        return self.find_path(weighted_end.parent) + [weighted_end]
+        return self.find_path(goal.parent) + [goal]
 
 
 class ClosedSet:

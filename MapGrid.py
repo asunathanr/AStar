@@ -10,9 +10,6 @@ Purpose:
 """
 
 
-
-
-
 class MapGrid:
     def __init__(self, xsize: int, ysize: int, obstacles: list):
         self.xsize = xsize
