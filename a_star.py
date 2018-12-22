@@ -13,6 +13,13 @@ Purpose:
 
 class AStar:
     def __init__(self, graph, heuristic_fn):
+        """
+        :param graph: A graph object which needs these methods: \n
+                      1. neighbors(node): Should return all valid neighbors of a node. \n
+                      2. Cost(node): Returns the cost to travel from a neighbor of node to node. \n
+        :param heuristic_fn: The heuristic used to direct A* towards the goal node. \n
+                             It should be able to take two arguments: A neighbor and the goal.
+        """
         self.graph = graph
         self.heuristic_fn = heuristic_fn
 
@@ -61,7 +68,7 @@ class AStar:
     def find_path(self, goal: SearchNode):
         """
         Traverse end's parents until at start and capture that into a list
-        :param goal:
+        :param goal: The last node in the path. Needs to have its parent saved in the parent field.
         """
         if goal is None:
             return []
