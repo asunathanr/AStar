@@ -1,4 +1,5 @@
 from coord import Coord
+from functools import lru_cache
 
 """
 File: MapGrid.py
@@ -19,6 +20,7 @@ class MapGrid:
         self.OBSTACLE_VALUE = 2
         self.INVALID_POSITION = -1
 
+    @lru_cache(maxsize=None)
     def cost(self, coord):
         """
         Returns cost (weight) to move into a cell on the grid.
