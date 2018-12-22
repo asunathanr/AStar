@@ -26,6 +26,7 @@ class AStar:
     def execute(self, endpoints: (Coord, Coord)):
         """
         Attempt to find quickest path from start to end.
+        :param endpoints: Start node and goal node values.
         :return: A list of nodes from start to end if successful, an empty list if not.
         """
         start, goal = endpoints
