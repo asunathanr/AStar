@@ -21,13 +21,12 @@ class DiagonalGrid:
         self.OBSTACLE_VALUE = 2
         self.INVALID_POSITION = -1
 
-    @lru_cache(maxsize=None)
-    def cost(self, coord):
+    def cost(self):
         """
         Returns cost (weight) to move into a cell on the grid.
         Preconditions: coord should be a point on the grid
         """
-        return self.OBSTACLE_VALUE if coord in self.obstacles() else self.CELL_VALUE
+        return self.CELL_VALUE
 
     def is_adjacent(self, coord1: Coord, coord2: Coord) -> bool:
         """
@@ -62,6 +61,7 @@ class DiagonalGrid:
             return True
         return False
 
+    @lru_cache(maxsize=None)
     def neighbors(self, coord: Coord) -> list:
         """
         :param coord:
@@ -97,7 +97,7 @@ def print_diagonal(grid: DiagonalGrid, path: []):
             coord = Coord(i, j)
             if coord in path:
                 val = 'P'
-            elif grid.cost(coord) == grid.OBSTACLE_VALUE:
+            elif coord in grid.obstacles():
                 val = 'X'
             else:
                 val = '.'

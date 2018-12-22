@@ -16,7 +16,7 @@ class AStar:
         """
         :param graph: A graph object which needs these methods: \n
                       1. neighbors(node): Should return all valid neighbors of a node. \n
-                      2. Cost(node): Returns the cost to travel from a neighbor of node to node. \n
+                      2. Cost(): Returns the cost to travel from a neighbor of node to node. \n
         :param heuristic_fn: The heuristic used to direct A* towards the goal node. \n
                              It should be able to take two arguments: A neighbor and the goal.
         """
@@ -35,13 +35,15 @@ class AStar:
         closed_set = ClosedSet()
         if start == goal:
             return [start]
+        elif not self.graph.neighbors(goal):
+            return []
         while not self.is_goal_reached(open_set.top(), goal):
             current = open_set.pop()
             closed_set.add(current.value, current.weight)
             neighbors = self.graph.neighbors(current.value)
             for neighbor in neighbors:
                 if not closed_set.find(neighbor):
-                    new_g = current.weight + self.graph.cost(neighbor)
+                    new_g = current.weight + self.graph.cost()
                     if open_set.should_replace_node(new_g, neighbor):
                         new_node = SearchNode(new_g, neighbor, current)
                         new_node.h = self.heuristic_fn(neighbor, goal)
