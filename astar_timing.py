@@ -1,9 +1,8 @@
-from PathMaker import *
 from MapGrid import MapGrid, manhattan, print_grid
 from DiagonalGrid import DiagonalGrid, diagonal, print_diagonal
 from functools import lru_cache
 # My A* implementation
-from a_star import AStar
+from a_star import *
 # Another A* implementation
 import astar
 import timeit
@@ -75,8 +74,8 @@ def make_diagonal_grid(size: (int, int), obstacle_prob: int) -> DiagonalGrid:
     return DiagonalGrid(xsize, ysize, obstacles)
 
 
-xsize = 50
-ysize = 50
+xsize = 100
+ysize = 100
 grid = make_grid((xsize, ysize), 10)
 diagonal_grid = make_diagonal_grid((xsize, ysize), 10)
 print(timeit.timeit(lambda: AStar(grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), tie_breaker_h).execute(), number=1))

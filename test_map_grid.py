@@ -1,9 +1,9 @@
 import unittest
 from MapGrid import MapGrid
-from weighted_coord import Coord
+from coord import Coord
 
 
-# File: map_grid_test.py
+# File: test_map_grid.py
 # Authors: Jason Cassimus, Eric Day, Nathan Robertson
 # Purpose: Test the MapGrid class.
 

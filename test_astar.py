@@ -1,11 +1,10 @@
 import unittest
 from MapGrid import MapGrid
 from a_star import AStar
-from PathMaker import PathMaker
-from weighted_coord import Coord
+from coord import Coord
 
 """
-File: astar_test.py
+File: test_astar.py
 Authors: Nathan Robertson
 Purpose: 
     Ensure the AStar path-finding class works correctly.
@@ -29,7 +28,6 @@ class SameStartEndTest(unittest.TestCase):
     def setUp(self):
         self.grid = MapGrid(2, 2, [])
         self.astar = AStar(self.grid, (Coord(0, 0), Coord(0, 0)), manhattan)
-        self.maker = PathMaker(self.grid)
 
     def test_first_cell(self):
         path = self.astar.execute()
@@ -43,11 +41,10 @@ class SameStartEndTest(unittest.TestCase):
 class OffGridTest(unittest.TestCase):
     def setUp(self):
         self.grid = MapGrid(2, 2, [])
-        self.maker = PathMaker(self.grid)
 
     def test_below_grid(self):
-        path = self.maker.make(AStar(self.grid, (Coord(-1, -1), Coord(-2, -2)), manhattan))
-        self.assertEqual(self.maker.PATH_OUT_OF_BOUNDS, path)
+        path = AStar(self.grid, (Coord(-1, -1), Coord(-2, -2)), manhattan).execute()
+        self.assertEqual([], path)
 
 
 class SimpleAStarTest(unittest.TestCase):
@@ -72,7 +69,6 @@ class ThreeGridAStarTest(unittest.TestCase):
     def setUp(self):
         obstacles = [Coord(2, 0), Coord(2, 1), Coord(0, 1), Coord(0, 2)]
         self.grid = MapGrid(3, 3, obstacles)
-        self.maker = PathMaker(MapGrid(3, 3, obstacles))
 
     def test_only_path(self):
         algo = AStar(self.grid, (Coord(0, 0), Coord(2, 2)), manhattan)
@@ -107,7 +103,6 @@ class ComplexPathTest(unittest.TestCase):
 class RightToLeftTest(unittest.TestCase):
     def setUp(self):
         self.grid = MapGrid(2, 2, [])
-        self.maker = PathMaker(self.grid)
 
     def test_simple_path(self):
         path = set(AStar(self.grid, (Coord(1, 1), Coord(0, 0)), manhattan).execute())
