@@ -61,8 +61,8 @@ xsize = 100
 ysize = 100
 grid = make_grid((xsize, ysize), 10)
 diagonal_grid = make_diagonal_grid((xsize, ysize), 10)
-print(timeit.timeit(lambda: AStar(grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), tie_breaker_h).execute(), number=1))
-print(timeit.timeit(lambda: AStar(diagonal_grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), diagonal_tie_breaker).execute(), number=1))
+print(timeit.timeit(lambda: AStar(grid, tie_breaker_h).execute((Coord(0, 0), Coord(xsize - 1, ysize - 1))), number=1))
+print(timeit.timeit(lambda: AStar(diagonal_grid, diagonal_tie_breaker).execute((Coord(0, 0), Coord(xsize - 1, ysize - 1))), number=1))
 #print(timeit.timeit(lambda: astar.find_path(Coord(0, 0), Coord(xsize - 1, ysize - 1), grid.neighbors, heuristic_cost_estimate_fnct=tie_breaker_h), number=1))
-path = AStar(diagonal_grid, (Coord(0, 0), Coord(xsize - 1, ysize - 1)), tie_breaker_h).execute()
+path = AStar(diagonal_grid, tie_breaker_h).execute((Coord(0, 0), Coord(xsize - 1, ysize - 1)))
 print_diagonal(diagonal_grid, path)

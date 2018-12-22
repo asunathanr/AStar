@@ -24,14 +24,14 @@ Purpose:
 class SameStartEndTest(unittest.TestCase):
     def setUp(self):
         self.grid = MapGrid(2, 2, [])
-        self.astar = AStar(self.grid, (Coord(0, 0), Coord(0, 0)), manhattan)
+        self.astar = AStar(self.grid, manhattan)
 
     def test_first_cell(self):
-        path = self.astar.execute()
+        path = self.astar.execute((Coord(0, 0), Coord(0, 0)))
         self.assertEqual([Coord(0, 0)], path)
 
     def test_last_cell(self):
-        path = AStar(self.grid, (Coord(1, 1), Coord(1, 1)), manhattan).execute()
+        path = AStar(self.grid, manhattan).execute((Coord(1, 1), Coord(1, 1)))
         self.assertEqual([Coord(1, 1)], path)
 
 
@@ -40,17 +40,17 @@ class OffGridTest(unittest.TestCase):
         self.grid = MapGrid(2, 2, [])
 
     def test_below_grid(self):
-        path = AStar(self.grid, (Coord(-1, -1), Coord(-2, -2)), manhattan).execute()
+        path = AStar(self.grid, manhattan).execute((Coord(-1, -1), Coord(-2, -2)))
         self.assertEqual([], path)
 
 
 class SimpleAStarTest(unittest.TestCase):
     def setUp(self):
         self.grid = MapGrid(2, 2, [])
-        self.maker = AStar(self.grid, (Coord(0, 0), Coord(1, 1)), manhattan)
+        self.maker = AStar(self.grid, manhattan)
 
     def test_simple_path(self):
-        path = set(self.maker.execute())
+        path = set(self.maker.execute((Coord(0, 0), Coord(1, 1))))
         self.assertEqual({Coord(0, 0), Coord(0, 1), Coord(1, 1)}, path)
 
 
@@ -68,14 +68,14 @@ class ThreeGridAStarTest(unittest.TestCase):
         self.grid = MapGrid(3, 3, obstacles)
 
     def test_only_path(self):
-        algo = AStar(self.grid, (Coord(0, 0), Coord(2, 2)), manhattan)
-        path = set(algo.execute())
+        algo = AStar(self.grid, manhattan)
+        path = set(algo.execute((Coord(0, 0), Coord(2, 2))))
         coord_path = set(map(lambda cell: Coord(cell.x, cell.y), path))
         self.assertEqual({Coord(0, 0), Coord(1, 0), Coord(1, 1), Coord(1, 2), Coord(2, 2)}, coord_path)
 
     def test_tricky_path(self):
         tricky_grid = MapGrid(3, 3, [Coord(0, 1), Coord(2, 1)])
-        path = set(AStar(tricky_grid, (Coord(0, 0), Coord(2, 2)), manhattan).execute())
+        path = set(AStar(tricky_grid, manhattan).execute((Coord(0, 0), Coord(2, 2))))
         coord_path = set(map(lambda cell: Coord(cell.x, cell.y), path))
         self.assertEqual({Coord(0, 0), Coord(1, 0), Coord(1, 1), Coord(1, 2), Coord(2, 2)}, coord_path)
 
@@ -93,7 +93,7 @@ class ComplexPathTest(unittest.TestCase):
         """
         grid = MapGrid(4, 4, [Coord(2, 1), Coord(2, 2), Coord(1, 2), Coord(0, 2)])
         expected_path = {Coord(1, 0), Coord(2, 0), Coord(3, 0), Coord(3, 1), Coord(3, 2), Coord(3, 3), Coord(2, 3)}
-        actual_path = AStar(grid, (Coord(1, 0), Coord(2, 3)), manhattan).execute()
+        actual_path = AStar(grid, manhattan).execute((Coord(1, 0), Coord(2, 3)))
         self.assertEqual(expected_path, set(actual_path))
 
 
@@ -102,5 +102,5 @@ class RightToLeftTest(unittest.TestCase):
         self.grid = MapGrid(2, 2, [])
 
     def test_simple_path(self):
-        path = set(AStar(self.grid, (Coord(1, 1), Coord(0, 0)), manhattan).execute())
+        path = set(AStar(self.grid, manhattan).execute((Coord(1, 1), Coord(0, 0))))
         self.assertEqual({Coord(1, 1), Coord(1, 0), Coord(0, 0)}, path)
