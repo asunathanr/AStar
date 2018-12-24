@@ -15,7 +15,7 @@ class MapGrid:
     def __init__(self, xsize: int, ysize: int, obstacles: list):
         self.xsize = xsize
         self.ysize = ysize
-        self.obstacle_set = set(obstacles)
+        self.obstacle_set = self._initialize_obstacles(obstacles)
         self.CELL_VALUE = 1
         self.OBSTACLE_VALUE = 2
         self.INVALID_POSITION = -1
@@ -83,6 +83,9 @@ class MapGrid:
         """
         return self.obstacle_set
 
+    def _initialize_obstacles(self, potential_obstacles):
+        return set(filter(lambda obstacle: self.is_valid_coord(obstacle), potential_obstacles))
+
 
 def print_grid(grid: MapGrid, path: []):
     """
@@ -95,7 +98,7 @@ def print_grid(grid: MapGrid, path: []):
             coord = Coord(i, j)
             if coord in path:
                 val = 'P'
-            elif grid.cost(coord) == grid.OBSTACLE_VALUE:
+            elif coord in grid.obstacles():
                 val = 'X'
             else:
                 val = '.'
