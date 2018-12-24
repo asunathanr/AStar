@@ -1,5 +1,5 @@
-from MapGrid import MapGrid
-from DiagonalGrid import DiagonalGrid
+from map_grid import MapGrid
+from diagonal_grid import DiagonalGrid
 from coord import Coord
 
 

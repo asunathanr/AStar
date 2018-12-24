@@ -1,4 +1,4 @@
-from HashHeap import HashHeap
+from hash_heap import HashHeap
 from a_star import Coord, SearchNode
 import unittest
 

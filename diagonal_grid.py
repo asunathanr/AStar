@@ -2,7 +2,7 @@ from coord import Coord
 from functools import lru_cache
 
 """
-File: DiagonalGrid.py
+File: diagonal_grid.py
 Authors: Kelsey Lewis, Ryan Pounders, Pedro Reyes, Nathan Robertson
 Purpose:
     Describes a DiagonalGrid class used in path finding algorithms.

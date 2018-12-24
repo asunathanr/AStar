@@ -2,7 +2,7 @@ from coord import Coord
 from functools import lru_cache
 
 """
-File: MapGrid.py
+File: map_grid.py
 Authors: Kelsey Lewis, Ryan Pounders, Pedro Reyes, Nathan Robertson
 Purpose:
     Describes a MapGrid class used in path finding algorithms.

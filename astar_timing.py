@@ -1,5 +1,5 @@
-from MapGrid import MapGrid, print_grid
-from DiagonalGrid import DiagonalGrid, print_diagonal
+from map_grid import MapGrid, print_grid
+from diagonal_grid import DiagonalGrid, print_diagonal
 from heuristics import diagonal_tie_breaker, tie_breaker_h
 from helpers import *
 # My A* implementation

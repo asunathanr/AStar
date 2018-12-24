@@ -1,6 +1,6 @@
 import unittest
 from heuristics import manhattan
-from MapGrid import MapGrid
+from map_grid import MapGrid
 from a_star import AStar
 from coord import Coord
 

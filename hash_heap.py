@@ -2,7 +2,7 @@ import heapq
 
 
 """
-File: HashHeap.py
+File: hash_heap.py
 Author: Nathan Robertson
 Purpose:
     Create a HashHeap interface specifically for the AStar class to use as its open set.
