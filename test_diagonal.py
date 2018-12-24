@@ -28,3 +28,8 @@ class DiagonalGridTest(unittest.TestCase):
         self.assertTrue(self.grid.is_adjacent(Coord(0, 0), Coord(0, 1)))
         self.assertTrue(self.grid.is_adjacent(Coord(1, 1), Coord(0, 1)))
         self.assertTrue(self.grid.is_adjacent(Coord(0, 0), Coord(1, 1)))
+
+    def test_init_invalid_obstacles(self):
+        obstacle_grid = DiagonalGrid(3, 3, [Coord(-1, -1), Coord(5, 5)])
+        self.assertFalse(Coord(-1, -1) in obstacle_grid.obstacles())
+        self.assertFalse(Coord(5, 5) in obstacle_grid.obstacles())
