@@ -37,17 +37,25 @@ class AStar:
             return []
         open_set = HashHeap()
         open_set.add(SearchNode(0, start))
-        closed_set = ClosedSet()
+        closed_set = set()
+        cost = self.graph.cost()
         while not self.is_goal_reached(open_set.top(), goal):
             current = open_set.pop()
-            closed_set.add(current.value, current.weight)
-            neighbors = [neighbor for neighbor in self.graph.neighbors(current.value) if not closed_set.find(neighbor)]
+            closed_set.add(current.value)
+            neighbors = [neighbor for neighbor in self.graph.neighbors(current.value) if neighbor not in closed_set]
+            weight = current.weight
+            new_g = cost + weight
             for neighbor in neighbors:
-                new_g = current.weight + 1
-                if open_set.should_replace_node(new_g, neighbor):
-                    new_node = SearchNode(new_g, neighbor, current)
-                    new_node.h = self.heuristic_fn(neighbor, goal)
-                    new_node.f = new_g + new_node.h
+                if open_set.has(neighbor):
+                    h = new_g + self.heuristic_fn(neighbor, goal)
+                    if open_set.should_replace_node(h, neighbor):
+                        node = open_set.find(neighbor)
+                        node.parent = current
+                        node.weight = new_g
+                        node.f = new_g + h
+                        open_set.add(node)
+                else:
+                    new_node = SearchNode(weight + cost, neighbor, current, new_g + self.heuristic_fn(neighbor, goal))
                     open_set.add(new_node)
         return self.extract_value(self.find_path(open_set.top()))
 

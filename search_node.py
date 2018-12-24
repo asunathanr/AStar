@@ -6,14 +6,13 @@ Purpose: Create a search node class to be used by A*
 
 
 class SearchNode:
-    __slots__ = ('weight', 'value', 'value', 'parent', 'h', 'f')
+    __slots__ = ('weight', 'value', 'value', 'parent', 'f')
 
-    def __init__(self, weight, value, parent=None):
+    def __init__(self, weight, value, parent=None, f=0):
         self.weight = weight
         self.value = value
         self.parent = parent
-        self.h = 0
-        self.f = 0
+        self.f = f
 
     def __eq__(self, other):
         """

@@ -1,4 +1,5 @@
 import heapq
+from search_node import SearchNode
 
 
 """
@@ -19,6 +20,7 @@ class HashHeap:
     def __init__(self):
         self.heap = []
         self.table = {}
+        self.current = None
 
     def add(self, node):
         """
@@ -35,13 +37,9 @@ class HashHeap:
         :param new_value:
         :return: If it is cheaper to travel new path opposed to path already stored in system.
         """
-        if self.find(new_value) is None:
+        if new_weight < self.table[new_value].weight:
             return True
-        else:
-            if new_weight < self.table[new_value].weight:
-                return True
-            else:
-                return False
+        return False
 
     def top(self):
         """
@@ -60,12 +58,17 @@ class HashHeap:
         node = heapq.heappop(self.heap)
         if self.find(node.value) is not None:
             self.table.pop(node.value)
+        self.current = node
         return node
+
+    def has(self, value) -> bool:
+        return value in self.table
 
     def find(self, node_value):
         if node_value in self.table:
             return self.table[node_value]
-        return None
+        else:
+            return None
 
     def __len__(self):
         return len(self.heap)
