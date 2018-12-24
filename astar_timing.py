@@ -1,10 +1,9 @@
 from MapGrid import MapGrid, print_grid
 from DiagonalGrid import DiagonalGrid, print_diagonal
 from heuristics import diagonal_tie_breaker, tie_breaker_h
+from helpers import *
 # My A* implementation
 from a_star import *
-# Another A* implementation
-import astar
 import timeit
 import random
 
@@ -20,7 +19,10 @@ Purpose:
     I will start with trying to get a 100x100 in under 10 seconds then progressively decrease the time.
     The current goal is to get it to run 100x100 grids with obstacles in <= 0.05 second
     Update:
-        I managed to meet that goal for both 
+        I managed to meet the above goal (100x100 grid in <= 0.05 seconds). 
+        Now I think the next efficency goals are to be split into two parts.
+        1. Get the average timing to be in range 1 ms <= n < 10 ms  for a 100x100 grid.
+        2. Find 100 randomly generated paths on a grid in < 1 second.
     
     Run in terminal with command: python -m cProfile -o profiling_results astar_timing.py
     to generate a file called profiling_results which can be viewed by running the display_stats.py script
@@ -57,25 +59,27 @@ def make_diagonal_grid(size: (int, int), obstacle_prob: int) -> DiagonalGrid:
     return DiagonalGrid(xsize, ysize, obstacles)
 
 
-def was_solution_found(endpoints: (Coord, Coord), tentative_path: []) -> bool:
-    """
-    :param endpoints: A tuple containing start and goal coordinates
-    :param path: list of coordinates to check.
-    :return: If path is a path from start to goal.
-    """
-    start, goal = endpoints
-    return start in tentative_path and goal in tentative_path
+def find_path(graph, endpoints, heuristic):
+    return AStar(graph, heuristic).execute(endpoints)
 
 
-xsize = 100
-ysize = 100
-grid = make_grid((xsize, ysize), 10)
-diagonal_grid = make_diagonal_grid((xsize, ysize), 10)
-print('Finding one path with orthogonal grid')
-print(timeit.timeit(lambda: AStar(grid, tie_breaker_h).execute((Coord(0, 0), Coord(xsize - 1, ysize - 1))), number=1))
+def print_result(result):
+    flat_result = flatten(result)
+    print(flat_result)
 
-print('Finding one path with diagonal grid')
-print(timeit.timeit(lambda: AStar(diagonal_grid, diagonal_tie_breaker).execute((Coord(0, 0), Coord(xsize - 1, ysize - 1))), number=1))
-#print(timeit.timeit(lambda: astar.find_path(Coord(0, 0), Coord(xsize - 1, ysize - 1), grid.neighbors, heuristic_cost_estimate_fnct=tie_breaker_h), number=1))
-path = AStar(diagonal_grid, tie_breaker_h).execute((Coord(0, 0), Coord(xsize - 1, ysize - 1)))
-print_diagonal(diagonal_grid, path)
+
+xsize = 50
+ysize = 50
+times = [1, 10, 100, 1000]
+obstacle_prob = [1, 10, 20, 50]
+grid = make_diagonal_grid((xsize, ysize), 10)
+top_left = Coord(0, 0)
+bottom_right = Coord(xsize - 1, ysize - 1)
+
+results = list(map(
+    lambda t:
+        timeit.repeat(lambda: AStar(grid, diagonal_tie_breaker).execute((top_left, bottom_right)), repeat=3, number=t),
+    times
+))
+
+print_result(results)
