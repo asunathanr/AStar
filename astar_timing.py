@@ -55,7 +55,7 @@ def print_result(result):
 
 xsize = 50
 ysize = 50
-times = [1, 10, 100, 1000]
+times = [1, 10, 100]
 obstacle_prob = [1, 10, 20, 50]
 grid = make_diagonal_grid((xsize, ysize), 10)
 top_left = Coord(0, 0)
