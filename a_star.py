@@ -24,7 +24,6 @@ class AStar:
         self.graph = graph
         self.heuristic_fn = heuristic_fn
 
-    @lru_cache(maxsize=None)
     def execute(self, endpoints: (Coord, Coord)):
         """
         Attempt to find quickest path from start to end.
@@ -42,19 +41,14 @@ class AStar:
         while not self.is_goal_reached(open_set.top(), goal):
             current = open_set.pop()
             closed_set.add(current.value, current.weight)
-            neighbors = self.graph.neighbors(current.value)
-            already_assigned = closed_set.find
-
-            def process_neighbor(neighbor):
-                if not already_assigned(neighbor):
-                    new_g = current.weight + 1
-                    if open_set.should_replace_node(new_g, neighbor):
-                        new_node = SearchNode(new_g, neighbor, current)
-                        new_node.h = self.heuristic_fn(neighbor, goal)
-                        new_node.f = new_g + new_node.h
-                        open_set.add(new_node)
-
-            list(map(lambda neighbor: process_neighbor(neighbor), neighbors))
+            neighbors = [neighbor for neighbor in self.graph.neighbors(current.value) if not closed_set.find(neighbor)]
+            for neighbor in neighbors:
+                new_g = current.weight + 1
+                if open_set.should_replace_node(new_g, neighbor):
+                    new_node = SearchNode(new_g, neighbor, current)
+                    new_node.h = self.heuristic_fn(neighbor, goal)
+                    new_node.f = new_g + new_node.h
+                    open_set.add(new_node)
         return self.extract_value(self.find_path(open_set.top()))
 
     def is_goal_reached(self, current, goal):
@@ -89,10 +83,10 @@ class ClosedSet:
     Closed set used in A* implementation.
     """
     def __init__(self):
-        self.closed = {}
+        self.closed = set()
 
     def add(self, item, weight) -> None:
-        self.closed[item] = weight
+        self.closed.add(item)
 
     def find(self, item) -> bool:
         return item in self.closed

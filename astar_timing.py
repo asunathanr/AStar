@@ -48,14 +48,17 @@ def find_path(graph, endpoints, heuristic):
     return AStar(graph, heuristic).execute(endpoints)
 
 
+times = [1, 10, 100]
+
+
 def print_result(result):
-    flat_result = flatten(result)
-    print(flat_result)
+    for t, r in zip(times, result):
+        print("Processed: ", t, " paths. The min processing time was: ", min(r))
 
 
 xsize = 50
 ysize = 50
-times = [1, 10, 100]
+
 obstacle_prob = [1, 10, 20, 50]
 grid = make_diagonal_grid((xsize, ysize), 10)
 top_left = Coord(0, 0)
@@ -63,7 +66,7 @@ bottom_right = Coord(xsize - 1, ysize - 1)
 
 results = list(map(
     lambda t:
-        timeit.repeat(lambda: AStar(grid, diagonal_tie_breaker).execute((top_left, bottom_right)), repeat=3, number=t),
+        AStar(grid, diagonal_tie_breaker).execute((top_left, bottom_right)),
     times
 ))
 
