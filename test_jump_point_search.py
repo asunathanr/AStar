@@ -44,6 +44,12 @@ class TestJumpPointSearch(unittest.TestCase):
         path = list(map(lambda jump_point: jump_point.coord, self.jps.execute((Coord(0, 0), Coord(0, 3)))))
         self.assertEqual(expected, path)
 
+
+class ConnectJumpPointsTest(unittest.TestCase):
+    def setUp(self):
+        self.grid = DiagonalGrid(4, 4, [])
+        self.jps = JumpPointSearch(self.grid, diagonal_tie_breaker)
+
     def test_full_horizontal_path(self):
         expected = [Coord(0, 0), Coord(0, 1), Coord(0, 2), Coord(0, 3)]
         path = self.jps.execute((Coord(0, 0), Coord(0, 3)))
