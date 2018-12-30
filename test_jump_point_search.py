@@ -105,7 +105,7 @@ class TestJumpPointSearch(unittest.TestCase):
         self.assertEqual(expected, path)
 
     def test_obstacle_execute(self):
-        expected = [JPSNode(Coord(0, 0), None), JPSNode(Coord(1, 2), Coord(-1, -1)), JPSNode(Coord(0, 3), Coord(-1, 1))]
+        expected = [JPSNode(Coord(0, 0), None), JPSNode(Coord(1, 1), Coord(1, 1)), JPSNode(Coord(1, 2), Coord(0, 1)), JPSNode(Coord(0, 3), Coord(-1, 1))]
         obstacle_jps = JumpPointSearch(self.obstacle_grid, diagonal)
         path = obstacle_jps.execute((Coord(0, 0), Coord(0, 3)))
         self.assertEqual(expected, path, coordinate_mismatch_message(expected, path))

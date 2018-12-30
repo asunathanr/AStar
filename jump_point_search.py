@@ -93,11 +93,25 @@ class JumpPointSearch:
         non_natural_neighbors = self.all_neighbors(coord) - natural_neighbors
         return len(set(filter(lambda n: n in self.grid.obstacles(), non_natural_neighbors))) > 0
 
-    def prune(self, current: JPSNode):
+    def prune(self, current: JPSNode) -> set:
+        """
+        Prune all non-natural neighbors except those who are in front of forced neighbors.
+        :param current:
+        :return: All natural neighbors plus any forced neighbors.
+        """
         if current.direction is None:
             return self.grid.neighbors(current.coord)
         natural_neighbors = self.natural_neighbors(current.coord, current.direction)
-        return set(filter(lambda neighbor: neighbor not in self.grid.obstacles(), natural_neighbors))
+        forced_neighbors = self.forced_neighbors(current.coord, current.direction)
+        neighbors = natural_neighbors.union(forced_neighbors)
+        return set(filter(lambda neighbor: neighbor not in self.grid.obstacles(), neighbors))
+
+    def forced_neighbors(self, coord, direction):
+        orthogonal_direction = Coord(direction.y, direction.x)
+        forced_candidates = {Coord(coord.x + orthogonal_direction.x, coord.y + orthogonal_direction.y),
+                             Coord(coord.x - orthogonal_direction.x, coord.y - orthogonal_direction.y)}
+        forced = set(filter(lambda candidate: candidate in self.grid.obstacles(), forced_candidates))
+        return set(map(lambda cell: Coord(cell.x + direction.x, cell.y + direction.y), forced))
 
     def all_neighbors(self, coord: Coord):
         return set(map(lambda neighbor: Coord(coord.x + neighbor.x, coord.y + neighbor.y), Direction().all_directions()))
