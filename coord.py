@@ -24,6 +24,9 @@ class Coord:
     def __ne__(self, other):
         return not (self == other)
 
+    def __str__(self):
+        return '(' + str(self.x) + ',' + str(self.y) + ')'
+
     def __hash__(self):
         """
         Coords need to be hashed if they are going in a set or dict

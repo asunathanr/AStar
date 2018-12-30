@@ -7,11 +7,20 @@ Purpose:
 
 
 class JPSNode:
-    def __init__(self, coord, direction, g=0, f=0):
+    def __init__(self, coord, direction, g=1, f=0):
         self.coord = coord
         self.direction = direction
         self.f = g
         self.g = f
 
-    def __le__(self, other):
+    def __lt__(self, other):
         return self.f < other.f
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.coord == other.coord and self.direction == other.direction
+
+    def __ne__(self, other):
+        return isinstance(other, self.__class__) and not (self == other)
+
+    def __hash__(self):
+        return hash((self.coord, self.direction))
