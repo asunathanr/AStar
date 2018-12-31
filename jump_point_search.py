@@ -106,12 +106,32 @@ class JumpPointSearch:
         neighbors = natural_neighbors.union(forced_neighbors)
         return set(filter(lambda neighbor: neighbor not in self.grid.obstacles(), neighbors))
 
-    def forced_neighbors(self, coord, direction):
-        orthogonal_direction = Coord(direction.y, direction.x)
-        forced_candidates = {Coord(coord.x + orthogonal_direction.x, coord.y + orthogonal_direction.y),
-                             Coord(coord.x - orthogonal_direction.x, coord.y - orthogonal_direction.y)}
-        forced = set(filter(lambda candidate: candidate in self.grid.obstacles(), forced_candidates))
-        return set(map(lambda cell: Coord(cell.x + direction.x, cell.y + direction.y), forced))
+    def forced_neighbors(self, coord, direction) -> set:
+        """
+        Forced neighbors are defined by the paper as:
+        1. Not a natural neighbor of coord
+        2. The length of a path from coord's parent to the coord through coord is less than the corresponding path
+            without coord.
+        :param coord: The current coordinate
+        :param direction: Direction traveled to get to coord.
+        :return: A set of forced neighbors (could be empty set)
+        """
+        def straight_forced_neighbors(coord, direction):
+            orthogonal_direction = Coord(direction.y, direction.x)
+            forced_candidates = {Coord(coord.x + orthogonal_direction.x, coord.y + orthogonal_direction.y),
+                                 Coord(coord.x - orthogonal_direction.x, coord.y - orthogonal_direction.y)}
+            forced = set(filter(lambda candidate: candidate in self.grid.obstacles(), forced_candidates))
+            return set(map(lambda cell: Coord(cell.x + direction.x, cell.y + direction.y), forced))
+
+        def diagonal_forced_neighbors(coord, direction):
+            forced_candidates = {Coord(coord.x, coord.y - direction.y)}
+            forced = set(filter(lambda candidate: candidate in self.grid.obstacles(), forced_candidates))
+            return set(map(lambda cell: Coord(cell.x + direction.x, cell.y), forced))
+
+        if self.is_diagonal(direction):
+            return diagonal_forced_neighbors(coord, direction)
+        else:
+            return straight_forced_neighbors(coord, direction)
 
     def all_neighbors(self, coord: Coord):
         return set(map(lambda neighbor: Coord(coord.x + neighbor.x, coord.y + neighbor.y), Direction().all_directions()))

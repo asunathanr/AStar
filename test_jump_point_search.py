@@ -61,11 +61,11 @@ class ForcedNeighborTest(unittest.TestCase):
         self.assertFalse(forced, "Error: forced neighbor occurred in empty grid space.")
 
     def test_forced_diagonal(self):
-        obstacle_grid = DiagonalGrid(4, 4, [Coord(3, 1)])
+        obstacle_grid = DiagonalGrid(4, 4, [Coord(2, 1)])
         diag_jps = JumpPointSearch(obstacle_grid, diagonal)
-        expected = Coord(3, 0)
+        expected = Coord(3, 1)
         current = JPSNode(Coord(2, 2), Coord(1, 1))
-        neighbors = set(self.jps.forced_neighbors(current.coord, current.direction))
+        neighbors = set(diag_jps.forced_neighbors(current.coord, current.direction))
         self.assertTrue(expected in neighbors)
 
 
