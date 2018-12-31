@@ -1,5 +1,6 @@
 import heapq
 import math
+from functools import lru_cache
 from direction import Direction
 from jps_node import JPSNode
 from coord import Coord
@@ -31,6 +32,19 @@ class JumpPointSearch:
         self.grid = grid
         self.heuristic_fn = heuristic_fn
 
+    def connect_path(self, jump_points: []):
+        def connect_jump_points(begin, end):
+            total_cells = int(self.heuristic_fn(begin.coord, end.coord))
+            return list(map(lambda offset: Coord(begin.coord.x + end.direction.x * offset, begin.coord.y + end.direction.y * offset), range(0, total_cells)))
+
+        path = []
+        for i in range(0, len(jump_points) - 1):
+            begin = jump_points[i]
+            end = jump_points[i + 1]
+            path += connect_jump_points(begin, end)
+        path.append(jump_points[len(jump_points) - 1].coord)
+        return path
+
     def execute(self, endpoints: (Coord, Coord)):
         start, goal = endpoints
         start_node = JPSNode(start, None, 0, self.heuristic_fn(start, goal))
@@ -58,21 +72,20 @@ class JumpPointSearch:
                 succ.add(next_node)
         return succ
 
-    def connect_path(self, jump_points: []):
-        def connect_jump_points(begin, end):
-            total_cells = int(self.heuristic_fn(begin.coord, end.coord))
-            return list(map(lambda offset: Coord(begin.coord.x + end.direction.x * offset, begin.coord.y + end.direction.y * offset), range(0, total_cells)))
+    def jump(self, parent: Coord, direction: Coord, goal):
+        """
+        Finds next jump point
+        Base cases:
+        1. Next coordinate is out of bounds
+        2. Next coordinate is an obstacle
+        3. Next coordinate has forced neighbors
 
-        path = []
-        for i in range(0, len(jump_points) - 1):
-            begin = jump_points[i]
-            end = jump_points[i + 1]
-            path += connect_jump_points(begin, end)
-        path.append(jump_points[len(jump_points) - 1].coord)
-        return path
-
-    def jump(self, initial_node: Coord, direction: Coord, goal):
-        next_x, next_y = (initial_node.x + direction.x, initial_node.y + direction.y)
+        :param parent: Previous considered point
+        :param direction:
+        :param goal:
+        :return:
+        """
+        next_x, next_y = (parent.x + direction.x, parent.y + direction.y)
         next_coord = Coord(next_x, next_y)
         if not self.grid.is_valid_coord(next_coord):
             return None
@@ -89,9 +102,12 @@ class JumpPointSearch:
         return self.jump(next_coord, direction, goal)
 
     def has_forced_neighbors(self, coord: Coord, direction: Coord):
-        natural_neighbors = self.natural_neighbors(coord, direction)
-        non_natural_neighbors = self.all_neighbors(coord) - natural_neighbors
-        return len(set(filter(lambda n: n in self.grid.obstacles(), non_natural_neighbors))) > 0
+        """
+        :param coord:
+        :param direction:
+        :return: If any forced neighbors exist for a particular coordinate
+        """
+        return len(self.forced_neighbors(coord, direction)) > 0
 
     def prune(self, current: JPSNode) -> set:
         """
@@ -106,6 +122,7 @@ class JumpPointSearch:
         neighbors = natural_neighbors.union(forced_neighbors)
         return set(filter(lambda neighbor: neighbor not in self.grid.obstacles(), neighbors))
 
+    @lru_cache(maxsize=None)
     def forced_neighbors(self, coord, direction) -> set:
         """
         Forced neighbors are defined by the paper as:
