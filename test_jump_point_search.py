@@ -60,6 +60,14 @@ class ForcedNeighborTest(unittest.TestCase):
         forced = self.jps.has_forced_neighbors(Coord(0, 0), Coord(0, 1))
         self.assertFalse(forced, "Error: forced neighbor occurred in empty grid space.")
 
+    def test_forced_diagonal(self):
+        obstacle_grid = DiagonalGrid(4, 4, [Coord(3, 1)])
+        diag_jps = JumpPointSearch(obstacle_grid, diagonal)
+        expected = Coord(3, 0)
+        current = JPSNode(Coord(2, 2), Coord(1, 1))
+        neighbors = set(self.jps.forced_neighbors(current.coord, current.direction))
+        self.assertTrue(expected in neighbors)
+
 
 class PruneTest(unittest.TestCase):
     def setUp(self):
@@ -86,7 +94,8 @@ class PruneTest(unittest.TestCase):
         self.assertEqual(expected, neighbors)
 
 
-class TestJumpPointSearch(unittest.TestCase):
+
+class JumpPointSearchTest(unittest.TestCase):
     def setUp(self):
         self.grid = DiagonalGrid(4, 4, [])
         self.obstacle_grid = DiagonalGrid(4, 4, [Coord(0, 2)])
@@ -108,6 +117,14 @@ class TestJumpPointSearch(unittest.TestCase):
         expected = [JPSNode(Coord(0, 0), None), JPSNode(Coord(1, 1), Coord(1, 1)), JPSNode(Coord(1, 2), Coord(0, 1)), JPSNode(Coord(0, 3), Coord(-1, 1))]
         obstacle_jps = JumpPointSearch(self.obstacle_grid, diagonal)
         path = obstacle_jps.execute((Coord(0, 0), Coord(0, 3)))
+        self.assertEqual(expected, path, coordinate_mismatch_message(expected, path))
+
+    def test_diagonal_obstacle(self):
+        expected = [JPSNode(Coord(0, 0), None), JPSNode(Coord(2, 2), Coord(1, 1)),
+                    JPSNode(Coord(3, 3), Coord(1, 1))]
+        diagonal_obstacle_grid = DiagonalGrid(4, 4, [Coord(2, 1)])
+        obstacle_jps = JumpPointSearch(diagonal_obstacle_grid, diagonal)
+        path = obstacle_jps.execute((Coord(0, 0), Coord(3, 3)))
         self.assertEqual(expected, path, coordinate_mismatch_message(expected, path))
 
 

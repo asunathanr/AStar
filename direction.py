@@ -64,3 +64,6 @@ class Direction:
 
     def all_directions(self) -> {}:
         return {self.top(), self.bottom(), self.left(), self.right(), self.top_left(), self.top_right(), self.bottom_left(), self.bottom_right()}
+
+
+global_direction = Direction()

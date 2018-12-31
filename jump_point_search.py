@@ -17,6 +17,7 @@ Terminology
     Path: a cycle-free ordered walk starting at node n0 and ending at node nk. Ordering is an important consequence
           of this definition. A path must be stored in a list or some ordered data structure, not a set.
     Direction: A vector representing one of eight allowable directions of travel.
+    Neighbors: The 0 < n <= 8 cells surrounding a cell on a grid.
 """
 
 
@@ -79,8 +80,7 @@ class JumpPointSearch:
             return None
         elif next_coord == goal:
             return next_coord
-        forced_neighbors = self.has_forced_neighbors(next_coord, direction)
-        if forced_neighbors:
+        if self.has_forced_neighbors(next_coord, direction):
             return next_coord
         if self.is_diagonal(direction):
             for i in {Coord(0, next_coord.y), Coord(next_coord.x, 0)}:
