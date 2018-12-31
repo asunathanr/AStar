@@ -33,6 +33,11 @@ class JumpPointSearch:
         self.heuristic_fn = heuristic_fn
 
     def connect_path(self, jump_points: []):
+        """
+        Computes full path from jump points
+        :param jump_points:
+        :return:
+        """
         def connect_jump_points(begin, end):
             total_cells = int(self.heuristic_fn(begin.coord, end.coord))
             return list(map(lambda offset: Coord(begin.coord.x + end.direction.x * offset, begin.coord.y + end.direction.y * offset), range(0, total_cells)))
@@ -46,7 +51,16 @@ class JumpPointSearch:
         return path
 
     def execute(self, endpoints: (Coord, Coord)):
+        """
+        Finds the jump points that comprise a path from some start to some goal
+        :param endpoints: A tuple containing (start, goal)
+        :return:
+        """
         start, goal = endpoints
+        if start == goal:
+            return []
+        if len(self.grid.neighbors(start)) == 0 or len(self.grid.neighbors(goal)) == 0:
+            return None
         start_node = JPSNode(start, None, 0, self.heuristic_fn(start, goal))
         open_set = OpenSet()
         open_set.add(start_node)
@@ -59,6 +73,12 @@ class JumpPointSearch:
         return jump_points + [open_set.top()]
 
     def successors(self, current: JPSNode, goal: Coord):
+        """
+        Finds jump point successors of current JPSNode.
+        :param current:
+        :param goal:
+        :return:
+        """
         succ = set()
         neighbors = self.prune(current)
         parent_x, parent_y = current.coord.x, current.coord.y
@@ -80,23 +100,27 @@ class JumpPointSearch:
         2. Next coordinate is an obstacle
         3. Next coordinate has forced neighbors
 
-        :param parent: Previous considered point
-        :param direction:
-        :param goal:
-        :return:
+        :param parent: Previously considered point (not necessarily a jump point)
+        :param direction: Direction to try finding next jump point.
+        :param goal: Goal cell.
+        :return: Next jump point to consider or None if direction is invalid.
         """
-        next_x, next_y = (parent.x + direction.x, parent.y + direction.y)
-        next_coord = Coord(next_x, next_y)
-        if not self.grid.is_valid_coord(next_coord):
+        def straight_moves():
+            return {Coord(0, direction.y), Coord(direction.x, 0)}
+
+        def invalid_direction() -> bool:
+            return not self.grid.is_valid_coord(next_coord) or next_coord in self.grid.obstacles()
+
+        def is_jump_point() -> bool:
+            return next_coord == goal or self.has_forced_neighbors(next_coord, direction)
+
+        next_coord = Coord(parent.x + direction.x, parent.y + direction.y)
+        if invalid_direction():
             return None
-        elif next_coord in self.grid.obstacles():
-            return None
-        elif next_coord == goal:
-            return next_coord
-        if self.has_forced_neighbors(next_coord, direction):
+        if is_jump_point():
             return next_coord
         if self.is_diagonal(direction):
-            for i in {Coord(0, next_coord.y), Coord(next_coord.x, 0)}:
+            for i in straight_moves():
                 if self.jump(next_coord, i, goal) is not None:
                     return next_coord
         return self.jump(next_coord, direction, goal)

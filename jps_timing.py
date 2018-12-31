@@ -55,8 +55,8 @@ def print_result(result):
         print("Processed: ", t, " paths. The min processing time was: ", min(r))
 
 
-xsize = 50
-ysize = 50
+xsize = 10
+ysize = 10
 
 obstacle_prob = [1, 10, 20, 50]
 grid = make_diagonal_grid((xsize, ysize), 3)
@@ -64,7 +64,11 @@ top_left = Coord(0, 0)
 bottom_right = Coord(xsize - 1, ysize - 1)
 
 if __name__ == "__main__":
-    print(timeit.timeit(lambda: JumpPointSearch(grid, diagonal_tie_breaker).execute((top_left, bottom_right)), number=1))
+    try:
+        print(timeit.timeit(lambda: JumpPointSearch(grid, diagonal_tie_breaker).execute((top_left, bottom_right)), number=1))
+    except RecursionError as e:
+        print(e)
+        print_diagonal(grid, [])
 else:
     for i in range(0, 100):
         JumpPointSearch(grid, diagonal_tie_breaker).execute((top_left, bottom_right))

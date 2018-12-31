@@ -94,7 +94,6 @@ class PruneTest(unittest.TestCase):
         self.assertEqual(expected, neighbors)
 
 
-
 class JumpPointSearchTest(unittest.TestCase):
     def setUp(self):
         self.grid = DiagonalGrid(4, 4, [])
@@ -126,6 +125,11 @@ class JumpPointSearchTest(unittest.TestCase):
         obstacle_jps = JumpPointSearch(diagonal_obstacle_grid, diagonal)
         path = obstacle_jps.execute((Coord(0, 0), Coord(3, 3)))
         self.assertEqual(expected, path, coordinate_mismatch_message(expected, path))
+
+    def test_large_obstacle_grid(self):
+        large_grid = DiagonalGrid(10, 10, [Coord(1, 8), Coord(5, 7), Coord(6, 0), Coord(7, 7)])
+        obstacle_jps = JumpPointSearch(large_grid, diagonal_tie_breaker)
+        path = obstacle_jps.execute((Coord(0, 0), Coord(9, 9)))
 
 
 class SuccessorsTest(unittest.TestCase):
