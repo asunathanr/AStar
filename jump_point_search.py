@@ -174,9 +174,6 @@ class JumpPointSearch:
         else:
             return straight_forced_neighbors(coord, direction)
 
-    def all_neighbors(self, coord: Coord):
-        return set(map(lambda neighbor: Coord(coord.x + neighbor.x, coord.y + neighbor.y), Direction().all_directions()))
-
     def natural_neighbors(self, cell: Coord, direction: Coord) -> {}:
         """
         :param cell: A cell inside the current grid.
