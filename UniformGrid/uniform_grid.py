@@ -1,15 +1,14 @@
 from Coordinate.coord import Coord
-from functools import lru_cache
 from abc import abstractmethod, ABC
 
 """
 File: uniform_grid.py
 Authors: Kelsey Lewis, Ryan Pounders, Pedro Reyes, Nathan Robertson
 Purpose:
-    Describes a DiagonalGrid class used in path finding algorithms.
-    An entity using this grid class will be able to move orthogonally (north, south, east, and west) and diagonally
-    (northeast, northwest, southeast, and southwest).
-    Uses a Sparse Grid implementation which only stores obstacles and size of grid.
+    Describes an abstract uniform grid class (each cell on the grid has the same cost.)
+    The neighbors method is a template method because there are many different ways of determining the 
+    neighbors of a cell, whereas the other methods in this class will probably not need to change.
+    This is an example of the template method pattern.
 """
 
 
@@ -68,9 +67,7 @@ class UniformGrid(ABC):
         :param coord:
         :return: All neighbors of coord in a list. (A coord with no neighbors would return empty list)
         """
-        make_neighbor = lambda x, y: Coord(coord.x + x, coord.y + y)
-        dist = map(lambda i: make_neighbor(i[0], i[1]), [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (1, 1), (-1, 1), (1, -1)])
-        return list(filter(lambda i: self.is_adjacent(coord, i), list(dist)))
+        pass
 
     def insert_obstacle(self, coord: Coord) -> None:
         """
@@ -82,7 +79,7 @@ class UniformGrid(ABC):
 
     def obstacles(self) -> set:
         """
-        :return: All tiles that are impassable in the current MapGrid
+        :return: All tiles that are impassable in the current OrthogonalGrid
         """
         return self.obstacle_set
 
@@ -93,7 +90,7 @@ class UniformGrid(ABC):
 def print_diagonal(grid: UniformGrid, path: []):
     """
     Print a grid with path.
-    :param grid: MapGrid to print
+    :param grid: OrthogonalGrid to print
     :param path: Path
     """
     for i in range(0, grid.xsize):

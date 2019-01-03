@@ -1,18 +1,18 @@
 import unittest
-from UniformGrid.orthogonal_grid import MapGrid
+from UniformGrid.orthogonal_grid import OrthogonalGrid
 from Coordinate.coord import Coord
 
 
 """
 File: test_orthogonal_grid.py
 Authors: Jason Cassimus, Eric Day, Nathan Robertson
-Purpose: Test the MapGrid class.
+Purpose: Test the OrthogonalGrid class.
 """
 
 
 class GridTest(unittest.TestCase):
     def setUp(self):
-        self.grid = MapGrid(3, 3, [])
+        self.grid = OrthogonalGrid(3, 3, [])
 
     def test_is_adjacent(self):
         self.assertFalse(self.grid.is_adjacent(Coord(0, 0), Coord(0, 0)))
@@ -35,11 +35,11 @@ class GridTest(unittest.TestCase):
 
 class ObstacleGridTest(unittest.TestCase):
     """
-    Test obstacle mechanism in MapGrid
+    Test obstacle mechanism in OrthogonalGrid
     """
     def setUp(self):
-        self.grid = MapGrid(3, 3, [])
-        self.obstacle_grid = MapGrid(3, 3, [Coord(1, 1), Coord(0, 1)])
+        self.grid = OrthogonalGrid(3, 3, [])
+        self.obstacle_grid = OrthogonalGrid(3, 3, [Coord(1, 1), Coord(0, 1)])
 
     def test_add_obstacle(self):
         self.grid.insert_obstacle(Coord(1, 1))
