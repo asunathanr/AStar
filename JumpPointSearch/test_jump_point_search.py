@@ -1,7 +1,7 @@
 import unittest
 from Coordinate.coord import Coord
 from functools import reduce
-from UniformGrid.uniform_grid import UniformGrid
+from UniformGrid.diagonal_grid import DiagonalGrid
 from JumpPointSearch.jps_node import JPSNode
 from JumpPointSearch.jump_point_search import JumpPointSearch
 from heuristics import diagonal, diagonal_tie_breaker
@@ -24,8 +24,8 @@ def coordinate_mismatch_message(expected: [], actual: []) -> str:
 
 class JumpTest(unittest.TestCase):
     def setUp(self):
-        self.grid = UniformGrid(4, 4, [])
-        self.obstacle_grid = UniformGrid(4, 4, [Coord(0, 2)])
+        self.grid = DiagonalGrid(4, 4, [])
+        self.obstacle_grid = DiagonalGrid(4, 4, [Coord(0, 2)])
         self.jps = JumpPointSearch(self.grid, diagonal)
 
     def test_horizontal_jump(self):
@@ -46,12 +46,12 @@ class JumpTest(unittest.TestCase):
 
 class ForcedNeighborTest(unittest.TestCase):
     def setUp(self):
-        self.grid = UniformGrid(4, 4, [])
-        self.obstacle_grid = UniformGrid(4, 4, [Coord(0, 2)])
+        self.grid = DiagonalGrid(4, 4, [])
+        self.obstacle_grid = DiagonalGrid(4, 4, [Coord(0, 2)])
         self.jps = JumpPointSearch(self.grid, diagonal)
 
     def test_is_forced_neighbor(self):
-        forced_neighbor_grid = UniformGrid(4, 4, [Coord(1, 2)])
+        forced_neighbor_grid = DiagonalGrid(4, 4, [Coord(1, 2)])
         obstacle_jps = JumpPointSearch(forced_neighbor_grid, diagonal)
         neighbors = obstacle_jps.has_forced_neighbors(Coord(0, 2), Coord(0, 1))
         self.assertTrue(neighbors)
@@ -61,7 +61,7 @@ class ForcedNeighborTest(unittest.TestCase):
         self.assertFalse(forced, "Error: forced neighbor occurred in empty grid space.")
 
     def test_forced_diagonal(self):
-        obstacle_grid = UniformGrid(4, 4, [Coord(2, 1)])
+        obstacle_grid = DiagonalGrid(4, 4, [Coord(2, 1)])
         diag_jps = JumpPointSearch(obstacle_grid, diagonal)
         expected = Coord(3, 1)
         current = JPSNode(Coord(2, 2), Coord(1, 1))
@@ -71,8 +71,8 @@ class ForcedNeighborTest(unittest.TestCase):
 
 class PruneTest(unittest.TestCase):
     def setUp(self):
-        self.grid = UniformGrid(4, 4, [])
-        self.obstacle_grid = UniformGrid(4, 4, [Coord(0, 2)])
+        self.grid = DiagonalGrid(4, 4, [])
+        self.obstacle_grid = DiagonalGrid(4, 4, [Coord(0, 2)])
         self.jps = JumpPointSearch(self.grid, diagonal_tie_breaker)
 
     def test_prune_start_node(self):
@@ -96,8 +96,8 @@ class PruneTest(unittest.TestCase):
 
 class JumpPointSearchTest(unittest.TestCase):
     def setUp(self):
-        self.grid = UniformGrid(4, 4, [])
-        self.obstacle_grid = UniformGrid(4, 4, [Coord(0, 2)])
+        self.grid = DiagonalGrid(4, 4, [])
+        self.obstacle_grid = DiagonalGrid(4, 4, [Coord(0, 2)])
         self.jps = JumpPointSearch(self.grid, diagonal)
 
     def test_horizontal_execute(self):
@@ -121,20 +121,20 @@ class JumpPointSearchTest(unittest.TestCase):
     def test_diagonal_obstacle(self):
         expected = [JPSNode(Coord(0, 0), None), JPSNode(Coord(2, 2), Coord(1, 1)),
                     JPSNode(Coord(3, 3), Coord(1, 1))]
-        diagonal_obstacle_grid = UniformGrid(4, 4, [Coord(2, 1)])
+        diagonal_obstacle_grid = DiagonalGrid(4, 4, [Coord(2, 1)])
         obstacle_jps = JumpPointSearch(diagonal_obstacle_grid, diagonal)
         path = obstacle_jps.execute((Coord(0, 0), Coord(3, 3)))
         self.assertEqual(expected, path, coordinate_mismatch_message(expected, path))
 
     def test_large_obstacle_grid(self):
-        large_grid = UniformGrid(10, 10, [Coord(1, 8), Coord(5, 7), Coord(6, 0), Coord(7, 7)])
+        large_grid = DiagonalGrid(10, 10, [Coord(1, 8), Coord(5, 7), Coord(6, 0), Coord(7, 7)])
         obstacle_jps = JumpPointSearch(large_grid, diagonal_tie_breaker)
         path = obstacle_jps.execute((Coord(0, 0), Coord(9, 9)))
 
 
 class SuccessorsTest(unittest.TestCase):
     def setUp(self):
-        self.grid = UniformGrid(4, 4, [])
+        self.grid = DiagonalGrid(4, 4, [])
         self.jps = JumpPointSearch(self.grid, diagonal)
 
     def test_start_successors(self):
@@ -148,7 +148,7 @@ class SuccessorsTest(unittest.TestCase):
 
 class ConnectJumpPointsTest(unittest.TestCase):
     def setUp(self):
-        self.grid = UniformGrid(4, 4, [])
+        self.grid = DiagonalGrid(4, 4, [])
         self.jps = JumpPointSearch(self.grid, diagonal)
 
     def test_full_horizontal_path(self):
@@ -163,5 +163,5 @@ class ConnectJumpPointsTest(unittest.TestCase):
         self.assertEqual(expected, self.jps.connect_path(path))
 
     def test_obstacle_execute(self):
-        obstacle_grid = UniformGrid(4, 4, [Coord(0, 2)])
+        obstacle_grid = DiagonalGrid(4, 4, [Coord(0, 2)])
         expected = [Coord(0, 0), Coord(0, 1), Coord(1, 0)]

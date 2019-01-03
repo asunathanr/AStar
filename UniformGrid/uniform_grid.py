@@ -1,5 +1,6 @@
 from Coordinate.coord import Coord
 from functools import lru_cache
+from abc import abstractmethod, ABC
 
 """
 File: uniform_grid.py
@@ -12,7 +13,7 @@ Purpose:
 """
 
 
-class UniformGrid:
+class UniformGrid(ABC):
     def __init__(self, xsize: int, ysize: int, obstacles: list):
         self.xsize = xsize
         self.ysize = ysize
@@ -61,7 +62,7 @@ class UniformGrid:
             return True
         return False
 
-    @lru_cache(maxsize=None)
+    @abstractmethod
     def neighbors(self, coord: Coord) -> list:
         """
         :param coord:

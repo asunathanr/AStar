@@ -1,4 +1,4 @@
-from UniformGrid.uniform_grid import UniformGrid
+from UniformGrid.diagonal_grid import DiagonalGrid
 from heuristics import diagonal_tie_breaker
 # My A* implementation
 from AStar.a_star import *
@@ -27,7 +27,7 @@ Purpose:
 """
 
 
-def make_diagonal_grid(size: (int, int), obstacle_prob: int) -> UniformGrid:
+def make_diagonal_grid(size: (int, int), obstacle_prob: int) -> DiagonalGrid:
     """
     :param size: tuple of max x and max y values
     :param obstacle_prob: Probability that an obstacle is on a tile.
@@ -39,7 +39,7 @@ def make_diagonal_grid(size: (int, int), obstacle_prob: int) -> UniformGrid:
         for j in range(0, ysize):
             if random.randint(0, 100) < obstacle_prob:
                 obstacles.append(Coord(i, j))
-    return UniformGrid(xsize, ysize, obstacles)
+    return DiagonalGrid(xsize, ysize, obstacles)
 
 
 def find_path(graph, endpoints, heuristic):
