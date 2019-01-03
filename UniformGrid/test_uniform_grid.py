@@ -1,10 +1,10 @@
-from UniformGrid.diagonal_grid import DiagonalGrid
+from UniformGrid.uniform_grid import UniformGrid
 from Coordinate.coord import Coord
 import unittest
 
 
 """
-File: test_diagonal.py
+File: test_uniform_grid.py
 Author: Nathan Robertson
 Purpose: Test behavior of DiagonalGrid class
 """
@@ -12,7 +12,7 @@ Purpose: Test behavior of DiagonalGrid class
 
 class DiagonalGridTest(unittest.TestCase):
     def setUp(self):
-        self.grid = DiagonalGrid(3, 3, [])
+        self.grid = UniformGrid(3, 3, [])
 
     def test_neighbors(self):
         coord = Coord(1, 1)
@@ -30,6 +30,6 @@ class DiagonalGridTest(unittest.TestCase):
         self.assertTrue(self.grid.is_adjacent(Coord(0, 0), Coord(1, 1)))
 
     def test_init_invalid_obstacles(self):
-        obstacle_grid = DiagonalGrid(3, 3, [Coord(-1, -1), Coord(5, 5)])
+        obstacle_grid = UniformGrid(3, 3, [Coord(-1, -1), Coord(5, 5)])
         self.assertFalse(Coord(-1, -1) in obstacle_grid.obstacles())
         self.assertFalse(Coord(5, 5) in obstacle_grid.obstacles())

@@ -2,7 +2,7 @@ from Coordinate.coord import Coord
 from functools import lru_cache
 
 """
-File: diagonal_grid.py
+File: uniform_grid.py
 Authors: Kelsey Lewis, Ryan Pounders, Pedro Reyes, Nathan Robertson
 Purpose:
     Describes a DiagonalGrid class used in path finding algorithms.
@@ -12,7 +12,7 @@ Purpose:
 """
 
 
-class DiagonalGrid:
+class UniformGrid:
     def __init__(self, xsize: int, ysize: int, obstacles: list):
         self.xsize = xsize
         self.ysize = ysize
@@ -89,7 +89,7 @@ class DiagonalGrid:
         return set(filter(lambda obstacle: self.is_valid_coord(obstacle), potential_obstacles))
 
 
-def print_diagonal(grid: DiagonalGrid, path: []):
+def print_diagonal(grid: UniformGrid, path: []):
     """
     Print a grid with path.
     :param grid: MapGrid to print

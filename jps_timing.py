@@ -1,4 +1,4 @@
-from UniformGrid.diagonal_grid import DiagonalGrid, print_diagonal
+from UniformGrid.uniform_grid import UniformGrid, print_diagonal
 from heuristics import diagonal_tie_breaker
 # My JPS implementation
 from jump_point_search import *
@@ -26,7 +26,7 @@ Purpose:
 """
 
 
-def make_diagonal_grid(size: (int, int), obstacle_prob: int) -> DiagonalGrid:
+def make_diagonal_grid(size: (int, int), obstacle_prob: int) -> UniformGrid:
     """
     :param size: tuple of max x and max y values
     :param obstacle_prob: Probability that an obstacle is on a tile.
@@ -38,7 +38,7 @@ def make_diagonal_grid(size: (int, int), obstacle_prob: int) -> DiagonalGrid:
         for j in range(0, ysize):
             if random.randint(0, 100) < obstacle_prob:
                 obstacles.append(Coord(i, j))
-    return DiagonalGrid(xsize, ysize, obstacles)
+    return UniformGrid(xsize, ysize, obstacles)
 
 
 def find_path(graph, endpoints, heuristic):
