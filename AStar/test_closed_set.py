@@ -1,4 +1,4 @@
-from a_star import ClosedSet, Coord, SearchNode
+from AStar.a_star import ClosedSet, SearchNode
 import unittest
 
 """

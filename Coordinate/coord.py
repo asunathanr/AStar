@@ -6,6 +6,8 @@ Purpose:
     like an index for that coordinate.
 """
 
+__all__ = ["Coord"]
+
 
 class Coord:
     __slots__ = ('x', 'y')

@@ -1,7 +1,7 @@
 import unittest
 from heuristics import manhattan
 from map_grid import MapGrid
-from a_star import AStar
+from AStar.a_star import AStar
 from Coordinate.coord import Coord
 
 """

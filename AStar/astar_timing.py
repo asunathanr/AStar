@@ -1,7 +1,7 @@
 from UniformGrid.uniform_grid import UniformGrid
 from heuristics import diagonal_tie_breaker
 # My A* implementation
-from a_star import *
+from AStar.a_star import *
 import timeit
 import random
 

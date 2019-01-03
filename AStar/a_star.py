@@ -1,5 +1,5 @@
 from Coordinate.coord import Coord
-from hash_heap import *
+from AStar.hash_heap import *
 from search_node import SearchNode
 
 """
