@@ -1,7 +1,7 @@
 import heapq
 import math
 from functools import lru_cache
-from jps_node import JPSNode
+from JumpPointSearch.jps_node import JPSNode
 from Coordinate.coord import Coord
 
 """

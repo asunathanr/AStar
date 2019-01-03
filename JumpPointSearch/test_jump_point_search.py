@@ -2,8 +2,8 @@ import unittest
 from Coordinate.coord import Coord
 from functools import reduce
 from UniformGrid.uniform_grid import UniformGrid
-from jps_node import JPSNode
-from jump_point_search import JumpPointSearch
+from JumpPointSearch.jps_node import JPSNode
+from JumpPointSearch.jump_point_search import JumpPointSearch
 from heuristics import diagonal, diagonal_tie_breaker
 
 

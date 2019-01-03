@@ -1,7 +1,7 @@
 from UniformGrid.uniform_grid import UniformGrid, print_diagonal
 from heuristics import diagonal_tie_breaker
 # My JPS implementation
-from jump_point_search import *
+from JumpPointSearch.jump_point_search import *
 import timeit
 import random
 
