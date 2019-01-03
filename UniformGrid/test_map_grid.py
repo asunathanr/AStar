@@ -1,5 +1,5 @@
 import unittest
-from map_grid import MapGrid
+from UniformGrid.map_grid import MapGrid
 from Coordinate.coord import Coord
 
 
