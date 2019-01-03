@@ -8,10 +8,10 @@ import timeit
 import random
 
 """
-File: astar_timing.py
+File: jps_timing.py
 Author: Nathan Robertson
 Purpose:
-    Investigate efficiency of astar algorithm implementation.
+    Investigate efficiency of jump point search algorithm implementation.
     Battlecode 2017's map took place on maps ranging from size 20x20 to 50x50. 
     Therefore the next order of magnitude is 100x100.
     The max time given was 10 seconds with 0.05 seconds added each round. 

@@ -1,5 +1,5 @@
 from diagonal_grid import DiagonalGrid
-from coord import Coord
+from Coordinate.coord import Coord
 import unittest
 
 

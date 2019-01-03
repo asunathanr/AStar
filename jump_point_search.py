@@ -1,9 +1,8 @@
 import heapq
 import math
 from functools import lru_cache
-from direction import Direction
 from jps_node import JPSNode
-from coord import Coord
+from Coordinate.coord import Coord
 
 """
 File: jump_point_search.py
@@ -19,6 +18,10 @@ Terminology
           of this definition. A path must be stored in a list or some ordered data structure, not a set.
     Direction: A vector representing one of eight allowable directions of travel.
     Neighbors: The 0 < n <= 8 cells surrounding a cell on a grid.
+    Natural Neighbors: Any neighbor of a node x which is left over after applying the following dominance constraint
+                       to all neighbors of node x:
+        1. Straight moves: length of path from the parent to node n is <= the length of the path including x.
+        2. Diagonal moves: 
 """
 
 
@@ -40,7 +43,8 @@ class JumpPointSearch:
         """
         def connect_jump_points(begin, end):
             total_cells = int(self.heuristic_fn(begin.coord, end.coord))
-            return list(map(lambda offset: Coord(begin.coord.x + end.direction.x * offset, begin.coord.y + end.direction.y * offset), range(0, total_cells)))
+            return list(map(lambda offset: Coord(begin.coord.x + end.direction.x * offset, begin.coord.y + end.direction.y * offset),
+                            range(0, total_cells)))
 
         path = []
         for i in range(0, len(jump_points) - 1):
@@ -77,7 +81,7 @@ class JumpPointSearch:
         Finds jump point successors of current JPSNode.
         :param current:
         :param goal:
-        :return:
+        :return: A set of successors, including empty set if no successors are found.
         """
         succ = set()
         neighbors = self.prune(current)
@@ -94,7 +98,7 @@ class JumpPointSearch:
 
     def jump(self, parent: Coord, direction: Coord, goal):
         """
-        Finds next jump point
+        Finds next jump point recursively.
         Base cases:
         1. Next coordinate is out of bounds
         2. Next coordinate is an obstacle
@@ -153,6 +157,10 @@ class JumpPointSearch:
         1. Not a natural neighbor of coord
         2. The length of a path from coord's parent to the coord through coord is less than the corresponding path
             without coord.
+        This method is cached because the same coord and direction are called in hot areas of code. (Once in pruning
+        and once in jump.) Recomputing it will slow program execution by an order of magnitude. A cache is a much cheaper
+        way of obtaining the same information twice.
+
         :param coord: The current coordinate
         :param direction: Direction traveled to get to coord.
         :return: A set of forced neighbors (could be empty set)

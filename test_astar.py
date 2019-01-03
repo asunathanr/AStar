@@ -2,7 +2,7 @@ import unittest
 from heuristics import manhattan
 from map_grid import MapGrid
 from a_star import AStar
-from coord import Coord
+from Coordinate.coord import Coord
 
 """
 File: test_astar.py

@@ -1,7 +1,6 @@
-from coord import Coord
+from Coordinate.coord import Coord
 from hash_heap import *
 from search_node import SearchNode
-from functools import lru_cache
 
 """
 File: a_star.py

@@ -1,5 +1,5 @@
 import unittest
-from coord import Coord
+from Coordinate.coord import Coord
 from functools import reduce
 from diagonal_grid import DiagonalGrid
 from jps_node import JPSNode

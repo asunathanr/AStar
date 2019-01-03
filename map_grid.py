@@ -1,5 +1,4 @@
-from coord import Coord
-from functools import lru_cache
+from Coordinate.coord import Coord
 
 """
 File: map_grid.py

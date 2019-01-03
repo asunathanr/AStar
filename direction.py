@@ -1,4 +1,4 @@
-from coord import Coord
+from Coordinate.coord import Coord
 import enum
 
 

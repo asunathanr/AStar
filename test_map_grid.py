@@ -1,6 +1,6 @@
 import unittest
 from map_grid import MapGrid
-from coord import Coord
+from Coordinate.coord import Coord
 
 
 """
