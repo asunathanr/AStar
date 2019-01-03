@@ -1,7 +1,7 @@
 import unittest
 from Coordinate.coord import Coord
 from functools import reduce
-from diagonal_grid import DiagonalGrid
+from UniformGrid.diagonal_grid import DiagonalGrid
 from jps_node import JPSNode
 from jump_point_search import JumpPointSearch
 from heuristics import diagonal, diagonal_tie_breaker

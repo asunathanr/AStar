@@ -1,7 +1,5 @@
-from map_grid import MapGrid, print_grid
-from diagonal_grid import DiagonalGrid, print_diagonal
-from heuristics import diagonal_tie_breaker, tie_breaker_h
-from helpers import *
+from UniformGrid.diagonal_grid import DiagonalGrid
+from heuristics import diagonal_tie_breaker
 # My A* implementation
 from a_star import *
 import timeit
