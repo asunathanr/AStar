@@ -1,10 +1,10 @@
 import unittest
-from UniformGrid.map_grid import MapGrid
+from UniformGrid.orthogonal_grid import MapGrid
 from Coordinate.coord import Coord
 
 
 """
-File: test_map_grid.py
+File: test_orthogonal_grid.py
 Authors: Jason Cassimus, Eric Day, Nathan Robertson
 Purpose: Test the MapGrid class.
 """

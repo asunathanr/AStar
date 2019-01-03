@@ -1,7 +1,7 @@
 from Coordinate.coord import Coord
 
 """
-File: map_grid.py
+File: orthogonal_grid.py
 Authors: Kelsey Lewis, Ryan Pounders, Pedro Reyes, Nathan Robertson
 Purpose:
     Describes a MapGrid class used in path finding algorithms.
