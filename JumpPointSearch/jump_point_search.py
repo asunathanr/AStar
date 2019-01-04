@@ -35,12 +35,12 @@ class JumpPointSearch:
         self.grid = grid
         self.heuristic_fn = heuristic_fn
 
-    def connect_path(self, jump_points: []):
+    def connect_path(self, jump_points: []) -> []:
         """
         Computes full path from jump points
         todo: Handle case where goal is invalid.
-        :param jump_points:
-        :return:
+        :param jump_points: A possibly non-connected sequence of nodes which were computed from the JPS algorithm.
+        :return: A connected sequence (list) of nodes which comprises the path from a start node to a goal node.
         """
         def connect_jump_points(begin, end):
             total_cells = int(self.heuristic_fn(begin.coord, end.coord))

@@ -48,7 +48,7 @@ class HashHeap:
 
     def top(self):
         """
-        :return: The top item on the heap or None if nothing is on the heap.
+        :return: The smallest item in the heap or None if nothing is in the heap.
         """
         if len(self.heap) > 0:
             return self.heap[0]

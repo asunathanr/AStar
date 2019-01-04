@@ -54,7 +54,7 @@ xsize = 10
 ysize = 10
 
 obstacle_prob = [1, 10, 20, 50]
-grid = make_diagonal_grid((xsize, ysize), 10)
+grid = make_diagonal_grid((xsize, ysize), obstacle_prob=10)
 top_left = Coord(0, 0)
 bottom_right = Coord(xsize - 1, ysize - 1)
 
