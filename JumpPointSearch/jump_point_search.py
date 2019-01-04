@@ -38,6 +38,7 @@ class JumpPointSearch:
     def connect_path(self, jump_points: []):
         """
         Computes full path from jump points
+        todo: Handle case where goal is invalid.
         :param jump_points:
         :return:
         """

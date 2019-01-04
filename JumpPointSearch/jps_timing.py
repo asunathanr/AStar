@@ -46,12 +46,8 @@ def find_path(graph, endpoints, heuristic):
     return JumpPointSearch(graph, heuristic).execute(endpoints)
 
 
-times = [1, 10, 100]
-
-
-def print_result(result):
-    for t, r in zip(times, result):
-        print("Processed: ", t, " paths. The min processing time was: ", min(r))
+def print_result(fn, times):
+    print(timeit.timeit(fn, number=times))
 
 
 xsize = 10
@@ -64,10 +60,11 @@ bottom_right = Coord(xsize - 1, ysize - 1)
 
 if __name__ == "__main__":
     try:
-        print(timeit.timeit(lambda: JumpPointSearch(grid, diagonal_tie_breaker).execute((top_left, bottom_right)), number=1000))
+        print("Compute jump points only: ")
+        jps = JumpPointSearch(grid, diagonal_tie_breaker)
+        print_result(lambda: jps.execute((top_left, bottom_right)), 1000)
+        print("Compute jump points and points between them.")
+        print_result(lambda: jps.connect_path(jps.execute((top_left, bottom_right))), 1000)
     except RecursionError as e:
         print(e)
         print_diagonal(grid, [])
-else:
-    for i in range(0, 100):
-        JumpPointSearch(grid, diagonal_tie_breaker).execute((top_left, bottom_right))
