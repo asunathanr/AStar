@@ -11,6 +11,9 @@ Purpose:
 """
 
 
+PATH_OUT_OF_BOUNDS = []
+
+
 class AStar:
     def __init__(self, graph, heuristic_fn):
         """
@@ -23,7 +26,7 @@ class AStar:
         self.graph = graph
         self.heuristic_fn = heuristic_fn
 
-    def execute(self, endpoints: (Coord, Coord)):
+    def execute(self, endpoints):
         """
         Attempt to find quickest path from start to end.
         :param endpoints: Start node and goal node values.
@@ -32,8 +35,8 @@ class AStar:
         start, goal = endpoints
         if start == goal:
             path = [start]
-        elif not self.graph.neighbors(goal):
-            path = []
+        elif not self.graph.neighbors(goal) or not self.graph.neighbors(goal):
+            path = PATH_OUT_OF_BOUNDS
         else:
             path = self._raw_execute(start, goal)
         return path

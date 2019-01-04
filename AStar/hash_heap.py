@@ -28,9 +28,9 @@ class HashHeap:
         new_heap.add(SearchNode(0, start))
         return new_heap
 
-    def add(self, node):
+    def add(self, node) -> None:
         """
-        Adds key to heap and key value pair to hash table.
+        Procedure which adds key to heap and key value pair to hash table.
         :param node:
         """
         self.table[node.value] = node

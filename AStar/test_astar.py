@@ -39,6 +39,10 @@ class OffGridTest(unittest.TestCase):
     def setUp(self):
         self.grid = OrthogonalGrid(2, 2, [])
 
+    def test_start_below_grid(self):
+        path = AStar(self.grid, manhattan).execute((Coord(-1, -1), Coord(1, 1)))
+        self.assertEqual([], path)
+
     def test_below_grid(self):
         path = AStar(self.grid, manhattan).execute((Coord(-1, -1), Coord(-2, -2)))
         self.assertEqual([], path)
