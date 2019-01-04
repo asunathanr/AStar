@@ -31,20 +31,21 @@ class SameStartEndTest(unittest.TestCase):
         self.assertEqual([Coord(0, 0)], path)
 
     def test_last_cell(self):
-        path = AStar(self.grid, manhattan).execute((Coord(1, 1), Coord(1, 1)))
+        path = self.astar.execute((Coord(1, 1), Coord(1, 1)))
         self.assertEqual([Coord(1, 1)], path)
 
 
 class OffGridTest(unittest.TestCase):
     def setUp(self):
         self.grid = OrthogonalGrid(2, 2, [])
+        self.astar = AStar(self.grid, manhattan)
 
     def test_start_below_grid(self):
-        path = AStar(self.grid, manhattan).execute((Coord(-1, -1), Coord(1, 1)))
+        path = self.astar.execute((Coord(-1, -1), Coord(1, 1)))
         self.assertEqual([], path)
 
     def test_below_grid(self):
-        path = AStar(self.grid, manhattan).execute((Coord(-1, -1), Coord(-2, -2)))
+        path = self.astar.execute((Coord(-1, -1), Coord(-2, -2)))
         self.assertEqual([], path)
 
 
@@ -59,29 +60,32 @@ class SimpleAStarTest(unittest.TestCase):
 
 
 class ThreeGridAStarTest(unittest.TestCase):
-    """
-    Only one path goes through this three by three grid.
-    test_path method should give us back this one path.
-    It looks like:
-    |X|X|E|
-    | | | |
-    |S|X|X|
-    """
+
     def setUp(self):
         obstacles = [Coord(2, 0), Coord(2, 1), Coord(0, 1), Coord(0, 2)]
         self.grid = OrthogonalGrid(3, 3, obstacles)
 
     def test_only_path(self):
+        """
+            Only one path goes through this three by three grid.
+            test_path method should give us back this one path.
+            It looks like:
+            |X|X|E|
+            | | | |
+            |S|X|X|
+        """
         algo = AStar(self.grid, manhattan)
         path = set(algo.execute((Coord(0, 0), Coord(2, 2))))
+        expected = {Coord(0, 0), Coord(1, 0), Coord(1, 1), Coord(1, 2), Coord(2, 2)}
         coord_path = set(map(lambda cell: Coord(cell.x, cell.y), path))
-        self.assertEqual({Coord(0, 0), Coord(1, 0), Coord(1, 1), Coord(1, 2), Coord(2, 2)}, coord_path)
+        self.assertEqual(expected, coord_path)
 
     def test_tricky_path(self):
         tricky_grid = OrthogonalGrid(3, 3, [Coord(0, 1), Coord(2, 1)])
         path = set(AStar(tricky_grid, manhattan).execute((Coord(0, 0), Coord(2, 2))))
+        expected = {Coord(0, 0), Coord(1, 0), Coord(1, 1), Coord(1, 2), Coord(2, 2)}
         coord_path = set(map(lambda cell: Coord(cell.x, cell.y), path))
-        self.assertEqual({Coord(0, 0), Coord(1, 0), Coord(1, 1), Coord(1, 2), Coord(2, 2)}, coord_path)
+        self.assertEqual(expected, coord_path)
 
 
 class ComplexPathTest(unittest.TestCase):
