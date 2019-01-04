@@ -1,5 +1,4 @@
 import heapq
-from search_node import SearchNode
 
 
 """

@@ -46,15 +46,15 @@ class AStar:
             new_g = cost + weight
             for neighbor in neighbors:
                 if open_set.has(neighbor):
-                    h = new_g + self.heuristic_fn(neighbor, goal)
-                    if open_set.should_replace_node(h, neighbor):
+                    if open_set.should_replace_node(new_g, neighbor):
+                        h = new_g + self.heuristic_fn(neighbor, goal)
                         node = open_set.find(neighbor)
                         node.parent = current
                         node.weight = new_g
                         node.f = new_g + h
                         open_set.add(node)
                 else:
-                    new_node = SearchNode(weight + cost, neighbor, current, new_g + self.heuristic_fn(neighbor, goal))
+                    new_node = SearchNode(new_g, neighbor, current, new_g + self.heuristic_fn(neighbor, goal))
                     open_set.add(new_node)
         return self.extract_value(self.find_path(open_set.top()))
 
