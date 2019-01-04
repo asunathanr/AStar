@@ -1,4 +1,5 @@
 import heapq
+from AStar.search_node import SearchNode
 
 
 """
@@ -20,6 +21,12 @@ class HashHeap:
         self.heap = []
         self.table = {}
         self.current = None
+
+    @staticmethod
+    def initialize(start):
+        new_heap = HashHeap()
+        new_heap.add(SearchNode(0, start))
+        return new_heap
 
     def add(self, node):
         """

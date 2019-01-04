@@ -1,6 +1,6 @@
 from Coordinate.coord import Coord
 from AStar.hash_heap import *
-from search_node import SearchNode
+from AStar.search_node import SearchNode
 
 """
 File: a_star.py
@@ -34,16 +34,14 @@ class AStar:
             return [start]
         elif not self.graph.neighbors(goal):
             return []
-        open_set = HashHeap()
-        open_set.add(SearchNode(0, start))
+        open_set = HashHeap.initialize(start)
         closed_set = set()
-        cost = self.graph.cost()
         while not self.is_goal_reached(open_set.top(), goal):
             current = open_set.pop()
             closed_set.add(current.value)
             neighbors = [neighbor for neighbor in self.graph.neighbors(current.value) if neighbor not in closed_set]
             weight = current.weight
-            new_g = cost + weight
+            new_g = self.graph.cost() + weight
             for neighbor in neighbors:
                 if open_set.is_cheaper(new_g, neighbor):
                     new_node = SearchNode(new_g, neighbor, current, new_g + self.heuristic_fn(neighbor, goal))
