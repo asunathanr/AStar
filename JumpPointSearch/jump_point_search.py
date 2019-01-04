@@ -1,5 +1,5 @@
-import heapq
 import math
+from JumpPointSearch.open_set import OpenSet
 from functools import lru_cache
 from JumpPointSearch.jps_node import JPSNode
 from Coordinate.coord import Coord
@@ -207,32 +207,3 @@ class JumpPointSearch:
 
     def direction(self, parent: Coord, current: Coord):
         return Coord(current.x - parent.x, current.y - parent.y)
-
-
-class OpenSet:
-    def __init__(self):
-        self.heap = []
-        self.values = set()
-
-    def add(self, jump_node):
-        if jump_node not in self.values:
-            heapq.heappush(self.heap, jump_node)
-            self.values.add(jump_node)
-
-    def top(self):
-        if len(self.heap) > 0:
-            return self.heap[0]
-        return None
-
-    def pop(self):
-        if len(self.heap) > 0:
-            value = heapq.heappop(self.heap)
-            self.values.remove(value)
-            return value
-        return None
-
-    def find(self, value):
-        return value in self.values
-
-    def __len__(self):
-        return len(self.heap)
