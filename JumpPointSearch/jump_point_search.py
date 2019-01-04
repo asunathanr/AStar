@@ -21,7 +21,7 @@ Terminology
     Natural Neighbors: Any neighbor of a node x which is left over after applying the following dominance constraint
                        to all neighbors of node x:
         1. Straight moves: length of path from the parent to node n is <= the length of the path including x.
-        2. Diagonal moves: 
+        2. Diagonal moves: Same as straight moves except <= becomes <
 """
 
 
@@ -48,11 +48,13 @@ class JumpPointSearch:
                             range(0, total_cells)))
 
         path = []
-        for i in range(0, len(jump_points) - 1):
-            begin = jump_points[i]
-            end = jump_points[i + 1]
+        valid_jump_points = [jump_point for jump_point in jump_points if jump_point is not None]
+        for i in range(0, len(valid_jump_points) - 1):
+            begin = valid_jump_points[i]
+            end = valid_jump_points[i + 1]
             path += connect_jump_points(begin, end)
-        path.append(jump_points[len(jump_points) - 1].coord)
+        if len(valid_jump_points) > 0:
+            path.append(valid_jump_points[len(valid_jump_points) - 1].coord)
         return path
 
     def execute(self, endpoints: (Coord, Coord)):
@@ -65,7 +67,7 @@ class JumpPointSearch:
         if start == goal:
             return []
         if len(self.grid.neighbors(start)) == 0 or len(self.grid.neighbors(goal)) == 0:
-            return None
+            return []
         start_node = JPSNode(start, None, 0, self.heuristic_fn(start, goal))
         open_set = OpenSet()
         open_set.add(start_node)
