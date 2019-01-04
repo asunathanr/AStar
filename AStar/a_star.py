@@ -47,12 +47,8 @@ class AStar:
             for neighbor in neighbors:
                 if open_set.has(neighbor):
                     if open_set.should_replace_node(new_g, neighbor):
-                        h = self.heuristic_fn(neighbor, goal)
-                        node = open_set.find(neighbor)
-                        node.parent = current
-                        node.weight = new_g
-                        node.f = new_g + h
-                        open_set.add(node)
+                        new_node = SearchNode(weight, neighbor, current, new_g + self.heuristic_fn(neighbor, goal))
+                        open_set.add(new_node)
                 else:
                     new_node = SearchNode(new_g, neighbor, current, new_g + self.heuristic_fn(neighbor, goal))
                     open_set.add(new_node)

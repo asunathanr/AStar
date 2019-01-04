@@ -24,7 +24,6 @@ class HashHeap:
     def add(self, node):
         """
         Adds key to heap and key value pair to hash table.
-        Only adds if it is beneficial to do so. (Is lowest value associated with that key)
         :param node:
         """
         self.table[node.value] = node
