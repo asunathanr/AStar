@@ -62,24 +62,27 @@ class AStar:
         """
         :param current: The cheapest node at this moment in time.
         :param goal: Final node of path.
-        :return: If current node is goal node or if there are no new nodes to process then there is no viable path from
-        start to end.
+        :return: If current node is goal node or if there are no new nodes to process.
         """
         return current is None or current == goal
 
     def extract_value(self, path: []) -> []:
         """
         Goes through each search node, pulls out the value, and returns the new list.
+        This method is for returning the pure path to the client instead of all the details that went into the search.
         :param path: A list of nodes on a grid that form a path.
         :return: List of node values (e.g. if working with grid would be coordinates)
         """
         return list(map(lambda cell: cell.value, path))
 
-    def find_path(self, goal: SearchNode):
+    def find_path(self, goal: SearchNode) -> []:
         """
-        Traverse end's parents until at start and capture that into a list
+        Translate parent pointers into a path.
         :param goal: The last node in the path. Needs to have its parent saved in the parent field.
         """
-        if goal is None:
-            return []
-        return self.find_path(goal.parent) + [goal]
+        current = goal
+        path = []
+        while current is not None:
+            path.append(current)
+            current = current.parent
+        return path
