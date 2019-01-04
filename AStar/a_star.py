@@ -31,18 +31,22 @@ class AStar:
         """
         start, goal = endpoints
         if start == goal:
-            return [start]
+            path = [start]
         elif not self.graph.neighbors(goal):
-            return []
+            path = []
+        else:
+            path = self._raw_execute(start, goal)
+        return path
+
+    def _raw_execute(self, start, goal):
         open_set = HashHeap.initialize(start)
         closed_set = set()
         while not self.is_goal_reached(open_set.top(), goal):
             current = open_set.pop()
             closed_set.add(current.value)
-            neighbors = [neighbor for neighbor in self.graph.neighbors(current.value) if neighbor not in closed_set]
-            weight = current.weight
-            new_g = self.graph.cost() + weight
-            for neighbor in neighbors:
+            new_g = self.graph.cost() + current.weight
+            for neighbor in [neighbor for neighbor in self.graph.neighbors(current.value) if
+                             neighbor not in closed_set]:
                 if open_set.is_cheaper(new_g, neighbor):
                     new_node = SearchNode(new_g, neighbor, current, new_g + self.heuristic_fn(neighbor, goal))
                     open_set.add(new_node)
