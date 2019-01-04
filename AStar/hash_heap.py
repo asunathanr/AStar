@@ -29,13 +29,13 @@ class HashHeap:
         self.table[node.value] = node
         heapq.heappush(self.heap, node)
 
-    def should_replace_node(self, new_weight, new_value) -> bool:
+    def is_cheaper(self, new_weight, new_value) -> bool:
         """
         :param new_weight:
         :param new_value:
         :return: If it is cheaper to travel new path opposed to path already stored in system.
         """
-        if new_weight < self.table[new_value].weight:
+        if not self.has(new_value) or new_weight < self.table[new_value].weight:
             return True
         return False
 
