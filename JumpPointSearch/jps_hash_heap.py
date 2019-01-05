@@ -1,7 +1,14 @@
 import heapq
 
+"""
+File: jps_hash_heap.py
+Author: Nathan Robertson
+Purpose:
+    A hash heap like the one used in the A* algorithm but build specifically for the JPS algorithm.
+"""
 
-class OpenSet:
+
+class JPSHashHeap:
     def __init__(self):
         self.heap = []
         self.values = set()

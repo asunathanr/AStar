@@ -1,5 +1,5 @@
 import math
-from JumpPointSearch.open_set import OpenSet
+from JumpPointSearch.jps_hash_heap import JPSHashHeap
 from functools import lru_cache
 from JumpPointSearch.jps_node import JPSNode
 from Coordinate.coord import Coord
@@ -71,7 +71,7 @@ class JumpPointSearch:
 
     def _raw_execute(self, start, goal):
         start_node = JPSNode(start, None, 0, self.heuristic_fn(start, goal))
-        open_set = OpenSet()
+        open_set = JPSHashHeap()
         open_set.add(start_node)
         jump_points = []
         while len(open_set) > 0 and open_set.top().coord != goal:
