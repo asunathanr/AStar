@@ -21,6 +21,7 @@ class HashHeap:
         self.heap = []
         self.table = {}
         self.current = None
+        self.empty_value = None
 
     @staticmethod
     def initialize(start):
@@ -53,17 +54,19 @@ class HashHeap:
         if len(self.heap) > 0:
             return self.heap[0]
         else:
-            return None
+            return self.empty_value
 
     def pop(self):
         """
         Removes cheapest node from heap and table.
-        :return: Cheapest node in heap
+        :return: Cheapest node in heap or empty_value if nothing to pop.
         """
-        node = heapq.heappop(self.heap)
-        if self.find(node.value) is not None:
-            self.table.pop(node.value)
-        self.current = node
+        if len(self.heap) > 0:
+            node = heapq.heappop(self.heap)
+            if self.has(node.value):
+                self.table.pop(node.value)
+        else:
+            node = self.empty_value
         return node
 
     def has(self, value) -> bool:

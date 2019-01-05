@@ -38,7 +38,6 @@ class JumpPointSearch:
     def connect_path(self, jump_points: []) -> []:
         """
         Computes full path from jump points
-        todo: Handle case where goal is invalid.
         :param jump_points: A possibly non-connected sequence of nodes which were computed from the JPS algorithm.
         :return: A connected sequence (list) of nodes which comprises the path from a start node to a goal node.
         """
