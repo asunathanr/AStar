@@ -27,7 +27,6 @@ Terminology
 
 NEXT_DIAGONALS = frozenset({(1, 1), (-1, -1), (-1, 1), (1, -1)})
 STRAIGHT_COST = 1
-DIAGONAL_COST = math.sqrt(2)
 
 
 class JumpPointSearch:
@@ -64,9 +63,13 @@ class JumpPointSearch:
         """
         start, goal = endpoints
         if start == goal:
+            return [start]
+        elif len(self.grid.neighbors(start)) == 0 or len(self.grid.neighbors(goal)) == 0:
             return []
-        if len(self.grid.neighbors(start)) == 0 or len(self.grid.neighbors(goal)) == 0:
-            return []
+        else:
+            return self._raw_execute(start, goal)
+
+    def _raw_execute(self, start, goal):
         start_node = JPSNode(start, None, 0, self.heuristic_fn(start, goal))
         open_set = OpenSet()
         open_set.add(start_node)
